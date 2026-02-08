@@ -3,61 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>KFZ Meister Trainer</title>
     <style>
-        :root { --p: #1a202c; --a: #ed8936; --s: #48bb78; --e: #f56565; --m: #4299e1; --bg: #f7fafc; }
-        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; touch-action: manipulation; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 10px; user-select: none; }
-        .app { max-width: 650px; margin: auto; background: white; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 90vh; display: flex; flex-direction: column; overflow: hidden; }
-        .h { background: var(--p); color: white; padding: 20px; text-align: center; border-bottom: 5px solid var(--a); }
-        .stats { background: #edf2f7; padding: 12px; display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: bold; border-bottom: 1px solid #e2e8f0; }
-        .c { padding: 20px; flex-grow: 1; overflow-y: auto; }
-        .q-text { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; color: #1a202c; }
-        .o { display: block; width: 100%; padding: 16px; margin-bottom: 10px; border: 2px solid #e2e8f0; border-radius: 14px; background: white; text-align: left; font-size: 1rem; }
-        .o.sel { border-color: var(--a); background: #fffaf0; }
-        .o.correct { background: var(--s) !important; color: white; border-color: var(--s); }
-        .o.wrong { background: var(--e) !important; color: white; border-color: var(--e); }
-        .o.miss { border: 2px dashed var(--m); color: var(--m); }
-        .f { padding: 20px; background: white; border-top: 1px solid #eee; }
-        .btn { width: 100%; padding: 18px; border: none; border-radius: 14px; font-weight: 800; font-size: 1rem; color: white; background: var(--p); }
-        .btn-a { background: var(--a); }
-        .nav-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; }
+        body { font-family: sans-serif; background: #eef2f3; margin: 0; padding: 15px; }
+        .container { max-width: 450px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; font-size: 22px; }
+        
+        /* Die Buttons müssen groß und frei liegend sein */
+        .btn { 
+            display: block; 
+            width: 100%; 
+            padding: 18px; 
+            margin: 12px 0; 
+            border: none; 
+            border-radius: 10px; 
+            background: #007bff; 
+            color: white; 
+            font-size: 17px; 
+            font-weight: bold; 
+            cursor: pointer;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .btn:active { background: #0056b3; }
+        
+        #quiz-box, #result-box { display: none; }
+        #q-text { font-size: 18px; margin-bottom: 20px; font-weight: bold; color: #222; }
+        #stat { text-align: center; margin-top: 15px; color: #666; font-size: 14px; }
     </style>
 </head>
 <body>
-<div class="app">
-    <div class="h">
-        <h2 style="margin:0; font-size: 1.2rem;">KFZ EXPERTE PRO</h2>
-        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 8px;">
-            <button id="back-btn" class="nav-btn" style="display:none;" onclick="goBack()"> Zurück</button>
-            <button class="nav-btn" onclick="shareApp()">App teilen</button>
-        </div>
+
+<style>
+    #paypal-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 1000000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.5s;
+    }
+    /* Wenn die Checkbox (unten) aktiviert wird, verschwindet das Popup */
+    #close-check:checked ~ #paypal-overlay {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .popup-box {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 320px;
+        font-family: sans-serif;
+    }
+</style>
+
+<input type="checkbox" id="close-check" style="display:none;">
+
+<div id="paypal-overlay">
+    <div class="popup-box">
+        <div style="font-size:50px;">☕</div>
+        <h2 style="color:#2c3e50; margin: 10px 0;">Kaffeekasse</h2>
+        <p style="color:#7f8c8d; font-size: 15px;">Kurze Pause! Ein kleines Trinkgeld für die über 300 Fragen?</p>
+        
+        <a href="https://www.paypal.me/soerenroesch" target="_blank" style="display:block; background:#0070ba; color:white; padding:16px; border-radius:12px; text-decoration:none; font-weight:bold; margin-top:20px;">Spenden via PayPal</a>
+        
+        <label for="close-check" style="display:block; color:#bdc3c7; cursor:pointer; text-decoration:underline; margin-top:20px; font-size:14px;">Vielleicht später</label>
     </div>
-    <div id="stat-bar" class="stats" style="display:none">
-        <span id="st-count"></span><span id="st-score"></span>
+</div>
+
+<div class="container">
+    <div id="start-menu">
+        <h1>Meister Trainer 🛠️</h1>
+        <button class="btn" onclick="startQuiz(20)">20 Fragen starten</button>
+        <button class="btn" onclick="startQuiz(50)">50 Fragen starten</button>
+        <button class="btn" onclick="startQuiz(pool.length)">Alle Fragen starten</button>
     </div>
-    <div id="main" class="c">
-        <div id="menu">
-            <h3 style="text-align:center">Prüfung starten:</h3>
-            <button class="btn" style="margin-bottom:12px" onclick="start(20)">20 Fragen</button>
-            <button class="btn" style="margin-bottom:12px" onclick="start(50)">50 Fragen</button>
-            <button class="btn" onclick="start(pool.length)">Alle Fragen</button>
-        </div>
-        <div id="quiz" style="display:none">
-            <div id="q-txt" class="q-text"></div>
-            <div id="opts"></div>
-        </div>
+
+    <div id="quiz-box">
+        <div id="q-text">Lade Frage...</div>
+        <div id="options-container"></div>
+        <div id="stat"></div>
+        <button class="btn" style="background:#6c757d; margin-top:20px;" onclick="location.reload()">Abbrechen</button>
     </div>
-    <div id="foot" class="f" style="display:none">
-        <button id="act" class="btn">Prüfen</button>
+
+    <div id="result-box">
+        <h2 style="text-align:center;">Ergebnis</h2>
+        <div id="final-score" style="font-size:40px; text-align:center; font-weight:bold; color:#28a745; margin:20px 0;">0%</div>
+        <p id="score-text" style="text-align:center;"></p>
+        <button class="btn" onclick="location.reload()">Neustart</button>
     </div>
 </div>
 
 <script>
-    // DEIN FRAGENPOOL (Beispielhaft - setze hier deine 500 Fragen ein)
-    const pool = [
+// Erst das Popup nach 1 Sekunde zeigen
+setTimeout(function() {
+    document.getElementById('paypal-popup').style.display = 'flex';
+}, 1000);
+
+// Quiz Variablen
+let currentIdx = 0;
+let points = 0;
+let activeQuestions = [];
+
+function startQuiz(amount) {
+    if (typeof pool === 'undefined' || pool.length === 0) {
+        alert("Fehler: Fragenliste nicht geladen!");
+        return;
+    }
+    document.getElementById('start-menu').style.display = 'none';
+    document.getElementById('quiz-box').style.display = 'block';
+    let shuffled = [...pool].sort(() => 0.5 - Math.random());
+    activeQuestions = shuffled.slice(0, amount);
+    currentIdx = 0; points = 0;
+    renderQuestion();
+}
+
+function renderQuestion() {
+    if (currentIdx >= activeQuestions.length) { finishQuiz(); return; }
+    let qData = activeQuestions[currentIdx];
+    document.getElementById('q-text').innerText = qData.q;
+    let container = document.getElementById('options-container');
+    container.innerHTML = '';
+    qData.a.forEach((text, i) => {
+        let btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.innerText = text;
+        btn.onclick = function() { checkAnswer(i); };
+        container.appendChild(btn);
+    });
+    document.getElementById('stat').innerText = "Frage " + (currentIdx + 1) + " von " + activeQuestions.length;
+}
+
+function checkAnswer(choice) {
+    let q = activeQuestions[currentIdx];
+    if (q.c.includes(choice)) { points++; alert("Richtig! ✅"); }
+    else { alert("Falsch! ❌\n\nRichtige Antwort:\n" + q.a[q.c[0]]); }
+    currentIdx++; renderQuestion();
+}
+
+function finishQuiz() {
+    document.getElementById('quiz-box').style.display = 'none';
+    document.getElementById('result-box').style.display = 'block';
+    let percent = Math.round((points / activeQuestions.length) * 100);
+    document.getElementById('final-score').innerText = percent + "%";
+    document.getElementById('score-text').innerText = points + " von " + activeQuestions.length + " richtig.";
+}
+
+// AB HIER DEIN POOL
+const pool = [
         // --- MIX AUS MECHATRONIK, HV, KAROSSERIE, RECHT, GUTACHTEN ---
         { q: "Was ist bei der Kalkulation einer Beilackierung im Gutachten zu beachten?", a: ["Sie dient der optischen Farbtonangleichung an angrenzenden Bauteilen.", "Sie wird meist mit 50% der Lackierkosten des Neuteils kalkuliert.", "Sie ist bei Metallic- und Perleffekt-Lacken technisch oft zwingend erforderlich.", "Sie darf nur bei Fahrzeugen durchgeführt werden, die jünger als 3 Jahre sind."], c: [0, 1, 2], t: "m" },
         { q: "Welche Bedingungen müssen für die Anwendung der 130%-Regel erfüllt sein?", a: ["Die Reparaturkosten dürfen 130% des Wiederbeschaffungswerts nicht übersteigen.", "Das Fahrzeug muss nachweislich 6 Monate weitergenutzt werden.", "Die Reparatur muss fachgerecht nach Gutachten durchgeführt werden.", "Es muss ein Haftpflichtschaden vorliegen (kein Kasko)."], c: [0, 1, 2, 3], t: "m" },
@@ -299,68 +398,424 @@
             q: "Was versteht man unter 'Downsizing' bei Verbrennungsmotoren?", 
             a: ["Hubraumverkleinerung bei gleichzeitiger Aufladung zur Effizienzsteigerung.", "Reduzierung der Zylinderanzahl.", "Verringerung der maximalen Drehzahl.", "Einbau von kleineren Batterien."], 
             c: [0, 1], t: "m" 
-        }
+        },        // --- BLOCK: KAROSSERIEBAU & MATERIALKUNDE ---
+        { q: "Warum darf hochfester Stahl (HSS/UHSS) beim Richten nicht stark erwärmt werden?", a: ["Gefügeveränderung und massiver Stabilitätsverlust", "Der Stahl wird zu weich zum Lackieren", "Er fängt sofort an zu rosten"], c: [0], t: "s" },
+        { q: "Was ist beim Austausch eines geklebten und genieteten Karosserieteils zu beachten?", a: ["Korrosionsschutz (Isolierung) zwischen verschiedenen Metallen", "Nieten immer verschweißen", "Kleber nur punktuell auftragen"], c: [0], t: "s" },
+        { q: "Welches Verfahren wird beim 'Löten' im Karosseriebau (z.B. C-Säule) angewendet?", a: ["MIG-Löten", "WIG-Schweißen", "Weichlöten mit dem Lötkolben"], c: [0], t: "s" },
+        { q: "Was ist das Ziel des Abschnitts-Reparaturverfahrens?", a: ["Vermeidung von unnötig großen Eingriffen in die Werksstruktur", "Kosteneinsparung durch Altschrott", "Verlängerung der Trocknungszeit"], c: [0], t: "s" },
+        { q: "Woran erkennt man eine 'Sandwich-Bauweise'?", a: ["Zwei Deckschichten mit einem stabilisierenden Kern (Wabe/Schaum)", "Zwei Bleche direkt aufeinander", "Lackierung in drei Schichten"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Rückfederung' beim Richten von Karosserieteilen?", a: ["Material geht nach Entlastung teilweise in Ursprungsform zurück", "Das Auto federt beim Fahren nach", "Der Richtsatz bricht ab"], c: [0], t: "s" },
+        { q: "Welche Funktion hat die Knautschzone?", a: ["Gezielte Energieumwandlung durch Verformung bei Aufprall", "Schutz des Motors vor Regen", "Verschönerung der Fahrzeugfront"], c: [0], t: "s" },
+        { q: "Warum werden Aluminiumkarosserien oft genietet und geklebt statt geschweißt?", a: ["Geringerer Wärmeverzug und Vermeidung von Kontaktkorrosion", "Aluminium kann man nicht schweißen", "Nieten ist billiger"], c: [0], t: "s" },
+        { q: "Was ist ein 'Tailored Blank'?", a: ["Blechtafel aus unterschiedlichen Dicken oder Festigkeiten", "Ein fertiges Ersatzteil", "Ein spezielles Richtwerkzeug"], c: [0], t: "s" },
+        { q: "Welche Aufgabe hat das Richtsystem (Richtbank)?", a: ["Wiederherstellung der Maßhaltigkeit nach Werksvorgaben", "Nur zum Festhalten beim Lackieren", "Prüfung des Reifendrucks"], c: [0], t: "s" },
+        { q: "Was ist Kontaktkorrosion?", a: ["Chemische Reaktion beim Zusammentreffen unterschiedlicher Metalle (z.B. Alu/Stahl)", "Rost durch Regenwasser", "Schaden durch Streusalz"], c: [0], t: "s" },
+        { q: "Welche Prüfmittel werden zur Kontrolle der Karosseriemaße verwendet?", a: ["Teleskopmaßstab oder 3D-Messsysteme", "Ein einfacher Zollstock reicht", "Sichtprüfung"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Kaltrichten'?", a: ["Verformungen ohne Hitzezufuhr beseitigen", "Richten im Winter", "Verwendung von Eis-Spray"], c: [0], t: "s" },
+        { q: "Wozu dienen Deformationszonen im Längsträger?", a: ["Gezieltes Einknicken bei einem Crash", "Kühlung des Motors", "Gewichtsersparnis"], c: [0], t: "s" },
+        { q: "Was muss nach einer Richtbank-Instandsetzung zwingend erfolgen?", a: ["Achsvermessung und ggf. Kalibrierung der Fahrerassistenzsysteme", "Nur eine Probefahrt", "Ölwechsel"], c: [0], t: "s" },        { q: "Was ist die Aufgabe des Zweimassenschwungrads (ZMS)?", a: ["Reduzierung von Drehschwingungen im Antriebsstrang", "Erhöhung der Motorleistung", "Kühlung der Kupplungsscheibe"], c: [0], t: "s" },
+        { q: "Woran erkennt man ein defektes ZMS?", a: ["Vibrationen und Rasselgeräusche im Leerlauf", "Motor springt nicht an", "Gänge lassen sich schwer schalten"], c: [0], t: "s" },
+        { q: "Aufgabe des Turboladers mit variabler Turbinengeometrie (VTG)?", a: ["Optimale Ladedruckregelung über den gesamten Drehzahlbereich", "Vermeidung von Überhitzung", "Kühlung der Ansaugluft"], c: [0], t: "s" },
+        { q: "Warum haben moderne Dieselmotoren eine Zylinderdrucksensorik?", a: ["Zur optimalen Steuerung des Verbrennungsablaufs (Echtzeit)", "Zur Messung des Ölstands", "Zum Schutz vor Überdrehzahl"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Miller-Zyklus' bei Benzinmotoren?", a: ["Einlassventil schließt früh/spät für besseren Wirkungsgrad", "Einspritzung erst nach der Zündung", "Abschaltung der Ölpumpe"], c: [0], t: "s" },
+        { q: "Wozu dient die Ventilüberschneidung?", a: ["Bessere Zylinderfüllung durch Ausnutzung der Gasdynamik", "Schutz vor Kolbenfressern", "Verhinderung von Fehlzündungen"], c: [0], t: "s" },
+        { q: "Was ist die Ursache für 'Ölverdünnung'?", a: ["Häufige Regenerationsfahrten (Diesel) oder Kurzstrecke", "Zu viel Kühlmittel im System", "Defekte Zündkerzen"], c: [0], t: "s" },
+        { q: "Aufgabe des Visco-Lüfters?", a: ["Bedarfsgerechte Kühlung durch temperaturabhängige Kupplung", "Antrieb der Lichtmaschine", "Reinigung der Ansaugluft"], c: [0], t: "s" },
+        { q: "Was passiert bei einem Riss im Ladeluftschlauch?", a: ["Leistungsverlust und starkes Rußen (Diesel)", "Motor dreht unkontrolliert hoch", "Kraftstoffverbrauch sinkt"], c: [0], t: "s" },
+        { q: "Wozu dient das Ausgleichswellengetriebe?", a: ["Kompensation von Massenkräften 2. Ordnung (Laufruhe)", "Übersetzung der Gänge", "Antrieb der Nockenwelle"], c: [0], t: "s" },        { q: "Was ist der Unterschied zwischen 1K- und 2K-Lacken?", a: ["2K-Lacke härtet durch chemische Reaktion mit Härter aus", "1K-Lacke sind immer glänzend", "2K-Lacke trocknen nur durch Luft"], c: [0], t: "s" },
+        { q: "Was verhindert ein 'Silikonentferner' vor dem Lackieren?", a: ["Kraterbildung im Lack", "Rostbildung", "Zu schnelles Trocknen"], c: [0], t: "s" },
+        { q: "Was versteht man unter 'Beilackieren'?", a: ["Farbtonangleichung durch Einlaufenlassen in angrenzende Bauteile", "Das Lackieren von zwei Autos gleichzeitig", "Lackieren mit zwei Pistolen"], c: [0], t: "s" },
+        { q: "Wozu dient der Füller?", a: ["Ausgleich von Unebenheiten und Haftgrund für den Decklack", "Nur zur Farbgebung", "Zum Schutz vor Steinschlag am Unterboden"], c: [0], t: "s" },
+        { q: "Was ist ein 'Basislack'?", a: ["Die farbgebende Schicht (muss mit Klarlack geschützt werden)", "Die unterste Rostschutzschicht", "Ein Lack für LKW-Rahmen"], c: [0], t: "s" },
+        { q: "Warum muss bei Metallic-Lacken ein Klarlack aufgetragen werden?", a: ["Schutz der Pigmente und Glanzerzeugung", "Damit der Lack matt wird", "Zur Erhöhung der Schichtdicke"], c: [0], t: "s" },
+        { q: "Was verursacht 'Läufer' oder 'Nasen' beim Lackieren?", a: ["Zu hoher Materialauftrag oder zu geringer Abstand", "Zu wenig Farbe", "Zu hohe Temperatur in der Kabine"], c: [0], t: "s" },
+        { q: "Wozu dient das 'Schleifbild'?", a: ["Kontrolle der Oberflächengüte nach dem Schleifen", "Ein Foto für die Versicherung", "Dekoration in der Werkstatt"], c: [0], t: "s" },
+        { q: "Was ist eine 'Orangenhaut' beim Lack?", a: ["Ungenügender Verlauf des Lackes (wellige Oberfläche)", "Ein spezieller Farbton", "Lackierung für Offroad-Fahrzeuge"], c: [0], t: "s" },
+        { q: "Welche PSA ist beim Lackieren zwingend?", a: ["Atemschutzmaske (Aktivkohle), Schutzanzug, Handschuhe", "Nur eine Sonnenbrille", "Einfacher Mundschutz"], c: [0], t: "s" },        { q: "Was ist die Aufgabe des Vierkreisschutzventils?", a: ["Sicherung der intakten Bremskreise bei Ausfall eines Kreises", "Verteilung des Kraftstoffs", "Regelung der Reifenfülldrucks"], c: [0], t: "s" },
+        { q: "Wozu dient die Lufttrocknerpatrone in der Druckluftbremse?", a: ["Verhinderung von Korrosion und Einfrieren durch Feuchtigkeitsentzug", "Reinigung der Luft von Staub", "Kühlung der Kompressorluft"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Dauerbremse' beim LKW?", a: ["Verschleißfreie Bremse (Retarder oder Motorbremse)", "Die Feststellbremse", "Ständiges leichtes Bremsen bergab"], c: [0], t: "s" },
+        { q: "Wie funktioniert ein Federspeicherbremszylinder?", a: ["Bremskraft durch Federdruck (Feststellbremse), Lösen durch Luftdruck", "Bremsen nur durch Luft", "Rein mechanisch über Seilzug"], c: [0], t: "s" },
+        { q: "Was beschreibt das 'Alb-Ventil'?", a: ["Automatisch-lastabhängige Bremskraftregelung", "Ein Ventil für den Turbolader", "Regelung der Innenraumtemperatur"], c: [0], t: "s" },
+        { q: "Was ist die Besonderheit eines AdBlue-Systems (SCR)?", a: ["Einspritzung von Harnstoff zur NOx-Reduktion", "Verbesserung der Schmierung", "Kühlung des Abgaskrümmers"], c: [0], t: "s" },
+        { q: "Welchen Druck hat ein Standard-LKW-Bremssystem etwa?", a: ["ca. 8 bis 12 bar", "ca. 2 bar", "ca. 100 bar"], c: [0], t: "s" },
+        { q: "Was ist ein 'Intarder'?", a: ["Ein im Getriebe integrierter hydrodynamischer Retarder", "Ein innerer Rückspiegel", "Ein Sensor für die Motordrehzahl"], c: [0], t: "s" },
+        { q: "Wozu dient der 'Königspfaltz' (Zugeinrichtung)?", a: ["Verbindung zwischen Sattelzugmaschine und Auflieger", "Befestigung des Ersatzrades", "Verbindung der Kardanwelle"], c: [0], t: "s" },
+        { q: "Aufgabe des EBS (Elektronisches Bremssystem)?", a: ["Schnellere Ansprechzeiten durch elektronische Signalübertragung", "Nur für das Radio zuständig", "Überwachung des Reifendrucks"], c: [0], t: "s" },        { q: "Welche Aufgabe hat der Kompressor in der Klimaanlage?", a: ["Verdichten des gasförmigen Kältemittels", "Reinigen der Luft", "Abkühlen des Wassers"], c: [0], t: "s" },
+        { q: "Was passiert im Verdampfer?", a: ["Kältemittel wird flüssig zu gasförmig und entzieht der Umgebung Wärme", "Luft wird erwärmt", "Kältemittel wird gefiltert"], c: [0], t: "s" },
+        { q: "Warum darf Kältemittel (z.B. R1234yf) nicht entweichen?", a: ["Umweltschädlich und teilweise leicht entzündlich", "Es riecht schlecht", "Es ist sehr billig"], c: [0], t: "s" },
+        { q: "Was ist die Aufgabe des Expansionsventils?", a: ["Druckabbau und Dosierung des Kältemittels in den Verdampfer", "Erhöhung des Drucks", "Abschalten der Anlage"], c: [0], t: "s" },
+        { q: "Wozu dient der Trockner in der Klimaanlage?", a: ["Entzug von Feuchtigkeit und Filtern von Abrieb", "Trocknen der Kleidung im Auto", "Kühlung des Kompressors"], c: [0], t: "s" },
+        { q: "Was ist ein 'Klimaservice'?", a: ["Evakuieren, Reinigen und Wiederbefüllen nach Herstellervorgabe", "Nur den Filter wechseln", "Scheiben putzen"], c: [0], t: "s" },
+        { q: "Warum riecht eine Klimaanlage manchmal modrig?", a: ["Bakterien und Pilze auf dem feuchten Verdampfer", "Zu wenig Kältemittel", "Der Kompressor ist alt"], c: [0], t: "s" },
+        { q: "Was macht das Kontrastmittel (UV-Additiv)?", a: ["Sichtbarmachen von Leckagen unter UV-Licht", "Färben der Luft", "Schmieren der Dichtungen"], c: [0], t: "s" },
+        { q: "Warum muss beim Klimaservice evakuiert werden (Vakuum)?", a: ["Entfernung von Restfeuchtigkeit durch Absenken des Siedepunkts", "Damit mehr Gas reinpasst", "Zum Testen der Lautsprecher"], c: [0], t: "s" },
+        { q: "Welche Aufgabe hat der Kondensator?", a: ["Abkühlung des Kältemittels (Verflüssigung durch Fahrtwind)", "Aufwärmen der Luft", "Speichern von Strom"], c: [0], t: "s" },        { q: "Was ist die Hauptaufgabe des Drehmomentwandlers?", a: ["Hydrodynamische Kraftübertragung und Drehmomentverstärkung beim Anfahren", "Starre Verbindung zwischen Motor und Getriebe", "Kühlung des Getriebeöls"], c: [0], t: "s" },
+        { q: "Was passiert beim 'Slip-Modus' der Wandlerüberbrückungskupplung?", a: ["Gezielter Schlupf zur Dämpfung von Drehschwingungen", "Der Motor geht aus", "Das Getriebe schaltet in den Leerlauf"], c: [0], t: "s" },
+        { q: "Warum benötigt ein Doppelkupplungsgetriebe (DSG) zwei Teilgetriebe?", a: ["Damit der nächste Gang bereits vorgewählt werden kann (Schalten ohne Zugkraftunterbrechung)", "Eines für Vorwärts-, eines für Rückwärtsgang", "Als Reserve bei Defekten"], c: [0], t: "s" },
+        { q: "Was ist ein 'Planetenradsatz'?", a: ["Getriebeeinheit aus Sonnenrad, Planetenrädern und Hohlrad", "Ein Reifentyp für LKWs", "Ein Bauteil der Lenkung"], c: [0], t: "s" },
+        { q: "Warum muss das Getriebeöl (ATF) regelmäßig gewechselt werden?", a: ["Verschleiß der Additive und Aufnahme von Abrieb", "Damit das Öl nicht verbrennt", "Getriebeöl hält normalerweise ein Leben lang"], c: [0], t: "s" },        { q: "Was unterscheidet einen Vollhybrid (HEV) von einem Mildhybrid (MHEV)?", a: ["Vollhybride können rein elektrisch fahren", "Mildhybride haben keinen Elektromotor", "Es gibt keinen Unterschied"], c: [0], t: "s" },
+        { q: "Was ist ein 'Plug-in-Hybrid' (PHEV)?", a: ["Ein Hybrid, dessen Batterie auch am Stromnetz geladen werden kann", "Ein Auto mit zwei Motoren ohne Batterie", "Ein Elektroauto mit Benzin-Reservekanister"], c: [0], t: "s" },
+        { q: "Aufgabe des Inverters im Hybridfahrzeug?", a: ["Umwandlung von Gleichstrom (Batterie) in Wechselstrom (Motor) und umgekehrt", "Kühlung der Batterie", "Regelung der Sitzheizung"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Boost-Funktion' beim Hybrid?", a: ["Gleichzeitige Kraftabgabe von Verbrenner und Elektromotor für maximale Leistung", "Schnellladen der Batterie", "Erhöhung des Reifendrucks"], c: [0], t: "s" },
+        { q: "Was ist ein 'Serieller Hybrid'?", a: ["Nur der Elektromotor treibt die Räder an, der Verbrenner lädt nur den Akku", "Beide Motoren treiben die Räder gleichzeitig an", "Ein Auto mit zwei Batterien"], c: [0], t: "s" },        { q: "Was misst der NOx-Sensor genau?", a: ["Die Konzentration von Stickoxiden im Abgas", "Den Rußgehalt", "Den Restsauerstoffgehalt"], c: [0], t: "s" },
+        { q: "Warum haben Euro-6-Diesel oft zwei AGR-Systeme (Hoch- und Niederdruck)?", a: ["Zur effektiven NOx-Reduktion in allen Lastbereichen", "Als Ersatz bei Verstopfung", "Zur Kühlung des Turboladers"], c: [0], t: "s" },
+        { q: "Was passiert bei der Regeneration des Partikelfilters?", a: ["Abgastemperatur wird erhöht, um Ruß zu Asche zu verbrennen", "Filter wird mit Wasser gespült", "Filter wird durch Druckluft ausgeblasen"], c: [0], t: "s" },
+        { q: "Was ist die Aufgabe der Breitband-Lambdasonde?", a: ["Exakte Messung des Lambdawerts auch in mageren/fetten Bereichen", "Nur Messung von Lambda 1.0", "Heizung des Katalysators"], c: [0], t: "s" },
+        { q: "Was bedeutet 'SCR-Sperrkat'?", a: ["Verhindert das Entweichen von überschüssigem Ammoniak (NH3 Slip)", "Blockiert den Auspuff bei Defekt", "Filtert groben Schmutz aus dem AdBlue"], c: [0], t: "s" },        { q: "Wie erkennt ein Notbremsassistent (AEB) Hindernisse?", a: ["Über Fusion von Kamera- und Radardaten", "Über den Regensensor", "Über die Raddrehzahl"], c: [0], t: "s" },
+        { q: "Was ist der Vorteil von Matrix-LED-Scheinwerfern?", a: ["Gezieltes Ausblenden von anderen Verkehrsteilnehmern bei Dauerfernlicht", "Sie verbrauchen mehr Strom", "Sie leuchten immer nur geradeaus"], c: [0], t: "s" },
+        { q: "Was muss nach einem Windschutzscheibentausch bei Kamerasystemen oft gemacht werden?", a: ["Statische oder dynamische Kalibrierung der Kamera", "Nichts, die Kamera stellt sich selbst ein", "Scheibe muss poliert werden"], c: [0], t: "s" },
+        { q: "Wie funktioniert ein Ultraschallsensor (PDC)?", a: ["Echolot-Prinzip (Schallwellenreflexion)", "Messung der Lichtstärke", "Messung der Wärme von Hindernissen"], c: [0], t: "s" },
+        { q: "Was ist 'Lidar'?", a: ["Laserscan der Umgebung zur 3D-Objekterkennung", "Ein spezieller Kraftstoff", "Eine Software zur Fehlerauslese"], c: [0], t: "s" },        { q: "Was ist der Vorteil eines Riemen-Starter-Generators (RSG)?", a: ["Schneller, komfortabler Motorstart und Rekuperation", "Er ersetzt das Getriebe", "Er braucht kein Öl"], c: [0], t: "s" },
+        { q: "Wozu dient die Zylinderabschaltung?", a: ["Kraftstoffersparnis im Teillastbereich durch Stilllegen von Zylindern", "Schutz vor Überhitzung", "Erhöhung der Motorbremswirkung"], c: [0], t: "s" },
+        { q: "Was ist eine 'trockene' Doppelkupplung?", a: ["Kupplung ohne Ölbad (höherer Wirkungsgrad, weniger Kühlung)", "Eine defekte Kupplung", "Eine Kupplung für Motorräder"], c: [0], t: "s" },
+        { q: "Warum ist die Bremsflüssigkeit hygroskopisch?", a: ["Sie nimmt Wasser auf (Siedepunkt sinkt mit der Zeit)", "Sie stößt Wasser ab", "Sie schmiert die Reifen"], c: [0], t: "s" },
+        { q: "Welches Bauteil regelt den Ladedruck beim Wastegate-Lader?", a: ["Ladedruckregelventil (taktet den Steuerdruck)", "Der Fahrer über das Gaspedal direkt", "Die Drosselklappe"], c: [0], t: "s" },        // --- BLOCK: MOTORENTECHNIK & MECHANIK (Fortsetzung) ---
+        { q: "Was ist die Aufgabe der variablen Ventilsteuerung (z.B. VVT, Vanos)?", a: ["Anpassung der Steuerzeiten an Last und Drehzahl", "Regelung des Öldrucks", "Antrieb der Wasserpumpe"], c: [0], t: "s" },
+        { q: "Woran erkennt man eine defekte Zylinderkopfdichtung?", a: ["Öl im Kühlwasser oder weißer Qualm aus dem Auspuff", "Motor dreht zu hoch", "Klimaanlage kühlt nicht"], c: [0], t: "s" },
+        { q: "Was ist ein 'Fresser' beim Kolben?", a: ["Verschweißen von Kolben und Zylinderwand durch Schmiermangel/Hitze", "Ein zu hoher Ölverbrauch", "Ein Geräusch beim Schalten"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Hubraum'?", a: ["Das Volumen, das der Kolben zwischen UT und OT verdrängt", "Das Gesamtvolumen des Motors", "Der Platz im Kofferraum"], c: [0], t: "s" },
+        { q: "Was ist die Aufgabe des Schwingungsdämpfers an der Kurbelwelle?", a: ["Reduzierung von Torsionsschwingungen", "Kühlung des Keilriemens", "Antrieb des Anlassers"], c: [0], t: "s" },
+        { q: "Warum haben manche Motoren zwei Zündkerzen pro Zylinder (Twin Spark)?", a: ["Schnellere und gleichmäßigere Verbrennung", "Falls eine ausfällt", "Zur Erhöhung der Leerlaufdrehzahl"], c: [0], t: "s" },
+        { q: "Was bewirkt eine defekte Kurbelgehäuseentlüftung?", a: ["Überdruck im Kurbelgehäuse und erhöhter Ölverbrauch", "Batterie entlädt sich", "Reifen verlieren Druck"], c: [0], t: "s" },
+        { q: "Was ist das Verdichtungsverhältnis?", a: ["Verhältnis vom gesamten Zylinderraum zum Verbrennungsraum", "Druck der Einspritzpumpe", "Kraft des Anlassers"], c: [0], t: "s" },
+        { q: "Aufgabe des Ölkühlers?", a: ["Konstanthalten der Öltemperatur unter Belastung", "Aufwärmen des Innenraums", "Schmierung des Turbos"], c: [0], t: "s" },
+        { q: "Was ist eine Trockensumpfschmierung?", a: ["Schmierung mit separatem Ölbehälter (oft im Motorsport)", "Schmierung ohne Öl", "Schmierung durch Fettspray"], c: [0], t: "s" },
+
+        // --- BLOCK: ELEKTRIK & SENSORIK (Tiefergehend) ---
+        { q: "Was ist ein Piezo-Injektor?", a: ["Injektor mit extrem schnellen Schaltzeiten durch Piezo-Kristalle", "Ein Injektor mit eingebautem Radio", "Ein mechanischer Zerstäuber"], c: [0], t: "s" },
+        { q: "Was misst der Klopfsensor?", a: ["Unkontrollierte Verbrennungen (Klopfen) als Körperschall", "Das Schließen der Türen", "Den Reifendruck"], c: [0], t: "s" },
+        { q: "Aufgabe der Zündspule?", a: ["Umwandlung der Bordspannung in Hochspannung", "Speichern von Strom für das Licht", "Regelung der Leerlaufdrehzahl"], c: [0], t: "s" },
+        { q: "Was ist ein Heißfilm-Luftmassenmesser?", a: ["Sensor zur Bestimmung der Masse der angesaugten Luft", "Ein Bauteil zur Heizung der Ansaugluft", "Ein Sensor für die Öltemperatur"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Ruhestrom'?", a: ["Stromfluss bei Fahrzeugstillstand und ausgeschalteten Systemen", "Maximalstrom beim Anfahren", "Ladestrom der Lichtmaschine"], c: [0], t: "s" },
+        { q: "Wozu dient ein Vorwiderstand beim Gebläsemotor?", a: ["Regelung der verschiedenen Gebläsestufen", "Schutz vor Überhitzung", "Erhöhung der Drehzahl"], c: [0], t: "s" },
+        { q: "Was ist der Unterschied zwischen Stern- und Dreieckschaltung (Lichtmaschine)?", a: ["Unterschiedliche Leistungsabgabe und Spannungsverhalten", "Es gibt keinen Unterschied", "Nur für Hybridfahrzeuge relevant"], c: [0], t: "s" },
+        { q: "Was prüft man mit einem Oszilloskop am Kurbelwellensensor?", a: ["Signalform, Amplitude und Frequenz", "Nur den Widerstand", "Die Farbe des Sensorgehäuses"], c: [0], t: "s" },
+        { q: "Was ist ein Kurzschluss nach Masse?", a: ["Verbindung einer Plusleitung mit der Karosserie vor dem Verbraucher", "Eine kaputte Glühbirne", "Eine leere Batterie"], c: [0], t: "s" },
+        { q: "Aufgabe des Relais?", a: ["Schalten großer Ströme mit einem kleinen Steuerstrom", "Speichern von Fehlern", "Messen der Temperatur"], c: [0], t: "s" },
+
+        // --- BLOCK: FAHRWERK & LENKUNG (Fortsetzung) ---
+        { q: "Was beschreibt der 'Nachlauf'?", a: ["Schrägstellung der Lenkachse in Fahrtrichtung (Stabilität)", "Das Hinterherrollen der Räder", "Die Zeit bis zum Bremsen"], c: [0], t: "s" },
+        { q: "Was ist eine Verbundlenkerachse?", a: ["Halbe Starrachse (oft hinten bei Fronttrieblern)", "Eine Achse für Allradantrieb", "Eine Lenkung für beide Achsen"], c: [0], t: "s" },
+        { q: "Woran erkennt man defekte Stoßdämpfer?", a: ["Nachschwingen des Fahrzeugs und ungleichmäßiger Reifenverschleiß", "Lenkrad lässt sich schwer drehen", "Motor wird heiß"], c: [0], t: "s" },
+        { q: "Was ist die Aufgabe der Servolenkung?", a: ["Reduzierung der Lenkkraft für den Fahrer", "Automatische Lenkung auf der Autobahn", "Kühlung der Reifen"], c: [0], t: "s" },
+        { q: "Wozu dient das Lenkgetriebe?", a: ["Umwandlung der Drehbewegung des Lenkrads in eine Schiebebewegung", "Regelung der Motordrehzahl", "Antrieb der Räder"], c: [0], t: "s" },
+        { q: "Was ist 'Aquaplaning'?", a: ["Aufschwimmen des Reifens auf einem Wasserfilm", "Reinigung der Windschutzscheibe", "Fahren durch tiefe Pfützen"], c: [0], t: "s" },
+        { q: "Was bedeutet die Kennzeichnung 'DOT' auf dem Reifen?", a: ["Herstellungsdatum des Reifens (Woche/Jahr)", "Maximale Geschwindigkeit", "Tragfähigkeit"], c: [0], t: "s" },
+        { q: "Was ist der Reifenfülldruck-Sensor (RDKS)?", a: ["Überwacht den Luftdruck in den Reifen", "Misst die Profiltiefe", "Regelt die Bremskraft"], c: [0], t: "s" },
+        { q: "Aufgabe des Radlagers?", a: ["Reibungsarme Lagerung der Räder an den Achsen", "Verbindung zum Getriebe", "Dämpfung von Schlaglöchern"], c: [0], t: "s" },
+        { q: "Was bewirkt eine falsche Spureinstellung?", a: ["Einseitiger Reifenverschleiß und schlechter Geradeauslauf", "Das Radio rauscht", "Die Bremsen quietschen"], c: [0], t: "s" },
+
+        // --- BLOCK: BREMSANLAGE (Tiefergehend) ---
+        { q: "Was ist die Bremsflüssigkeitsnorm DOT 4?", a: ["Standard für Siedepunkt und Viskosität", "Ein Name für Bremsbeläge", "Ein Werkzeug zum Entlüften"], c: [0], t: "s" },
+        { q: "Was ist ein Schwimmsattel?", a: ["Bremszange, die sich beim Bremsen seitlich bewegt", "Ein Teil der Kühlung", "Eine Bremse für Boote"], c: [0], t: "s" },
+        { q: "Was ist der Vorteil von innenbelüfteten Bremsscheiben?", a: ["Bessere Wärmeabfuhr", "Geringeres Gewicht", "Schöneres Design"], c: [0], t: "s" },
+        { q: "Warum muss Bremsflüssigkeit alle 2 Jahre gewechselt werden?", a: ["Sie ist wasseranziehend (Siedepunkt sinkt)", "Sie wird mit der Zeit dickflüssig", "Sie verliert ihre Farbe"], c: [0], t: "s" },
+        { q: "Aufgabe der Bremsbelagverschleißanzeige?", a: ["Warnung des Fahrers bei Erreichen der Verschleißgrenze", "Messung der Bremstemperatur", "Zählen der Bremsvorgänge"], c: [0], t: "s" },
+        { q: "Was ist ein Bremskraftverstärker (BKV)?", a: ["Verstärkt die Pedalkraft mittels Unterdruck", "Macht das Bremspedal härter", "Kühlt die Bremsbeläge"], c: [0], t: "s" },
+        { q: "Was bewirkt das ESP?", a: ["Verhinderung von Schleudern durch gezielten Bremseingriff", "Erhöhung der Endgeschwindigkeit", "Schnelleres Schalten"], c: [0], t: "s" },
+        { q: "Was ist der Tandem-Hauptbremszylinder?", a: ["Zylinder mit zwei getrennten Druckrädern für zwei Bremskreise", "Ein Zylinder für Fahrräder", "Ein Bauteil der Kupplung"], c: [0], t: "s" },
+        { q: "Warum darf kein Fett an die Bremsbeläge?", a: ["Massiver Verlust der Reibwirkung (Lebensgefahr)", "Beläge quietschen sonst", "Beläge nutzen sich schneller ab"], c: [0], t: "s" },
+        { q: "Was ist eine Trommelbremse?", a: ["Bremsanlage, bei der Beläge gegen eine Trommel gepresst werden", "Ein Instrument im Auto", "Eine Bremse nur für LKWs"], c: [0], t: "s" },
+
+        // --- BLOCK: ABGASTECHNIK & UMWELT ---
+        { q: "Was macht der Drei-Wege-Katalysator?", a: ["Umwandlung von CO, HC und NOx in harmlose Gase", "Reinigung des Rußes", "Kühlung der Abgase"], c: [0], t: "s" },
+        { q: "Was ist die Aufgabe der Sekundärluftleitung?", a: ["Nachverbrennung von HC in der Kaltlaufphase", "Kühlung des Turbos", "Zufuhr von Frischluft in den Innenraum"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Lambda = 1'?", a: ["Ideales Mischungsverhältnis von 14,7kg Luft zu 1kg Benzin", "Dass der Motor aus ist", "Dass der Turbo maximalen Druck hat"], c: [0], t: "s" },
+        { q: "Was ist AdBlue?", a: ["Harnstofflösung zur Reduktion von Stickoxiden", "Ein Zusatz zum Scheibenwischwasser", "Ein spezielles Motoröl"], c: [0], t: "s" },
+        { q: "Was ist die Abgasrückführung (AGR)?", a: ["Senkung der Verbrennungstemperatur zur NOx-Reduzierung", "Rückführung von unverbranntem Benzin", "Kühlung des Auspuffs"], c: [0], t: "s" },
+        { q: "Was ist ein Rußpartikelfilter (DPF)?", a: ["Filtert feine Rußpartikel aus dem Dieselabgas", "Filtert den Staub aus der Luft", "Ein Filter für das Motoröl"], c: [0], t: "s" },
+        { q: "Woran erkennt man eine defekte Lambdasonde?", a: ["Hoher Kraftstoffverbrauch und schlechte Abgaswerte", "Das Radio geht nicht", "Reifen verlieren Luft"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Euro 6d'?", a: ["Aktuelle, strenge Abgasnorm für Neufahrzeuge", "Ein Kennzeichen für E-Autos", "Eine Rennklasse"], c: [0], t: "s" },
+        { q: "Aufgabe des Oxydationskatalysators (Diesel)?", a: ["Umwandlung von CO und HC in CO2 und H2O", "Filtert Stickoxide", "Ersetzt den Schalldämpfer"], c: [0], t: "s" },
+        { q: "Was ist der 'Differenzdruck' beim DPF?", a: ["Druckunterschied vor und nach dem Filter (Beladungsmaß)", "Luftdruck im Reifen", "Druck im Kühlsystem"], c: [0], t: "s" },
+
+        // --- BLOCK: LKW & NUTZFAHRZEUGE ---
+        { q: "Was ist die Druckluftbeschaffungsanlage?", a: ["Kompressor, Regler und Lufttrockner beim LKW", "Eine Pumpe für Diesel", "Ein Gebläse für die Kabine"], c: [0], t: "s" },
+        { q: "Was ist der Retarder?", a: ["Verschleißfreie Dauerbremse (hydrodynamisch)", "Ein Teil der Beleuchtung", "Ein Gang im Getriebe"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Sattellast'?", a: ["Gewicht, das der Auflieger auf die Zugmaschine überträgt", "Das Gesamtgewicht des LKWs", "Das Gewicht des Fahrers"], c: [0], t: "s" },
+        { q: "Was ist die Achslast?", a: ["Belastung, die eine Achse auf die Fahrbahn überträgt", "Das Gewicht der Achse allein", "Die Kraft des Motors"], c: [0], t: "s" },
+        { q: "Was ist ein EG-Kontrollgerät (Tachograph)?", a: ["Aufzeichnung von Lenk- und Ruhezeiten", "Messung der Motortemperatur", "Ein Navi für LKWs"], c: [0], t: "s" },
+        { q: "Was bewirkt die Luftfederung beim LKW?", a: ["Konstante Fahrzeughöhe und Schonung der Ladung", "Dass der LKW schneller fährt", "Kühlung der Bremsen"], c: [0], t: "s" },
+        { q: "Was ist der Nebenabtrieb?", a: ["Anschluss am Getriebe für externe Geräte (z.B. Kipper)", "Ein zweiter Auspuff", "Ein Anschluss für den Anhänger"], c: [0], t: "s" },
+        { q: "Was ist die Doppelbereifung (Zwillingsreifen)?", a: ["Zwei Reifen nebeneinander pro Radseite (Tragfähigkeit)", "Ein Ersatzrad", "Zwei verschiedene Reifenmarken"], c: [0], t: "s" },
+        { q: "Wozu dient das Mehrkreis-Schutzventil?", a: ["Sicherung der Bremskreise bei Druckverlust", "Schutz vor Regen", "Regelung der Luftmenge"], c: [0], t: "s" },
+        { q: "Was ist die 'Federspeicherbremse'?", a: ["Parkbremse, die durch Federkraft hält", "Eine Bremse für Federbetten", "Eine Bremse, die federt"], c: [0], t: "s" },
+
+        // --- BLOCK: KLIMA & KOMFORT ---
+        { q: "Welches Gas wird heute meist als Kältemittel verwendet?", a: ["R1234yf oder R134a", "Sauerstoff", "Stickstoff"], c: [0], t: "s" },
+        { q: "Was ist die Aufgabe des Verdampfers?", a: ["Abkühlung der Innenraumluft", "Erwärmung des Motors", "Reinigung des Wassers"], c: [0], t: "s" },
+        { q: "Was macht der Klimakompressor?", a: ["Verdichtet das Kältemittel", "Pumpt Luft in die Reifen", "Kühlt das Öl"], c: [0], t: "s" },
+        { q: "Wozu dient der Innenraumfilter (Pollenfilter)?", a: ["Reinigung der Zuluft von Staub und Pollen", "Schutz des Motors", "Filtert das Benzin"], c: [0], t: "s" },
+        { q: "Was passiert, wenn die Klimaanlage zu wenig Kältemittel hat?", a: ["Kühlleistung sinkt und Kompressor kann Schaden nehmen", "Heizung geht kaputt", "Auto verbraucht weniger"], c: [0], t: "s" },
+        { q: "Was ist die Sitzheizung?", a: ["Elektrische Heizmatten im Sitz", "Ein Kissen für den Fahrer", "Ein Rohr vom Motor zum Sitz"], c: [0], t: "s" },
+        { q: "Was macht ein Regensensor?", a: ["Steuert automatisch die Wischergeschwindigkeit", "Schließt die Fenster", "Misst die Wassertiefe"], c: [0], t: "s" },
+        { q: "Was ist die Einparkhilfe (PDC)?", a: ["Ultraschallsensoren zur Abstandswarnung", "Ein Computer, der immer einparkt", "Eine Kamera nur für vorne"], c: [0], t: "s" },
+        { q: "Aufgabe der Standheizung?", a: ["Vorwärmen von Motor und Innenraum im Stand", "Heizen während der Fahrt", "Kühlen der Batterie"], c: [0], t: "s" },
+        { q: "Was ist Keyless-Go?", a: ["Schlüsselloses Starten und Öffnen des Fahrzeugs", "Ein Auto ohne Schlüssel", "Ein System zum Weglaufen"], c: [0], t: "s" },
+
+        // --- BLOCK: HYBRID & ELEKTRO ---
+        { q: "Was bedeutet 'Rekuperation'?", a: ["Rückgewinnung von Energie beim Bremsen", "Laden an der Steckdose", "Schnellfahren auf der Autobahn"], c: [0], t: "s" },
+        { q: "Was ist eine Wallbox?", a: ["Ladestation für E-Autos zu Hause", "Ein Kasten für Werkzeug", "Eine spezielle Autobatterie"], c: [0], t: "s" },
+        { q: "Was ist der Unterschied zwischen AC- und DC-Laden?", a: ["Wechselstrom (langsam) vs. Gleichstrom (schnell)", "Es gibt keinen Unterschied", "AC ist nur für Radios"], c: [0], t: "s" },
+        { q: "Was ist die Hochvolt-Batterie?", a: ["Energiespeicher für den Elektromotor (300V-800V)", "Die 12V Starterbatterie", "Eine Batterie für die Taschenlampe"], c: [0], t: "s" },
+        { q: "Was macht der Inverter?", a: ["Wandelt Gleichstrom in Wechselstrom für den Motor", "Kühlt den Akku", "Lädt die 12V Batterie"], c: [0], t: "s" },
+        { q: "Was ist ein Range Extender?", a: ["Kleiner Verbrenner, der den Akku während der Fahrt lädt", "Ein langes Ladekabel", "Ein größerer Tank"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Zellen-Balancing'?", a: ["Angleichen der Spannungen aller Akkuzellen", "Wiegen der Batterie", "Stapeln der Batterien"], c: [0], t: "s" },
+        { q: "Was ist der Elektromotor?", a: ["Antriebseinheit, die Strom in Bewegung wandelt", "Ein Motor, der Benzin braucht", "Ein Anlasser"], c: [0], t: "s" },
+        { q: "Was bedeutet 'E-Kennzeichen'?", a: ["Vorteile für Elektrofahrzeuge (Parken, Busspur)", "Dass das Auto geladen wird", "Eine neue Farbe für Nummernschilder"], c: [0], t: "s" },
+        { q: "Was ist thermisches Management beim E-Auto?", a: ["Heizen und Kühlen von Akku und Motor für optimale Leistung", "Nur die Innenraumheizung", "Brandschutz"], c: [0], t: "s" },
+
+        // --- BLOCK: KAROSSERIE & WERKSTOFFE ---
+        { q: "Was ist CFK?", a: ["Kohlenstofffaserverstärkter Kunststoff (leicht und fest)", "Ein neues Metall", "Ein Kleber für Plastik"], c: [0], t: "s" },
+        { q: "Was ist Verzinken?", a: ["Aufbringen einer Zinkschicht als Korrosionsschutz", "Anstreichen mit grauer Farbe", "Erhitzen von Blech"], c: [0], t: "s" },
+        { q: "Was ist eine selbsttragende Karosserie?", a: ["Karosserie und Rahmen bilden eine feste Einheit", "Ein Auto, das alleine steht", "Ein LKW-Fahrgestell"], c: [0], t: "s" },
+        { q: "Was ist Aluminium?", a: ["Leichtmetall, oft im Karosseriebau genutzt", "Ein sehr schwerer Stahl", "Ein Kunststoff"], c: [0], t: "s" },
+        { q: "Was ist Punktschweißen?", a: ["Verbinden von Blechen durch Strom und Druck an Punkten", "Schweißen von Punkten auf Lack", "Ein Klebeverfahren"], c: [0], t: "s" },
+        { q: "Was ist Glasfaser (GFK)?", a: ["Kunststoff mit Glasfasern verstärkt", "Ein neues Fensterglas", "Ein Kabel für Internet"], c: [0], t: "s" },
+        { q: "Was bewirkt ein Unterbodenschutz?", a: ["Schutz vor Steinschlag und Korrosion", "Dass das Auto schneller fährt", "Dichtung des Motors"], c: [0], t: "s" },
+        { q: "Was ist eine A-Säule?", a: ["Die vordere Dachstütze der Karosserie", "Die Stütze am Kofferraum", "Ein Teil des Sitzes"], c: [0], t: "s" },
+        { q: "Was ist Verbundglas?", a: ["Zwei Glasscheiben mit einer Folie dazwischen (Windschutzscheibe)", "Glas, das leicht bricht", "Farbige Glasscheiben"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Crash-Test'?", a: ["Prüfung der Fahrzeugsicherheit bei Unfällen", "Eine schnelle Fahrt", "Ein Test für Bremsen"], c: [0], t: "s" },
+
+        // --- BLOCK: GETRIEBE & ANTRIEB ---
+        { q: "Was ist das Differenzial?", a: ["Gleichgewichtsausgleich der Raddrehzahlen bei Kurvenfahrt", "Ein Teil des Motors", "Ein Messgerät für Druck"], c: [0], t: "s" },
+        { q: "Was ist ein Allradantrieb (4x4)?", a: ["Antrieb aller vier Räder des Fahrzeugs", "Ein Auto mit vier Motoren", "Ein Auto mit vier Sitzen"], c: [0], t: "s" },
+        { q: "Was ist die Kupplung?", a: ["Trennt und verbindet Kraftfluss zwischen Motor und Getriebe", "Verbindung zum Anhänger", "Ein Pedal zum Bremsen"], c: [0], t: "s" },
+        { q: "Was ist ein sequentielles Getriebe?", a: ["Getriebe, bei dem Gänge nacheinander geschaltet werden", "Ein Automatikgetriebe", "Ein Getriebe ohne Gänge"], c: [0], t: "s" },
+        { q: "Was macht das Getriebe?", a: ["Wandelt Drehmoment und Drehzahl", "Macht den Motor leiser", "Reinigt das Öl"], c: [0], t: "s" },
+        { q: "Was ist eine Kardanwelle?", a: ["Welle zur Kraftübertragung zwischen Getriebe und Achse", "Eine Welle im Motor", "Ein Teil der Lenkung"], c: [0], t: "s" },
+        { q: "Was ist eine Antriebswelle?", a: ["Überträgt die Kraft vom Differenzial zum Rad", "Eine Welle für den Scheibenwischer", "Ein Teil des Radios"], c: [0], t: "s" },
+        { q: "Was ist Schaltsynchronisation?", a: ["Gleichschalten der Drehzahlen beim Gangwechsel", "Gleichzeitiges Schalten von zwei Gängen", "Ein Licht im Tacho"], c: [0], t: "s" },
+        { q: "Was ist ein Overdrive?", a: ["Ein Schongang zur Drehzahlsenkung bei hoher Geschwindigkeit", "Ein Turbo-Modus", "Ein kaputtes Getriebe"], c: [0], t: "s" },
+        { q: "Was ist Getriebeöl?", a: ["Spezialöl zur Schmierung und Kühlung des Getriebes", "Öl für den Salat", "Flüssigkeit für die Scheiben"], c: [0], t: "s" },        // --- BLOCK: SCHADENRECHT & HAFTPFLICHT (JURISTISCH) ---
+        { q: "Was ist der Unterschied zwischen Haftpflicht und Kasko?", a: ["Haftpflicht deckt Schäden Dritter, Kasko Schäden am eigenen Kfz", "Haftpflicht ist freiwillig", "Kasko zahlt immer den Neupreis"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Quotenbevorrechtigung'?", a: ["Abrechnung zwischen Kasko und Haftpflicht bei Teilschuld", "Bevorzugung von Frauen im KFZ-Handwerk", "Vorrangige Zahlung der Versicherung"], c: [0], t: "s" },
+        { q: "Wann liegt 'Sittenwidrigkeit' bei einem Kaufvertrag vor?", a: ["Wenn Kaufpreis und Wert in krassem Missverhältnis stehen", "Wenn das Auto schmutzig ist", "Wenn kein Kaufvertrag unterschrieben wurde"], c: [0], t: "s" },
+        { q: "Was ist eine 'Nutzungsausfallentschädigung'?", a: ["Geldersatz, wenn der Geschädigte keinen Mietwagen nimmt", "Bezahlung für die Zeit in der Werkstatt", "Entschädigung für den Wertverlust"], c: [0], t: "s" },
+        { q: "Was versteht man unter 'Einwand der Unverhältnismäßigkeit'?", a: ["Versicherung lehnt Reparatur ab, da Kosten weit über 130%", "Kunde will zu teures Ersatzteil", "Gutachter ist zu teuer"], c: [0], t: "s" },
+        { q: "Was ist die 'Geringfügigkeitsschwelle' (Bagatellschaden)?", a: ["Schäden bis ca. 750-1000 EUR (kein Gutachten nötig)", "Schäden unter 100 EUR", "Wenn nur der Spiegel fehlt"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Verschuldenshaftung'?", a: ["Haftung aufgrund von persönlichem Fehlverhalten (BGB)", "Haftung nur für das Auto", "Haftung ohne eigenes Verschulden"], c: [0], t: "s" },
+        { q: "Was ist die 'Gefährdungshaftung'?", a: ["Haftung allein durch den Betrieb eines KFZ (StVG)", "Haftung bei riskantem Fahrstil", "Haftung nur bei Rennen"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Mitverschulden' (§ 254 BGB)?", a: ["Geschädigter hat den Schaden teilweise selbst mitverursacht", "Beifahrer ist schuld", "Der Mechaniker hat einen Fehler gemacht"], c: [0], t: "s" },
+        { q: "Was ist ein 'Haftpflichtschaden'?", a: ["Ein Schaden, den ein Dritter dem Geschädigten zugefügt hat", "Ein Steinschlag in der Scheibe", "Ein Motorschaden nach 5 Jahren"], c: [0], t: "s" },
+
+        // --- BLOCK: GUTACHTENERSTELLUNG & WERTERMITTLUNG ---
+        { q: "Was ist der 'Wiederbeschaffungswert' (WBW)?", a: ["Wert eines gleichwertigen Fahrzeugs beim seriösen Händler", "Der Preis im Internet (Mobile.de)", "Der Neupreis ab Werk"], c: [0], t: "s" },
+        { q: "Was beschreibt der 'Restwert'?", a: ["Wert des Fahrzeugs im unreparierten Zustand auf dem regionalen Markt", "Wert nach der Reparatur", "Schrottwert"], c: [0], t: "s" },
+        { q: "Was ist die 'merkantile Wertminderung'?", a: ["Minderwert, da das Fahrzeug nun ein Unfallwagen ist", "Verschleiß der Reifen", "Wertverlust durch hohe Kilometer"], c: [0], t: "s" },
+        { q: "Was ist die 'technische Wertminderung'?", a: ["Minderwert, wenn das KFZ nicht vollumfänglich repariert werden kann", "Defekt am Motor", "Fehler in der Elektronik"], c: [0], t: "s" },
+        { q: "Wann wird die Umsatzsteuer im Gutachten abgezogen?", a: ["Bei fiktiver Abrechnung (Schaden wird nicht repariert)", "Immer", "Nur bei Oldtimern"], c: [0], t: "s" },
+        { q: "Was ist der 'Wiederbeschaffungszeitraum'?", a: ["Dauer, die ein Käufer braucht, um ein Ersatz-KFZ zu finden", "Dauer der Reparatur", "Dauer der Probefahrt"], c: [0], t: "s" },
+        { q: "Was versteht man unter 'Vorschäden'?", a: ["Bereits vorhandene, reparierte Schäden am KFZ", "Schäden durch den aktuellen Unfall", "Rost am Auspuff"], c: [0], t: "s" },
+        { q: "Was sind 'Altschäden'?", a: ["Nicht reparierte Schäden aus der Vergangenheit", "Schäden am alten Auto", "Kratzer in der Felge"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Integritätsinteresse'?", a: ["Der Wunsch des Kunden, sein Auto trotz Totalschaden zu behalten (130%)", "Ehrlichkeit des Gutachters", "Datenschutz im Gutachten"], c: [0], t: "s" },
+        { q: "Was ist eine 'Reparaturbestätigung'?", a: ["Nachweis durch Gutachter/Fotos, dass Schaden behoben wurde", "Rechnung der Werkstatt", "Quittung für Ersatzteile"], c: [0], t: "s" },
+
+        // --- BLOCK: KALKULATION & TECHNIK IM GUTACHTEN ---
+        { q: "Was sind UPE-Aufschläge?", a: ["Aufschläge auf Ersatzteilpreise für Lagerhaltung/Logistik", "Steuern", "Trinkgeld für den Mechaniker"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Verbundarbeit'?", a: ["Arbeiten, die zusammenfallen (z.B. Stoßfänger abmontieren für Scheinwerfer)", "Arbeit von zwei Mechanikern", "Arbeit am Wochenende"], c: [0], t: "s" },
+        { q: "Was beschreibt der 'AW-Faktor'?", a: ["Arbeitswerte (Zeitvorgabe des Herstellers)", "Abnutzungswert", "Anschaffungswert"], c: [0], t: "s" },
+        { q: "Was ist 'Lackangleichung'?", a: ["Lackieren angrenzender Teile zur Vermeidung von Farbunterschieden", "Mischen von zwei Farben", "Polieren des Autos"], c: [0], t: "s" },
+        { q: "Was ist eine 'Reparaturkosten-Kalkulation'?", a: ["Detaillierte Auflistung von Lohn, Material und Nebenkosten", "Eine grobe Schätzung", "Die Endrechnung"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Opfergrenze' beim Totalschaden?", a: ["Die 130%-Regelung (Reparaturkosten > WBW)", "Die Schmerzgrenze des Kunden", "Der Wert des Schrotts"], c: [0], t: "s" },
+        { q: "Was ist der 'Prüfbericht' einer Versicherung?", a: ["Kürzung oder Korrektur des Gutachtens durch einen Dienstleister", "Der TÜV-Bericht", "Die Zulassung"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Überlagerung' bei Lackierzeiten?", a: ["Zeitabzug, wenn mehrere Teile gleichzeitig lackiert werden", "Zu dicker Lack", "Lackieren im Schatten"], c: [0], t: "s" },
+        { q: "Was ist eine 'Hebebühnen-Besichtigung'?", a: ["Prüfung des Unterbodens auf versteckte Unfallschäden", "Ein Blick aus der Ferne", "Prüfung der Werkstatteinrichtung"], c: [0], t: "s" },
+        { q: "Was sind 'Nebenkosten' im Gutachten?", a: ["Telefon, Porto, Lichtbilder des Gutachters", "Stromkosten der Werkstatt", "Kaffee für den Kunden"], c: [0], t: "s" },
+
+        // --- WEITERE SPEZIALFRAGEN (RECHT & GUTACHTEN) ---
+        { q: "Wer trägt die Beweislast für den Schadenumfang?", a: ["Der Geschädigte", "Die Versicherung", "Die Werkstatt"], c: [0], t: "s" },
+        { q: "Was ist eine 'Abtretungserklärung'?", a: ["Kunde tritt seinen Zahlungsanspruch an die Werkstatt ab", "Kunde gibt sein Auto ab", "Versicherung kündigt den Vertrag"], c: [0], t: "s" },
+        { q: "Darf der Geschädigte einen Mietwagen wählen?", a: ["Ja, aber er muss auf die Kosten achten (Schadenminderungspflicht)", "Nein, nur Bus und Bahn", "Ja, immer die Luxusklasse"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Fiktive Abrechnung auf Netto-Basis'?", a: ["Auszahlung der Reparaturkosten ohne MwSt", "Auszahlung in Bar", "Zahlung nach Kostenvoranschlag"], c: [0], t: "s" },
+        { q: "Was ist ein 'Totalschaden auf 100%-Basis'?", a: ["Reparaturkosten liegen zwischen Restwert und WBW", "Das Auto brennt komplett ab", "Alle Reifen sind platt"], c: [0], t: "s" },
+        { q: "Was ist eine 'Nachtragskalkulation'?", a: ["Erweiterung des Gutachtens bei versteckten Schäden nach Demontage", "Rechnung nach Feierabend", "Kalkulation für Licht"], c: [0], t: "s" },
+        { q: "Was bedeutet 'VIE'?", a: ["Vollständige Instandsetzungs-Entschädigung", "Vorder-Individual-Einheit", "Versicherungs-Interne-Ermittlung"], c: [0], t: "s" },
+        { q: "Wozu dient die Rahmenvermessung?", a: ["Feststellung von Verzug in der tragenden Struktur", "Messung der Fenster", "Prüfung der Dachreling"], c: [0], t: "s" },
+        { q: "Was ist ein 'Schadenprotokoll'?", a: ["Erste Aufnahme der Beschädigungen am Unfallort", "Ein Brief an die Polizei", "Die Rechnung"], c: [0], t: "s" },
+        { q: "Was ist die 'Schwacke-Liste'?", a: ["Marktwertübersicht für gebrauchte Kraftfahrzeuge", "Eine Liste für Bußgelder", "Ein Telefonbuch für Werkstätten"], c: [0], t: "s" },        // --- BLOCK: MODERNE KAROSSERIE-INSTANDSETZUNG ---
+        { q: "Was ist das Ziel des 'Abschnitts-Reparaturverfahrens'?", a: ["Vermeidung von unnötig großen Eingriffen in die Werksstruktur", "Kosteneinsparung durch Altschrott", "Verlängerung der Trocknungszeit"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Rückfederung' beim Richten von Karosserieteilen?", a: ["Material geht nach Entlastung teilweise in Ursprungsform zurück", "Das Auto federt beim Fahren nach", "Der Richtsatz bricht ab"], c: [0], t: "s" },
+        { q: "Warum werden Aluminiumkarosserien oft genietet und geklebt statt geschweißt?", a: ["Geringerer Wärmeverzug und Vermeidung von Kontaktkorrosion", "Aluminium kann man nicht schweißen", "Nieten ist billiger"], c: [0], t: "s" },
+        { q: "Was ist ein 'Tailored Blank'?", a: ["Blechtafel aus unterschiedlichen Dicken oder Festigkeiten", "Ein fertiges Ersatzteil", "Ein spezielles Richtwerkzeug"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Kaltrichten'?", a: ["Verformungen ohne Hitzezufuhr beseitigen", "Richten im Winter", "Verwendung von Eis-Spray"], c: [0], t: "s" },
+        { q: "Wozu dienen Deformationszonen im Längsträger?", a: ["Gezieltes Einknicken bei einem Crash zur Energieaufnahme", "Kühlung des Motors", "Gewichtsersparnis"], c: [0], t: "s" },
+        { q: "Was ist das MAG-Löten?", a: ["Lichtbogenlöten mit geringer Wärmeeinbringung für verzinkte Bleche", "Schweißen unter Wasser", "Verbinden von Kunststoffteilen"], c: [0], t: "s" },
+        { q: "Woran erkennt man eine 'Sandwich-Bauweise'?", a: ["Zwei Deckschichten mit einem stabilisierenden Kern", "Zwei Bleche direkt aufeinander", "Lackierung in drei Schichten"], c: [0], t: "s" },
+        { q: "Was ist ein 'Ziehfix'?", a: ["Werkzeug zum Herausziehen von Dellen (Spotter)", "Ein schneller Kleber", "Ein Transportwagen"], c: [0], t: "s" },
+        { q: "Welche Aufgabe hat das Richtsystem (Richtbank)?", a: ["Wiederherstellung der Maßhaltigkeit nach Werksvorgaben", "Nur zum Festhalten beim Lackieren", "Prüfung des Reifendrucks"], c: [0], t: "s" },
+
+        // --- BLOCK: MATERIALKUNDE & FÜGETECHNIK ---
+        { q: "Was ist hochfester Stahl (HSS)?", a: ["Stahl mit hoher Zugfestigkeit bei geringerer Dicke", "Ein besonders dicker Stahl", "Edelstahl"], c: [0], t: "s" },
+        { q: "Was ist Kontaktkorrosion?", a: ["Chemische Reaktion beim Zusammentreffen unterschiedlicher Metalle (z.B. Alu/Stahl)", "Rost durch Regenwasser", "Schaden durch Streusalz"], c: [0], t: "s" },
+        { q: "Was ist ein 'Stanzniet'?", a: ["Nietverbindung, bei der das Blech nicht vorgebohrt werden muss", "Ein loser Niet im Blech", "Ein Niet für Leder"], c: [0], t: "s" },
+        { q: "Was bewirkt Karosseriekleber zusätzlich zur Festigkeit?", a: ["Abdichtung gegen Feuchtigkeit und Vibrationsdämpfung", "Schutz vor Diebstahl", "Erhöhung der Motorleistung"], c: [0], t: "s" },
+        { q: "Warum darf UHSS-Stahl (ultra-hochfest) nicht gerichtet werden?", a: ["Bruchgefahr durch extreme Sprödigkeit nach Verformung", "Er ist zu weich", "Er lässt sich nicht biegen"], c: [0], t: "s" },
+        { q: "Was ist das 'Clinchen'?", a: ["Druckfügen durch Kaltumformung ohne Zusatzwerkstoffe", "Ein anderes Wort für Polieren", "Verschrauben von Kunststoff"], c: [0], t: "s" },
+        { q: "Wozu dient ein Schweißpunktfräser?", a: ["Zum sauberen Trennen von punktgeschweißten Blechen", "Zum Bohren von Löchern für Schrauben", "Zum Reinigen der Schweißdüse"], c: [0], t: "s" },
+        { q: "Was ist der Vorteil von Laserlöten?", a: ["Hochpräzise, glatte Nähte ohne Nacharbeit (z.B. Dachnaht)", "Es ist besonders billig", "Man braucht keinen Strom"], c: [0], t: "s" },
+        { q: "Was bedeutet 'E-Modul' bei Werkstoffen?", a: ["Maß für die Elastizität des Materials", "Elektronik-Modul", "Einspritz-Modul"], c: [0], t: "s" },
+        { q: "Was ist CFK?", a: ["Kohlenstofffaserverstärkter Kunststoff", "Ein spezielles Schweißgas", "Ein Ersatzteil für Bremsen"], c: [0], t: "s" },
+
+        // --- BLOCK: LACKIERUNG (VORBEREITUNG & GRUNDIERUNG) ---
+        { q: "Was verhindert ein 'Silikonentferner'?", a: ["Kraterbildung (Fischaugen) im Lack", "Dass der Lack zu schnell trocknet", "Rost am Kunststoff"], c: [0], t: "s" },
+        { q: "Was ist eine 'Zweikomponenten-Grundierung' (2K)?", a: ["Material aus Stamm-Material und Härter", "Lack in zwei Farben", "Grundierung für zwei Autos"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Schleifbild'?", a: ["Die Rauheit der Oberfläche nach dem Schleifen", "Ein Foto vom Schaden", "Ein Plan für die Lackierung"], c: [0], t: "s" },
+        { q: "Wozu dient der 'Füller'?", a: ["Ausgleich von kleinen Unebenheiten und Schleifspuren", "Zum Füllen des Tanks", "Zum Reinigen der Pistole"], c: [0], t: "s" },
+        { q: "Was ist 'Nass-in-Nass-Lackierung'?", a: ["Auftragen des Decklacks auf den noch nicht getrockneten Füller", "Lackieren im Regen", "Reinigen mit Wasser"], c: [0], t: "s" },
+        { q: "Wozu dient ein 'Kontrollschwarz' (Kontrollpulver)?", a: ["Sichtbarmachen von Unebenheiten beim Schleifen", "Färben von Reifen", "Markieren von Schweißstellen"], c: [0], t: "s" },
+        { q: "Was ist der Vorteil von Wasserbasislacken?", a: ["Geringerer Lösemittelgehalt (Umwelt/Gesundheit)", "Trocknen viel schneller", "Sind billiger als Kunstharz"], c: [0], t: "s" },
+        { q: "Was bewirkt das 'Paten' (Anschleifen)?", a: ["Verbesserung der mechanischen Haftung des Folgelacks", "Reinigung der Oberfläche", "Entfernung von Rost"], c: [0], t: "s" },
+        { q: "Was ist 'Spritzviskosität'?", a: ["Die Fließfähigkeit des Lacks für die Pistole", "Die Farbe des Lacks", "Der Druck in der Leitung"], c: [0], t: "s" },
+        { q: "Welche Körnung wählt man für den Feinschliff vor dem Decklack?", a: ["P800 bis P1200", "P40 (sehr grob)", "P120"], c: [0], t: "s" },
+
+        // --- BLOCK: DECKLACK & FINISH ---
+        { q: "Was ist ein 'Metallic-Lack'?", a: ["Lack mit Aluminium-Plättchen für Metalleffekt", "Lack, der nur auf Metall hält", "Lack mit Goldanteil"], c: [0], t: "s" },
+        { q: "Warum muss bei Basislack zwingend Klarlack folgen?", a: ["Schutz vor UV, Witterung und Glanzerzeugung", "Damit die Farbe dunkler wird", "Damit der Lack nicht abblättert"], c: [0], t: "s" },
+        { q: "Was sind 'Lackläufer'?", a: ["Lackansammlungen durch zu dicken Auftrag", "Mechaniker, die den Lack bringen", "Kratzer im Klarlack"], c: [0], t: "s" },
+        { q: "Was ist 'Beilackieren' (Einlackieren)?", a: ["Farblose Auslaufzone in angrenzende Bauteile zum Farbausgleich", "Das Lackieren des ganzen Autos", "Lackieren von Felgen"], c: [0], t: "s" },
+        { q: "Was bewirkt ein 'Mattierungsmittel'?", a: ["Reduzierung des Glanzgrades im Klarlack", "Schnellere Trocknung", "Entfernung von Kratzern"], c: [0], t: "s" },
+        { q: "Was verursacht 'Orangenhaut'?", a: ["Zu hoher Druck oder zu schnelle Verdunstung (schlechter Verlauf)", "Lackieren einer Frucht", "Zu viel Verdünnung"], c: [0], t: "s" },
+        { q: "Wozu dient ein 'Farbton-Messgerät' (Spektrometer)?", a: ["Exakte Bestimmung des aktuellen Farbtons am Fahrzeug", "Messung der Lackdicke", "Messung der Temperatur"], c: [0], t: "s" },
+        { q: "Was ist 'Polieren'?", a: ["Abtragen kleinster Lackunreinheiten für Hochglanz", "Auftragen von Wachs", "Schleifen mit grobem Papier"], c: [0], t: "s" },
+        { q: "Wozu dient die 'Infrarot-Trocknung'?", a: ["Schnelle Durchtrocknung von innen nach außen", "Nur für rote Autos", "Kühlung des Lacks"], c: [0], t: "s" },
+        { q: "Was ist ein 'Dreischicht-Lack'?", a: ["Grundfarbe + Effektlasur + Klarlack (z.B. Perlweiß)", "Drei Lagen Klarlack", "Drei verschiedene Farben"], c: [0], t: "s" },
+
+        // --- BLOCK: KUNSTSTOFF & SPEZIALFÄLLE ---
+        { q: "Was ist bei der Lackierung von Kunststoffteilen zwingend nötig?", a: ["Kunststoff-Haftvermittler (Primer) und Elastifizierer", "Viel Hitze", "Grobe Drahtbürste"], c: [0], t: "s" },
+        { q: "Woran erkennt man 'Thermoplaste'?", a: ["Sie schmelzen bei Hitzezufuhr", "Sie sind immer schwarz", "Sie lassen sich nicht kleben"], c: [0], t: "s" },
+        { q: "Was ist 'Smart Repair'?", a: ["Punktuelle Reparatur von Kleinschäden (kostengünstig)", "Reparatur von Smart-Autos", "Reparatur mit dem Handy"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Hohlraumversiegelung'?", a: ["Wachs- oder Fettbeschichtung zum Korrosionsschutz innen", "Zukleben von Löchern", "Ausschäumen der Schweller"], c: [0], t: "s" },
+        { q: "Was ist Unterbodenschutz (UBS)?", a: ["Steinschlagschutzschicht auf Bitumen- oder Kunststoffbasis", "Eine Panzerplatte", "Eine Schürze aus Plastik"], c: [0], t: "s" },        // --- BLOCK: MODERNE BELEUCHTUNGSTECHNIK ---
+        { q: "Was ist der Vorteil von Laser-Fernlicht?", a: ["Enorme Reichweite (bis zu 600m) und tageslichtähnliche Farbe", "Es verbraucht mehr Strom", "Es leuchtet um Kurven herum"], c: [0], t: "s" },
+        { q: "Was macht ein Matrix-LED-Scheinwerfer bei Gegenverkehr?", a: ["Gezieltes Ausschalten einzelner Segmente (Dauerfernlicht ohne Blendung)", "Komplettes Ausschalten", "Umschalten auf Nebelscheinwerfer"], c: [0], t: "s" },
+        { q: "Wozu dient die automatische Leuchtweitenregulierung bei Xenon/LED?", a: ["Vermeidung von Blendung durch Beladungszustände", "Erhöhung der Helligkeit", "Reinigung der Linse"], c: [0], t: "s" },
+        { q: "Was ist 'dynamisches Kurvenlicht'?", a: ["Scheinwerfer schwenken in Abhängigkeit vom Lenkwinkel mit", "Licht wird beim Bremsen heller", "Zusätzliche Lampen im Heck"], c: [0], t: "s" },
+        { q: "Warum haben LED-Scheinwerfer oft Lüfter oder Kühlkörper?", a: ["Abführung der Wärme von der Elektronik/LED-Chips", "Kühlung der Umgebungsluft", "Damit das Plastik nicht schmilzt"], c: [0], t: "s" },
+
+        // --- BLOCK: SENSORIK & DIAGNOSE ---
+        { q: "Was misst ein Heißfilm-Luftmassenmesser (HFM) zusätzlich zur Luftmenge oft?", a: ["Ansauglufttemperatur", "Luftfeuchtigkeit", "Kraftstoffdruck"], c: [0], t: "s" },
+        { q: "Was ist ein 'Hall-Sensor'?", a: ["Berührungsloser magnetischer Sensor für Drehzahl/Position", "Ein Sensor für die Innenraumtemperatur", "Ein Schalter für das Bremslicht"], c: [0], t: "s" },
+        { q: "Was passiert, wenn der Nockenwellensensor ausfällt?", a: ["Motor geht oft aus oder läuft im Notlauf (Synchronisationsverlust)", "Radio geht nicht mehr", "Turbo bringt keinen Druck"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Freeze Frame' im Fehlerspeicher?", a: ["Betriebsdaten zum Zeitpunkt des Fehlereintritts (z.B. Drehzahl, Temp)", "Ein Foto des Motors", "Das Löschen des Fehlers"], c: [0], t: "s" },
+        { q: "Was ist ein 'Readiness-Code'?", a: ["Statusanzeige, ob alle abgasrelevanten Prüfungen durchgeführt wurden", "Ein Code für das Radio", "Die Freigabe zum Starten"], c: [0], t: "s" },
+
+        // --- BLOCK: FAHRERASSISTENZ & SICHERHEIT (ADAS) ---
+        { q: "Was ist 'ACC' (Adaptive Cruise Control)?", a: ["Abstandsgeregelter Tempomat", "Automatisches Kurvenlicht", "Ein Notbremsassistent"], c: [0], t: "s" },
+        { q: "Wozu dient der 'Gierratensensor' im ESP-System?", a: ["Messung der Drehbewegung um die Hochachse", "Messung der Beschleunigung nach vorne", "Prüfung des Reifendrucks"], c: [0], t: "s" },
+        { q: "Was erkennt der Totwinkel-Assistent?", a: ["Fahrzeuge im nicht sichtbaren Bereich neben dem Auto", "Hindernisse hinter dem Auto beim Parken", "Verschmutzungen auf der Scheibe"], c: [0], t: "s" },
+        { q: "Wie funktioniert die Verkehrszeichenerkennung?", a: ["Bildverarbeitung über die Frontkamera", "Über das Internet", "Über Sensoren in der Stoßstange"], c: [0], t: "s" },
+        { q: "Was ist 'ISOFIX'?", a: ["Ein standardisiertes System zur Befestigung von Kindersitzen", "Ein Werkzeug für Motoren", "Ein spezielles Öl"], c: [0], t: "s" },
+
+        // --- BLOCK: GETRIEBE & ANTRIEBSTECHNIK ---
+        { q: "Was ist die Aufgabe der Lamellenkupplung im Allradantrieb?", a: ["Variable Kraftverteilung zwischen den Achsen", "Trennen des Motors vom Getriebe", "Bremsen der Räder"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Kickdown'?", a: ["Schaltsignal für sofortiges Zurückschalten bei Vollgas", "Ausschalten des Motors", "Feststellen der Parkbremse"], c: [0], t: "s" },
+        { q: "Was ist ein Wandler-Lockup?", a: ["Überbrückungskupplung für starren Durchtrieb im Drehmomentwandler", "Ein Defekt im Getriebe", "Eine Sperre für den Rückwärtsgang"], c: [0], t: "s" },
+        { q: "Warum haben Elektroautos meist nur ein Ein-Gang-Getriebe?", a: ["Elektromotoren haben ein breites nutzbares Drehzahlband", "Mehr Gänge sind verboten", "Damit sie leichter sind"], c: [0], t: "s" },
+        { q: "Was ist eine Visko-Kupplung?", a: ["Selbstregelnde Kupplung zur Kraftübertragung mittels Silikonöl", "Eine Kupplung für den Klimakompressor", "Ein Teil der Zündung"], c: [0], t: "s" },
+
+        // --- BLOCK: MOTORMANAGEMENT & KRAFTSTOFF ---
+        { q: "Was ist der Vorteil der Direkteinspritzung beim Benziner?", a: ["Bessere Zylinderfüllung und Kühlung (Schichtladung möglich)", "Einfachere Pumpentechnik", "Kein Klopfsensor nötig"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Oktanzahl'?", a: ["Maß für die Klopffestigkeit von Benzin", "Maß für den Energiegehalt", "Dichte des Kraftstoffs"], c: [0], t: "s" },
+        { q: "Was ist 'Cetanzahl'?", a: ["Maß für die Zündwilligkeit von Diesel", "Reinheit des Diesels", "Farbe des Kraftstoffs"], c: [0], t: "s" },
+        { q: "Was macht der Raildrucksensor?", a: ["Überwachung des hohen Drucks im Kraftstoffspeicher", "Messung des Tankinhalts", "Messung des Öldrucks"], c: [0], t: "s" },
+        { q: "Wozu dient die Zumesseinheit an der Hochdruckpumpe?", a: ["Regelung der Kraftstoffmenge zum Hochdruckbereich", "Filterung des Kraftstoffs", "Kühlung der Pumpe"], c: [0], t: "s" },
+
+        // --- BLOCK: MIXED TECH (GEMISCHT) ---
+        { q: "Was ist die Aufgabe des Zweimassenschwungrads?", a: ["Entkopplung von Motorschwingungen vom Getriebe", "Erhöhung der Leerlaufdrehzahl", "Kühlung der Kupplung"], c: [0], t: "s" },
+        { q: "Was ist ein Pulsweitenmoduliertes Signal (PWM)?", a: ["Digitales Signal mit variablem Tastverhältnis zur Steuerung", "Ein Sinussignal für Lautsprecher", "Ein Signal für das Internet"], c: [0], t: "s" },
+        { q: "Wozu dient der Freilauf an der Lichtmaschine?", a: ["Schutz des Riementriebs vor Drehschwingungen des Motors", "Damit die Batterie nicht überlädt", "Zur Erhöhung der Spannung"], c: [0], t: "s" },
+        { q: "Was ist eine elektrische Wasserpumpe?", a: ["Bedarfsgerechte Kühlung unabhängig von der Motordrehzahl", "Eine Pumpe für das Scheibenwischwasser", "Eine Pumpe im Aquarium"], c: [0], t: "s" },
+        { q: "Was ist der Vorteil von Kohlenstoff-Keramik-Bremsen?", a: ["Kein Fading bei Hitze und sehr hohe Lebensdauer", "Sehr geringer Preis", "Kurzer Bremsweg bei Glatteis"], c: [0], t: "s" },
+        { q: "Was bedeutet 'Low-SAPS' bei Motorölen?", a: ["Aschearmes Öl zum Schutz von Partikelfiltern", "Besonders dünnflüssiges Öl", "Billiges Mineralöl"], c: [0], t: "s" },
+        { q: "Was ist die 'Spreizung' am Fahrwerk?", a: ["Winkel zwischen Lenkachse und Senkrechter", "Abstand der Räder", "Winkel der Scheinwerfer"], c: [0], t: "s" },
+        { q: "Was macht ein Ladeluftkühler?", a: ["Erhöht die Luftdichte durch Abkühlung (mehr Sauerstoff)", "Kühlt das Öl im Turbo", "Wärmt den Innenraum"], c: [0], t: "s" },
+        { q: "Was bedeutet 'OBD2'?", a: ["Standardisierte Schnittstelle für Fahrzeugdiagnose", "Ein spezielles Motorsteuergerät", "Ein Reifenprofil"], c: [0], t: "s" },
+        { q: "Was ist ein Reifendruckkontrollsystem (indirekt)?", a: ["Berechnung über Raddrehzahlen (ABS-Sensoren)", "Sensor im Ventil", "Sensor im Reifeninneren"], c: [0], t: "s" }
+        // ... (Dieser Block liefert die Basis für 100 Fragen durch Ergänzung ähnlicher technischer Details)
+        // ... (Der Pool kann beliebig erweitert werden)
+        // ... (hier könnten noch 60 weitere Fragen im gleichen Stil folgen)
         // Hier können wir nun nahtlos bis Frage 500 weitermachen...
 
-    ];
+    ]; // Das schließt deinen Fragen-Pool
 
-    let sess=[], idx=0, score=0, chk=false, sel=[];
+// --- AB HIER ALLES ERSETZEN ---
 
-    function start(n) {
-        document.getElementById('menu').style.display='none';
-        document.getElementById('quiz').style.display='block';
-        document.getElementById('foot').style.display='block';
-        document.getElementById('stat-bar').style.display='flex';
-        document.getElementById('back-btn').style.display='inline-block';
-        sess = [...pool].sort(() => 0.5 - Math.random()).slice(0, n);
-        idx=0; score=0; draw();
-    }
+window.onload = function() {
+    document.getElementById('paypal-popup').style.display = 'flex';
+};
 
-    function draw() {
-        chk = false; sel = [];
-        const d = sess[idx];
-        document.getElementById('st-count').innerText = "Frage " + (idx + 1) + "/" + sess.length;
-        document.getElementById('st-score').innerText = "Richtig: " + score;
-        document.getElementById('q-txt').innerText = d.q;
-        const b = document.getElementById('opts'); b.innerHTML = '';
-        d.a.forEach((t, i) => {
-            const o = document.createElement('button'); o.className = 'o'; o.innerText = t;
-            o.onclick = () => { if(chk) return;
-                if(d.t === 's') { sel = [i]; document.querySelectorAll('.o').forEach(x => x.classList.remove('sel')); o.classList.add('sel'); }
-                else { if(sel.includes(i)) sel = sel.filter(x => x !== i); else sel.push(i); o.classList.toggle('sel'); }
-            };
-            b.appendChild(o);
+let idx = 0;
+let score = 0;
+let sess = [];
+
+function start(n) {
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('quiz').style.display = 'block';
+    document.getElementById('foot').style.display = 'block';
+    
+    // Mischt die Fragen und nimmt die Anzahl n
+    sess = [...pool].sort(() => 0.5 - Math.random()).slice(0, n);
+    
+    idx = 0;
+    score = 0;
+    draw();
+}
+
+function draw() {
+    if (idx < sess.length) {
+        let q = sess[idx];
+        document.getElementById('q-text').innerText = q.q;
+        let opt = document.getElementById('options');
+        opt.innerHTML = '';
+        
+        q.a.forEach((text, i) => {
+            let b = document.createElement('button');
+            b.className = 'btn';
+            b.innerText = text;
+            b.onclick = () => check(i);
+            opt.appendChild(b);
         });
-        document.getElementById('act').innerText = "Prüfen";
-        document.getElementById('act').classList.remove('btn-a');
+        
+        document.getElementById('stat').innerText = "Frage " + (idx + 1) + " von " + sess.length;
+    } else {
+        showResult();
     }
+}
 
-    document.getElementById('act').onclick = () => {
-        if(sel.length === 0 && !chk) return;
-        const d = sess[idx];
-        if(!chk) {
-            const ok = JSON.stringify(sel.sort()) === JSON.stringify(d.c.sort());
-            document.querySelectorAll('.o').forEach((el, i) => {
-                if(d.c.includes(i) && sel.includes(i)) el.classList.add('correct');
-                else if(!d.c.includes(i) && sel.includes(i)) el.classList.add('wrong');
-                else if(d.c.includes(i) && !sel.includes(i)) el.classList.add('miss');
-            });
-            if(ok) score++; chk = true;
-            document.getElementById('act').innerText = "Nächste Frage";
-            document.getElementById('act').classList.add('btn-a');
-        } else {
-            idx++; if(idx < sess.length) draw(); else location.reload();
-        }
-    };
-
-    function goBack() { if(confirm("Abbrechen?")) location.reload(); }
-
-    function shareApp() {
-        const code = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-        const t = document.createElement("textarea"); document.body.appendChild(t);
-        t.value = code; t.select(); document.execCommand("copy"); document.body.removeChild(t);
-        alert("App-Code kopiert! Schicke ihn per WhatsApp.");
+function check(ans) {
+    let q = sess[idx];
+    if (q.c.includes(ans)) {
+        score++;
+        alert("Richtig! ✅");
+    } else {
+        alert("Falsch! ❌\nRichtige Antwort: " + q.a[q.c[0]]);
     }
+    idx++;
+    draw();
+}
+
+function showResult() {
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('foot').style.display = 'none';
+    let res = document.getElementById('menu');
+    res.style.display = 'block';
+    
+    let prozent = Math.round((score / sess.length) * 100);
+    let bewertung = prozent >= 50 ? "Bestanden! 🎉" : "Nicht bestanden. 🛠️ Dranbleiben!";
+    
+    res.innerHTML = `
+        <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 15px; border: 3px solid #2c3e50;">
+            <h2 style="color: #2c3e50;">Prüfung beendet</h2>
+            <div style="font-size: 48px; margin: 20px 0; font-weight: bold; color: ${prozent >= 50 ? '#27ae60' : '#e74c3c'};">
+                ${prozent}%
+            </div>
+            <p style="font-size: 18px;">Du hast <strong>${score} von ${sess.length}</strong> Fragen richtig beantwortet.</p>
+            <h3 style="margin-top: 20px;">${bewertung}</h3>
+            <hr style="margin: 20px 0;">
+            <button class="btn" onclick="location.reload()" style="background: #2c3e50; color: white;">Neustart</button>
+        </div>`; 
+}
 </script>
 </body>
 </html>
