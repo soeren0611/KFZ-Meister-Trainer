@@ -42,6 +42,9 @@
     </style>
 </head>
 <body>
+<div id="session-timer" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 5px 12px; border-radius: 20px; font-family: sans-serif; font-size: 12px; z-index: 999; display: none;">
+    Zugriff aktiv: <span id="timer-minutes">60</span> Min.
+</div>
 <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 10000; display: flex; justify-content: center; align-items: center; font-family: sans-serif;">
     <div style="background: white; padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); max-width: 400px; width: 90%;">
         <div style="font-size: 50px; margin-bottom: 20px;">🔒</div>
@@ -1250,42 +1253,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-// Prüfen, ob das Passwort bereits erfolgreich eingegeben wurde (beim Laden der Seite)
+// --- PASSWORT LOGIK MIT COUNTDOWN ---
+
 document.addEventListener('DOMContentLoaded', () => {
-    const isUnlocked = localStorage.getItem('kfz_quiz_unlocked');
-    if (isUnlocked === 'true') {
-        document.getElementById('password-overlay').style.display = 'none';
-    }
+    checkSessionStatus();
+    // Alle 30 Sekunden die Anzeige aktualisieren
+    setInterval(checkSessionStatus, 30000);
 });
+
+function checkSessionStatus() {
+    const unlockTime = localStorage.getItem('kfz_quiz_time');
+    const now = new Date().getTime();
+    const oneHour = 60 * 60 * 1000;
+    const timerDisplay = document.getElementById('session-timer');
+    const overlay = document.getElementById('password-overlay');
+
+    if (unlockTime && (now - unlockTime < oneHour)) {
+        // Zugriff ist gültig
+        if (overlay) overlay.style.display = 'none';
+        if (timerDisplay) {
+            timerDisplay.style.display = 'block';
+            const remainingMs = oneHour - (now - unlockTime);
+            const remainingMins = Math.ceil(remainingMs / 60000);
+            document.getElementById('timer-minutes').innerText = remainingMins;
+        }
+    } else {
+        // Abgelaufen
+        localStorage.removeItem('kfz_quiz_time');
+        if (overlay) overlay.style.display = 'flex';
+        if (timerDisplay) timerDisplay.style.display = 'none';
+    }
+}
 
 function checkPassword() {
     const userInput = document.getElementById('pw-input').value;
     const errorMsg = document.getElementById('pw-error');
-    const overlay = document.getElementById('password-overlay');
     
-    // Dein festgelegtes Passwort
     const correctPassword = "Kfz2026"; 
 
     if (userInput === correctPassword) {
-        // Erfolg im Browser speichern
-        localStorage.setItem('kfz_quiz_unlocked', 'true');
-        overlay.style.display = 'none';
+        localStorage.setItem('kfz_quiz_time', new Date().getTime());
+        checkSessionStatus(); // Sofort aktualisieren
     } else {
         errorMsg.style.display = 'block';
         document.getElementById('pw-input').value = '';
     }
 }
 
-// Enter-Taste unterstützen
-document.getElementById('pw-input').addEventListener('keypress', function (e) {
+// Enter-Taste Support
+document.getElementById('pw-input')?.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') checkPassword();
 });
-
-// Funktion zum Sperren (für dich zum Testen oder für den Logout)
-function lockQuiz() {
-    localStorage.removeItem('kfz_quiz_unlocked');
-    location.reload();
-}
 </script>
 
 </body>
