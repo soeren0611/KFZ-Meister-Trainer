@@ -42,6 +42,16 @@
     </style>
 </head>
 <body>
+<div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 10000; display: flex; justify-content: center; align-items: center; font-family: sans-serif;">
+    <div style="background: white; padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); max-width: 400px; width: 90%;">
+        <div style="font-size: 50px; margin-bottom: 20px;">🔒</div>
+        <h2 style="margin-bottom: 20px; color: #333;">KFZ-Prüfungssimulation</h2>
+        <p style="color: #666; margin-bottom: 20px;">Bitte gib das Passwort ein, um die Simulation zu starten.</p>
+        <input type="password" id="pw-input" placeholder="Passwort eingeben..." style="width: 100%; padding: 12px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
+        <button onclick="checkPassword()" style="width: 100%; padding: 12px; background: #0070ba; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer;">Zugreifen</button>
+        <p id="pw-error" style="color: #dc3545; display: none; margin-top: 15px; font-size: 0.9rem;">❌ Falsches Passwort!</p>
+    </div>
+</div>
 
 <div class="quiz-container">
     <div id="start-screen" class="start-screen">
@@ -1240,6 +1250,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+// Prüfen, ob das Passwort bereits erfolgreich eingegeben wurde (beim Laden der Seite)
+document.addEventListener('DOMContentLoaded', () => {
+    const isUnlocked = localStorage.getItem('kfz_quiz_unlocked');
+    if (isUnlocked === 'true') {
+        document.getElementById('password-overlay').style.display = 'none';
+    }
+});
+
+function checkPassword() {
+    const userInput = document.getElementById('pw-input').value;
+    const errorMsg = document.getElementById('pw-error');
+    const overlay = document.getElementById('password-overlay');
+    
+    // Dein festgelegtes Passwort
+    const correctPassword = "Kfz2026"; 
+
+    if (userInput === correctPassword) {
+        // Erfolg im Browser speichern
+        localStorage.setItem('kfz_quiz_unlocked', 'true');
+        overlay.style.display = 'none';
+    } else {
+        errorMsg.style.display = 'block';
+        document.getElementById('pw-input').value = '';
+    }
+}
+
+// Enter-Taste unterstützen
+document.getElementById('pw-input').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') checkPassword();
+});
+
+// Funktion zum Sperren (für dich zum Testen oder für den Logout)
+function lockQuiz() {
+    localStorage.removeItem('kfz_quiz_unlocked');
+    location.reload();
+}
 </script>
 
 </body>
