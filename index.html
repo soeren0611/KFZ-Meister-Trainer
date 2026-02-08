@@ -42,14 +42,16 @@
     </style>
 </head>
 <body>
+
 <div id="session-timer" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 5px 12px; border-radius: 20px; font-family: sans-serif; font-size: 12px; z-index: 999; display: none;">
     Zugriff aktiv: <span id="timer-minutes">60</span> Min.
 </div>
+
 <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 10000; display: flex; justify-content: center; align-items: center; font-family: sans-serif;">
     <div style="background: white; padding: 35px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); max-width: 400px; width: 90%;">
         <div style="font-size: 50px; margin-bottom: 15px;">🔧</div>
-        <h2 style="margin-bottom: 10px; color: #333;">KFZ-Experten Zugang</h2>
-        <p style="color: #666; margin-bottom: 20px; font-size: 0.95rem;">
+        <h2 id="overlay-title" style="margin-bottom: 10px; color: #333;">KFZ-Experten Zugang</h2>
+        <p id="overlay-text" style="color: #666; margin-bottom: 20px; font-size: 0.95rem;">
             Gib dein Passwort ein oder erwerbe den <b>6-Monats Zugang</b> für einmalig 10€.
         </p>
         
@@ -65,30 +67,28 @@
 
         <a href="https://www.paypal.me/soerenroesch/10" target="_blank" style="text-decoration: none;">
             <div style="width: 100%; padding: 12px; background: #ffc439; color: #2c2e2f; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-sizing: border-box; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                <span style="margin-right: 8px;">🚀</span> Passwort für 6 Monate freischalten (10€)
+                <span style="margin-right: 8px;">🚀</span> Passwort freischalten (10€)
             </div>
         </a>
+
+        <button id="demo-btn" onclick="startDemo()" style="width: 100%; padding: 10px; background: transparent; color: #888; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; cursor: pointer; margin-top: 15px;">
+            Erstmal 10 Fragen kostenlos testen
+        </button>
         
         <p id="pw-error" style="color: #dc3545; display: none; margin-top: 15px; font-size: 0.9rem;">❌ Falsches Passwort!</p>
-        
-        <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin-top: 20px;">
-            <p style="font-size: 0.7rem; color: #777; line-height: 1.3; margin: 0;">
-                <b>So geht's:</b> Nach der PayPal-Zahlung sende ich dir das Passwort direkt an deine E-Mail-Adresse. Bitte gib im Betreff "Quiz" an.
-            </p>
-        </div>
     </div>
 </div>
 
 <div class="quiz-container">
-    <div id="start-screen" class="start-screen">
-        <h1>Willkommen zur KFZ Prüfungssimulation für angehende Meister und Sachverständige</h1>
+    <div id="start-screen">
+        <h1>KFZ Prüfungssimulation</h1>
         <p style="text-align:center">Wähle die Anzahl der Fragen für dein Training:</p>
         <div class="btn-grid">
             <button class="main-btn start-btn" onclick="startQuiz(20)">20 Fragen</button>
             <button class="main-btn start-btn" onclick="startQuiz(30)">30 Fragen</button>
             <button class="main-btn start-btn" onclick="startQuiz(40)">40 Fragen</button>
             <button class="main-btn start-btn" onclick="startQuiz(50)">50 Fragen</button>
-            <button id="start-all" class="main-btn start-btn" style="grid-column: span 2;" onclick="startQuiz(0)">Alle Fragen</button>
+            <button class="main-btn start-btn" style="grid-column: span 2;" onclick="startQuiz(0)">Alle Fragen</button>
         </div>
     </div>
 
@@ -105,44 +105,31 @@
     <div id="result-screen" class="hidden" style="text-align:center;">
         <h2>Prüfung beendet</h2>
         <p id="score-text" style="font-size: 1.6rem; font-weight: bold; margin: 10px 0;"></p>
-        
         <div id="review-area" class="review-section"></div>
-
         <button class="main-btn start-btn" onclick="location.reload()">Neuer Versuch</button>
     </div>
 
-            <div class="footer">
+    <div class="footer">
         <a href="https://www.paypal.me/soerenroesch" target="_blank" class="paypal-btn">☕ Unterstützung via PayPal</a>
         <div class="copyright">
-            © 2026 Sören Rösch. Alle Rechte vorbehalten. <br>
-            <a href="#" id="open-impressum" style="color: #888; text-decoration: underline; cursor: pointer; display: inline-block; margin-top: 5px;">Impressum & Datenschutz</a>
+            © 2026 Sören Rösch. <br>
+            <a href="#" id="open-impressum" style="color: #888; text-decoration: underline; cursor: pointer;">Impressum & Datenschutz</a>
         </div>
     </div>
-</div> <div id="impressum-modal" class="hidden" style="position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; padding: 20px; display: none;">
-    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 100%; position: relative; max-height: 85vh; overflow-y: auto; color: #333; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-        <span id="close-x" style="position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; font-weight: bold; color: #999;">&times;</span>
-        
-        <h2 style="margin-top: 0; color: var(--primary);">Impressum</h2>
-        <p><strong>Angaben gemäß § 5 TMG:</strong><br>
-        Sören Rösch<br>
-        Akazienring 9<br>
-        76706 Dettenheim</p>
-        
-        <p><strong>Kontakt:</strong><br>
-        E-Mail: <a href="mailto:soeren.roesch@gmx.de" style="color: var(--primary);">soeren.roesch@gmx.de</a><br>
-        Support: <a href="https://www.paypal.me/soerenroesch" target="_blank" style="color: var(--primary);">PayPal.me/soerenroesch</a></p>
+</div>
 
-        <h3 style="border-top: 1px solid #eee; pt: 15px;">Haftungsausschluss</h3>
-        <p style="font-size: 0.85rem; line-height: 1.4;">Die Inhalte dieser Prüfungssimulation wurden mit größter Sorgfalt erstellt. Sören Rösch übernimmt jedoch keine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der bereitgestellten Fachfragen. Die Nutzung erfolgt auf eigene Gefahr.</p>
-        
-        <h3 style="border-top: 1px solid #eee; pt: 15px;">Datenschutz</h3>
-        <p style="font-size: 0.85rem; line-height: 1.4;">Diese Webseite dient rein privaten Bildungszwecken. Es werden keine Tracker verwendet und keine personenbezogenen Daten auf Servern gespeichert. Alle Berechnungen erfolgen lokal in Ihrem Browser.</p>
-        
-        <button class="main-btn start-btn" id="close-btn-bottom">Verstanden & Schließen</button>
+<div id="impressum-modal" class="hidden" style="position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; padding: 20px;">
+    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 100%; position: relative; max-height: 85vh; overflow-y: auto; color: #333;">
+        <span id="close-x" style="position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer;">&times;</span>
+        <h2>Impressum</h2>
+        <p>Sören Rösch<br>Akazienring 9<br>76706 Dettenheim</p>
+        <p>E-Mail: soeren.roesch@gmx.de</p>
+        <button class="main-btn start-btn" id="close-btn-bottom">Schließen</button>
     </div>
 </div>
 
 <script>
+    // --- DATEN & VARIABLEN ---
     const allQuestions = [
         {
         q: "Ein Common-Rail-System (Euro VI) zeigt bei Volllast sporadische Aussetzer. Der Rücklaufdruck der Piezoinjektoren ist zu niedrig. Welche Folgen hat dies?",
@@ -1298,27 +1285,86 @@
     // ... fortführend bis 100 Fragen ...
     // ... hier folgen weitere Fragen nach diesem Schema ...
 ];
-
-    let activeQuestions = [];
+let activeQuestions = [];
     let currentIdx = 0;
     let score = 0;
     let selectedChoices = [];
-    let userLog = []; // Speichert die Antworten für die Analyse
+    let userLog = [];
+    let isDemoMode = false;
+    const DEMO_LIMIT = 10;
 
+    // --- INITIALISIERUNG ---
+    document.addEventListener('DOMContentLoaded', () => {
+        checkSessionStatus();
+        setInterval(checkSessionStatus, 30000);
+
+        // Impressum
+        const openBtn = document.getElementById('open-impressum');
+        const impModal = document.getElementById('impressum-modal');
+        if(openBtn) {
+            openBtn.onclick = (e) => {
+                e.preventDefault();
+                impModal.style.setProperty('display', 'flex', 'important');
+                impModal.classList.remove('hidden');
+            };
+        }
+        const hideImp = () => {
+            impModal.style.setProperty('display', 'none', 'important');
+            impModal.classList.add('hidden');
+        };
+        document.getElementById('close-x').onclick = hideImp;
+        document.getElementById('close-btn-bottom').onclick = hideImp;
+    });
+
+    // --- ZUGANGS-LOGIK ---
+    function checkSessionStatus() {
+        const unlockTime = localStorage.getItem('kfz_quiz_time');
+        const now = new Date().getTime();
+        const overlay = document.getElementById('password-overlay');
+        const timer = document.getElementById('session-timer');
+
+        if (unlockTime && (now - unlockTime < 3600000)) {
+            if(overlay) overlay.style.display = 'none';
+            if(timer) {
+                timer.style.display = 'block';
+                document.getElementById('timer-minutes').innerText = Math.ceil((3600000 - (now - unlockTime)) / 60000);
+            }
+        } else {
+            if(overlay) overlay.style.display = 'flex';
+            if(timer) timer.style.display = 'none';
+        }
+    }
+
+    function checkPassword() {
+        const input = document.getElementById('pw-input').value;
+        if (input === "Kfz2026") {
+            localStorage.setItem('kfz_quiz_time', new Date().getTime());
+            location.reload();
+        } else {
+            document.getElementById('pw-error').style.display = 'block';
+        }
+    }
+
+    function startDemo() {
+        if (localStorage.getItem('kfz_demo_used') === 'true') {
+            alert("Du hast die Testfragen bereits genutzt!");
+            return;
+        }
+        isDemoMode = true;
+        document.getElementById('password-overlay').style.display = 'none';
+        startQuiz(DEMO_LIMIT);
+    }
+
+    // --- QUIZ-LOGIK ---
     function startQuiz(amount) {
         let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-        activeQuestions = amount === 0 ? shuffled : shuffled.slice(0, amount);
-        currentIdx = 0;
-        score = 0;
-        userLog = [];
+        activeQuestions = (amount === 0) ? shuffled : shuffled.slice(0, amount);
+        currentIdx = 0; score = 0; userLog = [];
         
         document.getElementById('start-screen').classList.add('hidden');
         document.getElementById('quiz-area').classList.remove('hidden');
+        document.getElementById('result-screen').classList.add('hidden');
         showQuestion();
-    }
-
-    function confirmBack() {
-        if(confirm("Simulation wirklich abbrechen?")) location.reload();
     }
 
     function showQuestion() {
@@ -1327,158 +1373,77 @@
         document.getElementById('progress').innerText = `Frage ${currentIdx + 1} von ${activeQuestions.length}`;
         document.getElementById('question').innerText = data.q;
         
-        const optionsDiv = document.getElementById('options');
-        optionsDiv.innerHTML = '';
-
+        const optsDiv = document.getElementById('options');
+        optsDiv.innerHTML = '';
         data.a.forEach((opt, i) => {
             const div = document.createElement('div');
             div.className = 'option';
             div.innerText = opt;
             div.onclick = () => {
+                div.classList.toggle('selected');
                 if (selectedChoices.includes(i)) {
-                    selectedChoices = selectedChoices.filter(item => item !== i);
-                    div.classList.remove('selected');
+                    selectedChoices = selectedChoices.filter(c => c !== i);
                 } else {
                     selectedChoices.push(i);
-                    div.classList.add('selected');
                 }
             };
-            optionsDiv.appendChild(div);
+            optsDiv.appendChild(div);
         });
     }
 
     document.getElementById('submit-btn').onclick = () => {
         if (selectedChoices.length === 0) return alert("Bitte wähle eine Antwort!");
-
+        
         const correctOnes = activeQuestions[currentIdx].correct;
         const isCorrect = selectedChoices.length === correctOnes.length && 
                           selectedChoices.every(v => correctOnes.includes(v));
 
-        // Logge die Antwort für die Auswertung am Ende
         userLog.push({
-            question: activeQuestions[currentIdx].q,
-            userAnswers: selectedChoices.map(i => activeQuestions[currentIdx].a[i]),
-            correctAnswers: correctOnes.map(i => activeQuestions[currentIdx].a[i]),
-            status: isCorrect
+            q: activeQuestions[currentIdx].q,
+            status: isCorrect,
+            user: selectedChoices.map(i => activeQuestions[currentIdx].a[i]),
+            correct: correctOnes.map(i => activeQuestions[currentIdx].a[i])
         });
 
         if (isCorrect) score++;
-
         currentIdx++;
+
         if (currentIdx < activeQuestions.length) {
             showQuestion();
         } else {
-            showResults();
+            if (isDemoMode) {
+                localStorage.setItem('kfz_demo_used', 'true');
+                showPaywall();
+            } else {
+                showResults();
+            }
         }
     };
+
+    function showPaywall() {
+        const overlay = document.getElementById('password-overlay');
+        overlay.style.display = 'flex';
+        document.getElementById('overlay-title').innerText = "Test beendet!";
+        document.getElementById('overlay-text').innerHTML = "Du hast die 10 Demo-Fragen geschafft. Schalte jetzt alles frei!";
+        document.getElementById('demo-btn').style.display = 'none';
+        document.getElementById('quiz-area').classList.add('hidden');
+    }
 
     function showResults() {
         document.getElementById('quiz-area').classList.add('hidden');
         document.getElementById('result-screen').classList.remove('hidden');
         document.getElementById('score-text').innerText = `${score} von ${activeQuestions.length} Punkten`;
-
-        const reviewArea = document.getElementById('review-area');
-        reviewArea.innerHTML = '<h3>Deine Fehleranalyse:</h3>';
-
-        userLog.forEach((item, idx) => {
-            const div = document.createElement('div');
-            div.className = 'review-item';
-            div.innerHTML = `
-                <strong>Frage ${idx+1}: ${item.question}</strong><br>
-                <span class="${item.status ? 'status-correct' : 'status-wrong'}">
-                    ${item.status ? '✓ Richtig' : '✗ Falsch'}
-                </span>
-                ${!item.status ? `
-                    <span class="small-label">Deine Wahl: ${item.userAnswers.join(', ')}</span>
-                    <span class="small-label" style="color:var(--success)">Richtig wäre: ${item.correctAnswers.join(', ')}</span>
-                ` : ''}
-            `;
-            reviewArea.appendChild(div);
+        const review = document.getElementById('review-area');
+        review.innerHTML = '<h3>Analyse:</h3>';
+        userLog.forEach((item, i) => {
+            const d = document.createElement('div');
+            d.className = 'review-item';
+            d.innerHTML = `<strong>${i+1}. ${item.q}</strong><br><span class="${item.status ? 'status-correct' : 'status-wrong'}">${item.status ? '✓' : '✗'}</span>`;
+            review.appendChild(d);
         });
     }
-// Impressum-Logik (Sicherstellung der Anzeige trotz .hidden !important)
-document.addEventListener('DOMContentLoaded', () => {
-    const impModal = document.getElementById('impressum-modal');
-    const openBtn = document.getElementById('open-impressum');
-    const closeX = document.getElementById('close-x');
-    const closeBtnBottom = document.getElementById('close-btn-bottom');
 
-    // Öffnen-Funktion
-    openBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        // Wir setzen Display auf Flex und überschreiben damit das "none" von .hidden
-        impModal.style.setProperty('display', 'flex', 'important');
-        impModal.classList.remove('hidden');
-    });
-
-    // Schließen-Funktion
-    const hideImp = () => {
-        impModal.style.setProperty('display', 'none', 'important');
-        impModal.classList.add('hidden');
-    };
-
-    closeX.addEventListener('click', hideImp);
-    closeBtnBottom.addEventListener('click', hideImp);
-
-    // Schließen bei Klick auf den dunklen Hintergrund
-    window.addEventListener('click', (event) => {
-        if (event.target === impModal) {
-            hideImp();
-        }
-    });
-});
-// --- PASSWORT LOGIK MIT COUNTDOWN ---
-
-document.addEventListener('DOMContentLoaded', () => {
-    checkSessionStatus();
-    // Alle 30 Sekunden die Anzeige aktualisieren
-    setInterval(checkSessionStatus, 30000);
-});
-
-function checkSessionStatus() {
-    const unlockTime = localStorage.getItem('kfz_quiz_time');
-    const now = new Date().getTime();
-    const oneHour = 60 * 60 * 1000;
-    const timerDisplay = document.getElementById('session-timer');
-    const overlay = document.getElementById('password-overlay');
-
-    if (unlockTime && (now - unlockTime < oneHour)) {
-        // Zugriff ist gültig
-        if (overlay) overlay.style.display = 'none';
-        if (timerDisplay) {
-            timerDisplay.style.display = 'block';
-            const remainingMs = oneHour - (now - unlockTime);
-            const remainingMins = Math.ceil(remainingMs / 60000);
-            document.getElementById('timer-minutes').innerText = remainingMins;
-        }
-    } else {
-        // Abgelaufen
-        localStorage.removeItem('kfz_quiz_time');
-        if (overlay) overlay.style.display = 'flex';
-        if (timerDisplay) timerDisplay.style.display = 'none';
-    }
-}
-
-function checkPassword() {
-    const userInput = document.getElementById('pw-input').value;
-    const errorMsg = document.getElementById('pw-error');
-    
-    const correctPassword = "Kfz2026"; 
-
-    if (userInput === correctPassword) {
-        localStorage.setItem('kfz_quiz_time', new Date().getTime());
-        checkSessionStatus(); // Sofort aktualisieren
-    } else {
-        errorMsg.style.display = 'block';
-        document.getElementById('pw-input').value = '';
-    }
-}
-
-// Enter-Taste Support
-document.getElementById('pw-input')?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') checkPassword();
-});
+    function confirmBack() { if(confirm("Abbrechen?")) location.reload(); }
 </script>
-
 </body>
 </html>
