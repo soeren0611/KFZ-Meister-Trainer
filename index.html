@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>KFZ Meister Trainer</title>
+    <style>
+        :root { --p: #1a202c; --a: #ed8936; --s: #48bb78; --e: #f56565; --m: #4299e1; --bg: #f7fafc; }
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; touch-action: manipulation; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 10px; user-select: none; }
+        .app { max-width: 650px; margin: auto; background: white; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 90vh; display: flex; flex-direction: column; overflow: hidden; }
+        .h { background: var(--p); color: white; padding: 20px; text-align: center; border-bottom: 5px solid var(--a); }
+        .stats { background: #edf2f7; padding: 12px; display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: bold; border-bottom: 1px solid #e2e8f0; }
+        .c { padding: 20px; flex-grow: 1; overflow-y: auto; }
+        .q-text { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; color: #1a202c; }
+        .o { display: block; width: 100%; padding: 16px; margin-bottom: 10px; border: 2px solid #e2e8f0; border-radius: 14px; background: white; text-align: left; font-size: 1rem; }
+        .o.sel { border-color: var(--a); background: #fffaf0; }
+        .o.correct { background: var(--s) !important; color: white; border-color: var(--s); }
+        .o.wrong { background: var(--e) !important; color: white; border-color: var(--e); }
+        .o.miss { border: 2px dashed var(--m); color: var(--m); }
+        .f { padding: 20px; background: white; border-top: 1px solid #eee; }
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 14px; font-weight: 800; font-size: 1rem; color: white; background: var(--p); }
+        .btn-a { background: var(--a); }
+        .nav-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="h">
+        <h2 style="margin:0; font-size: 1.2rem;">KFZ EXPERTE PRO</h2>
+        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 8px;">
+            <button id="back-btn" class="nav-btn" style="display:none;" onclick="goBack()"> Zurück</button>
+            <button class="nav-btn" onclick="shareApp()">App teilen</button>
+        </div>
+    </div>
+    <div id="stat-bar" class="stats" style="display:none">
+        <span id="st-count"></span><span id="st-score"></span>
+    </div>
+    <div id="main" class="c">
+        <div id="menu">
+            <h3 style="text-align:center">Prüfung starten:</h3>
+            <button class="btn" style="margin-bottom:12px" onclick="start(20)">20 Fragen</button>
+            <button class="btn" style="margin-bottom:12px" onclick="start(50)">50 Fragen</button>
+            <button class="btn" onclick="start(pool.length)">Alle Fragen</button>
+        </div>
+        <div id="quiz" style="display:none">
+            <div id="q-txt" class="q-text"></div>
+            <div id="opts"></div>
+        </div>
+    </div>
+    <div id="foot" class="f" style="display:none">
+        <button id="act" class="btn">Prüfen</button>
+    </div>
+</div>
+
+<script>
+    // DEIN FRAGENPOOL (Beispielhaft - setze hier deine 500 Fragen ein)
+    const pool = [
+        // --- MIX AUS MECHATRONIK, HV, KAROSSERIE, RECHT, GUTACHTEN ---
+        { q: "Was ist bei der Kalkulation einer Beilackierung im Gutachten zu beachten?", a: ["Sie dient der optischen Farbtonangleichung an angrenzenden Bauteilen.", "Sie wird meist mit 50% der Lackierkosten des Neuteils kalkuliert.", "Sie ist bei Metallic- und Perleffekt-Lacken technisch oft zwingend erforderlich.", "Sie darf nur bei Fahrzeugen durchgeführt werden, die jünger als 3 Jahre sind."], c: [0, 1, 2], t: "m" },
+        { q: "Welche Bedingungen müssen für die Anwendung der 130%-Regel erfüllt sein?", a: ["Die Reparaturkosten dürfen 130% des Wiederbeschaffungswerts nicht übersteigen.", "Das Fahrzeug muss nachweislich 6 Monate weitergenutzt werden.", "Die Reparatur muss fachgerecht nach Gutachten durchgeführt werden.", "Es muss ein Haftpflichtschaden vorliegen (kein Kasko)."], c: [0, 1, 2, 3], t: "m" },
+        { q: "Welche Bauteile im HV-System sind galvanisch von der Fahrzeugmasse getrennt?", a: ["Die gesamte HV-Batterie inkl. Zellmodulen.", "Der HV-Klimakompressor.", "Die HV-Leitungen (Plus und Minus).", "Die 12V-Starterbatterie."], c: [0, 1, 2], t: "m" },
+        { q: "Was beschreibt die 'merkantile Wertminderung' nach einem Unfallschaden?", a: ["Der am Markt geringere Erlös beim Verkauf trotz perfekter Reparatur.", "Der Abzug für bereits vorhandene Altschäden.", "Ein Schadenersatzanspruch, der auch bei älteren Fahrzeugen (>5 Jahre) bestehen kann.", "Die Kosten für die Wertfeststellung durch einen Gutachter."], c: [0, 2], t: "m" },
+        { q: "Welches Fügeverfahren wird bei der Reparatur von Aluminium-Stahl-Mischbauweisen angewendet?", a: ["Stanznieten in Verbindung mit Strukturkleber.", "Konventionelles MAG-Schweißen.", "Punktschweißen mit erhöhter Stromstärke.", "Reibschweißen."], c: [0], t: "s" },
+        { q: "Was ist ein 'UPE-Aufschlag' in einer Schadenskalkulation?", a: ["Ein regionaler Aufschlag auf die unverbindliche Preisempfehlung für Ersatzteile.", "Ein Honoraraufschlag für den Sachverständigen.", "Zusatzkosten für die Entsorgung von Altteilen.", "Kosten für die Verbringung zum Lackierer."], c: [0], t: "s" },
+        { q: "Wie wird der Isolationswiderstand im HV-System gemessen?", a: ["Mit einem Isolationsmessgerät zwischen HV-Leitung und Fahrzeugmasse.", "Mit einem Standard-Multimeter im Ohm-Bereich.", "Bei eingeschalteter Zündung (Ready-Modus).", "Unter Verwendung einer erhöhten Prüfspannung (z.B. 500V)."], c: [0, 3], t: "m" },
+        { q: "Wann darf fiktiv abgerechnet werden?", a: ["Wenn der Geschädigte sich den Nettobetrag laut Gutachten auszahlen lässt.", "Wenn die Reparatur nicht oder nur teilweise durchgeführt wird.", "Wenn die Mehrwertsteuer nicht erstattet werden soll.", "Nur bei Schäden unter der Bagatellgrenze."], c: [0, 1, 2], t: "m" },
+        { q: "Welche Aufgabe hat der Interlock-Kreis im HV-Fahrzeug?", a: ["Überwachung der HV-Steckverbindungen auf festen Sitz.", "Sofortige Abschaltung der Schütze bei Unterbrechung des Kreises.", "Verriegelung der Ladeklappe während des Ladevorgangs.", "Diebstahlschutz für die HV-Komponenten."], c: [0, 1], t: "m" },
+        { q: "Was ist eine 'Vorschaden-Kompensation'?", a: ["Abzug vom Wiederbeschaffungswert aufgrund nicht reparierter Altschäden.", "Zahlung der Versicherung für die Instandsetzung alter Kratzer.", "Ein Bonus für ein besonders gepflegtes Fahrzeug ohne Vorschäden.", "Die Verrechnung von Reparaturkosten mit dem Restwert."], c: [0], t: "s" },
+        { q: "Definition 'Bagatellschaden' im Haftpflichtrecht?", a: ["Schadenhöhe liegt unter ca. 750 - 1000 Euro.", "Versicherung muss kein volles Sachverständigengutachten bezahlen.", "Kostenvoranschlag reicht meist zur Schadenregulierung aus.", "Schäden, die nur Kunststoffteile betreffen."], c: [0, 1, 2], t: "m" },
+        { q: "Was beschreibt der 'SOH' (State of Health) einer HV-Batterie?", a: ["Den allgemeinen Gesundheitszustand/Restkapazität im Vergleich zum Neuzustand.", "Den aktuellen Ladezustand in Prozent.", "Die aktuelle Temperatur der Batteriezellen.", "Die verbleibende Ladezeit."], c: [0], t: "s" },
+        { q: "Welche Messsysteme werden zur Rahmenvermessung eingesetzt?", a: ["Elektronische 3D-Messsysteme (Ultraschall/Laser).", "Mechanische Messbrücken.", "Teleskop-Maßstäbe.", "Wasserwaage."], c: [0, 1, 2], t: "m" },
+        { q: "Was ist das 'Quotenvorrecht'?", a: ["Der Geschädigte kann trotz Teilschuld bestimmte Posten voll von der Haftpflicht erstattet bekommen.", "Gilt für Posten wie Selbstbeteiligung bei Kaskonutzung.", "Eine Bevorzugung von Versicherungen.", "Regelung der Quoten für Ersatzteile."], c: [0, 1], t: "m" },
+        { q: "Wofür steht KTL?", a: ["Kathodische Tauchlackierung.", "Elektrochemisches Verfahren zum Korrosionsschutz.", "Grundierung im Tauchbad.", "Kunststoff-Trenn-Lackierung."], c: [0, 1, 2], t: "m" },
+        { q: "Anspruch auf Nutzungsausfall besteht...", a: ["Wenn kein Mietwagen genutzt wird.", "Für die notwendige Reparaturdauer laut Gutachten.", "Wenn eine hypothetische Nutzungsmöglichkeit besteht.", "Nur bei Totalschaden."], c: [0, 1, 2], t: "m" },
+        { q: "Bedeutung 'Umsetzpause' im Gutachten?", a: ["Zeit zwischen Unfall und Gutachtenerstellung.", "Zeitraum zur Suche eines Ersatzfahrzeugs.", "Wird beim Nutzungsausfall oft mit 1-2 Tagen berücksichtigt.", "Pause des Mechanikers."], c: [1, 2], t: "m" },
+        { q: "Was ist bei Borstahl-Reparatur verboten?", a: ["Erwärmen über 250 Grad.", "Rückverformen durch Hitze.", "MAG-Schweißen ohne Herstellerfreigabe.", "Kleben."], c: [0, 1, 2], t: "m" },
+        { q: "Potentialausgleich im HV-System dient...", a: ["Schutz vor Berührungsspannungen.", "Vermeidung von EMV-Störungen.", "Kühlung der Batterie.", "Ableitung von Fehlerströmen."], c: [0, 1, 3], t: "m" },
+        { q: "Was ist ein 'Wiederbeschaffungswert'?", a: ["Kaufpreis eines gleichwertigen Fahrzeugs am allgemeinen Markt.", "Händlereinkaufspreis.", "Beinhaltet MwSt (Regel- oder Differenzbesteuert).", "Schrottwert."], c: [0, 2], t: "m" },        // --- BLOCK: MECHATRONIK & MOTORENMANAGEMENT ---
+        { q: "Was ist die Ursache für das 'Nageln' bei einem Dieselmotor?", a: ["Zu großer Zündverzug.", "Zu früher Einspritzbeginn.", "Erhöhter Kraftstoffdruck.", "Verschlissene Glühkerzen."], c: [0, 1], t: "m" },
+        { q: "Welche Aufgabe hat der Heißfilm-Luftmassenmesser (HFM)?", a: ["Messung der Masse der angesaugten Luft.", "Erkennung der Strömungsrichtung der Luft.", "Messung der Luftfeuchtigkeit.", "Regelung der Drosselklappe."], c: [0, 1], t: "m" },
+        { q: "Was passiert bei einer Unterbrechung der Lambdasonden-Heizung?", a: ["Die Sonde erreicht ihre Betriebstemperatur später oder gar nicht.", "Die Abgaswerte verschlechtern sich in der Warmlaufphase.", "Der Motor geht sofort in den Notlauf.", "Der Kraftstoffverbrauch sinkt."], c: [0, 1], t: "m" },
+        { q: "Welche Vorteile bietet die Biturbos-Aufladung (Registeraufladung)?", a: ["Besseres Ansprechverhalten bei niedrigen Drehzahlen.", "Hohe maximale Leistung bei hohen Drehzahlen.", "Vermeidung des Turbolochs.", "Geringerer mechanischer Aufwand."], c: [0, 1, 2], t: "m" },
+
+        // --- BLOCK: HV-TECHNIK & SICHERHEIT ---
+        { q: "Wer darf die Spannungsfreiheit an einem HV-System feststellen?", a: ["Eine Fachkundige Person (FHV) für Arbeiten an HV-Systemen.", "Jeder Kfz-Geselle nach Einweisung.", "Nur der Werkstattmeister persönlich.", "Ausschließlich Mitarbeiter des Fahrzeugherstellers."], c: [0], t: "s" },
+        { q: "Was ist ein 'Pilotkontakt' (Low-Voltage-Protection) in einer HV-Steckverbindung?", a: ["Ein Niedervoltschaltkreis, der beim Öffnen des Steckers das HV-System abschaltet.", "Eine Sicherung gegen Kurzschluss.", "Ein Kontakt zur Übertragung von Navigationsdaten.", "Ein mechanischer Schutz gegen Verpolung."], c: [0], t: "s" },
+        { q: "Welche PSA ist beim Messen unter Spannung am HV-System zwingend?", a: ["Isolierende Handschuhe (Klasse 0).", "Lichtbogengeprüfter Gesichtsschutz.", "Isolierende Standortmatte.", "Antistatische Sicherheitsschuhe."], c: [0, 1, 2], t: "m" },
+        { q: "Was versteht man unter 'Active Discharge'?", a: ["Das gezielte Entladen der Zwischenkreiskondensatoren nach dem Abschalten.", "Das schnelle Entladen der HV-Batterie bei Kurzschluss.", "Die Kühlung der Batterie beim Laden.", "Ein Testverfahren für Batteriezellen."], c: [0], t: "s" },
+
+        // --- BLOCK: KAROSSERIEBAU & UNFALLINSTANDSETZUNG ---
+        { q: "Welche Folgen hat eine Überhitzung von ultrahochfestem Stahl (UHS) bei der Instandsetzung?", a: ["Massiver Verlust der Festigkeit (Gefügeänderung).", "Erhöhte Korrosionsanfälligkeit.", "Das Bauteil wird spröde und kann bei Belastung reißen.", "Keine, der Stahl regeneriert sich beim Abkühlen."], c: [0, 1, 2], t: "m" },
+        { q: "Was ist bei der Verwendung von Karosserieklebstoffen zu beachten?", a: ["Die Oberflächen müssen absolut fettfrei und sauber sein.", "Einige Kleber benötigen eine Mindestaushärtezeit vor der Weiterbearbeitung.", "Kleber kann Schweißpunkte bei der Kraftübertragung unterstützen.", "Kleber dient auch als Isolator gegen Kontaktkorrosion."], c: [0, 1, 2, 3], t: "m" },
+        { q: "Was beschreibt die 'Schattenbildung' nach einer Lackierung?", a: ["Unregelmäßige Ausrichtung der Effektpartikel (Metallic/Perl).", "Falscher Spritzabstand oder Winkel.", "Zu geringe Schichtdicke.", "Verschmutzung im Klarlack."], c: [0, 1], t: "m" },
+
+        // --- BLOCK: SCHADENERSATZRECHT ---
+        { q: "Wann hat der Geschädigte Anspruch auf einen Rechtsanwalt auf Kosten der Gegenseite?", a: ["Grundsätzlich bei jedem berechtigten Haftpflichtschaden (Waffengleichheit).", "Nur bei Personenschäden.", "Nur wenn die Versicherung die Zahlung verweigert.", "Nur bei Totalschaden."], c: [0], t: "s" },
+        { q: "Was bedeutet 'Verschuldenshaftung' im Gegensatz zur 'Gefährdungshaftung'?", a: ["Verschuldenshaftung setzt ein schuldhaftes Fehlverhalten (z.B. Vorfahrtfehler) voraus.", "Gefährdungshaftung ergibt sich allein aus dem Betrieb eines Kfz.", "Beide Konzepte spielen bei der Haftungsquote eine Rolle.", "Gefährdungshaftung gilt nur für LKW."], c: [0, 1, 2], t: "m" },
+        { q: "Was ist eine 'Reparaturbestätigung' und wozu dient sie?", a: ["Nachweis über die durchgeführte Reparatur für die Versicherung.", "Dient zur Erlangung des Nutzungsausfalls bei fiktiver Abrechnung.", "Wichtig zur Beweissicherung bei einem eventuellen Zweitunfall (Vorschaden).", "Ist eine Rechnungskopie der Werkstatt."], c: [0, 1, 2], t: "m" },
+
+        // --- BLOCK: GUTACHTENERSTELLUNG ---
+        { q: "Welche Angaben zum Reifen müssen in ein Gutachten aufgenommen werden?", a: ["Hersteller und Profilbezeichnung.", "Reifengröße und DOT (Alter).", "Restprofiltiefe in mm an allen Reifen.", "Zustand der Felgen (z.B. Bordsteinkratzer)."], c: [0, 1, 2, 3], t: "m" },
+        { q: "Wie wird die 'Voraussichtliche Reparaturdauer' im Gutachten ermittelt?", a: ["Basierend auf den kalkulierten Arbeitswerten (AW).", "Unter Berücksichtigung von Lacktrocknungszeiten.", "Ersatzteillieferzeiten (falls bekannt) fließen mit ein.", "Sie entspricht immer den reinen Mechanik-Stunden."], c: [0, 1, 2], t: "m" },
+        { q: "Was ist der Unterschied zwischen einem Schadengutachten und einer Bewertung?", a: ["Schadengutachten ermittelt die Reparaturkosten nach einem Unfall.", "Bewertung ermittelt den Marktwert (z.B. für Leasingende oder Oldtimer).", "Eine Bewertung berücksichtigt keine Unfallschäden.", "Das Schadengutachten ist für die Versicherung bindend."], c: [0, 1], t: "m" },
+        { q: "Was ist bei der Restwertermittlung im Haftpflichtfall die 'Schadenminderungspflicht'?", a: ["Der Geschädigte muss ein deutlich höheres Gebot der Versicherung annehmen, wenn er noch nicht verkauft hat.", "Er muss den Schrott zum billigsten Preis entsorgen.", "Er muss auf das Gutachten warten, bevor er das Auto verkauft.", "Er darf den Restwert selbst schätzen."], c: [0, 2], t: "m" },
+        { q: "Definition 'Wiederbeschaffungsdauer'?", a: ["Der Zeitraum, den der Geschädigte benötigt, um ein gleichwertiges Ersatzfahrzeug zu finden.", "Die Zeit, bis die Versicherung das Geld überweist.", "Die Dauer der Reparatur in der Werkstatt.", "Wird beim Nutzungsausfall zusätzlich zur Reparaturdauer angerechnet."], c: [0, 3], t: "m" },
+        { q: "Welche Rolle spielt die 'Haltedauer' bei der 130%-Regel?", a: ["Das Fahrzeug muss mindestens 6 Monate nach dem Unfall weitergenutzt werden.", "Die Versicherung prüft dies oft nach einem halben Jahr ab.", "Bei Verkauf nach 2 Monaten entfällt der Anspruch rückwirkend.", "Das Auto muss vor dem Unfall 6 Monate im Besitz gewesen sein."], c: [0, 1, 2], t: "m" },        // --- BLOCK: SCHADENRECHT & MIETWAGEN (TIEFENWISSEN) ---
+        { 
+            q: "Was versteht man unter dem 'Prognoserisiko' bei der Gutachtenerstellung?", 
+            a: ["Das Risiko, dass die tatsächlichen Reparaturkosten die Kalkulation des Gutachters übersteigen.", "Dieses Risiko geht zulasten des Schädigers, sofern der Gutachter sorgfältig gearbeitet hat.", "Das Risiko, dass das Ersatzteil nicht lieferbar ist.", "Die Vorhersage der Wertentwicklung des Fahrzeugs."], 
+            c: [0, 1], t: "m" 
+        },
+        { 
+            q: "Nach welchen Kriterien wird die Mietwagenklasse im Haftpflichtschaden bestimmt?", 
+            a: ["Der Geschädigte muss meist ein Fahrzeug mieten, das eine Klasse unter seinem eigenen liegt (Eigenersparnis).", "Die Einstufung erfolgt nach der Schwacke-Liste oder dem Fraunhofer-Mietpreisspiegel.", "Es darf immer ein gleichwertiges Fahrzeug gemietet werden.", "Die Mietwagenkosten müssen in einem angemessenen Verhältnis zum WBW stehen."], 
+            c: [0, 1, 3], t: "m" 
+        },
+        { 
+            q: "Wann darf die Versicherung den Geschädigten auf eine günstigere 'Referenzwerkstatt' verweisen?", 
+            a: ["Nur wenn das Fahrzeug älter als 3 Jahre ist und nicht checkheftgepflegt bei einer Markenwerkstatt.", "Wenn die Versicherung nachweist, dass die Reparatur dort qualitativ gleichwertig ist.", "Bei einem Kaskoschaden mit vereinbarter Werkstattbindung immer.", "Im Haftpflichtschaden grundsätzlich niemals."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Was bedeutet 'Opfergrenze' im Zusammenhang mit der 130%-Regelung?", 
+            a: ["Die absolute Grenze, bis zu der eine Reparatur für den Schädiger noch zumutbar ist (130% vom WBW).", "Der Punkt, an dem der Restwert höher ist als die Reparaturkosten.", "Die maximale Entschädigung bei Personenschäden.", "Ein fester Betrag von 2.000 Euro über dem WBW."], 
+            c: [0], t: "s" 
+        },
+
+        // --- BLOCK: HV-DIAGNOSE & ELEKTRIK ---
+        { 
+            q: "Welche Funktion hat der Isolationswächter während des Fahrbetriebs?", 
+            a: ["Permanente Überwachung des Isolationswiderstands zwischen HV-System und Fahrzeugmasse.", "Abschaltung des HV-Systems bei Unterschreitung eines definierten Grenzwerts (z.B. 100 Ohm/Volt).", "Überwachung der Zellspannung.", "Regelung der Ladegeschwindigkeit."], 
+            c: [0, 1], t: "m" 
+        },
+        { 
+            q: "Was ist bei der Messung des Potentialausgleichs zu beachten?", 
+            a: ["Der Widerstand muss extrem niedrig sein (meist < 0,1 Ohm).", "Die Messung erfolgt zwischen HV-Komponentengehäusen und der Masse.", "Es muss ein spezielles Milliohmmeter verwendet werden.", "Die Zündung muss eingeschaltet sein."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Wie reagiert das HV-System auf einen Unfall mit Airbagauslösung?", 
+            a: ["Die Crash-Sensorik öffnet über das BMS sofort die HV-Schütze.", "Die Pyrosicherung im HV-Batteriekasten wird ggf. ausgelöst.", "Die Batterie wird kurzgeschlossen, um sie zu entladen.", "Das System bleibt unter Spannung, bis der Rettungsdienst kommt."], 
+            c: [0, 1], t: "m" 
+        },
+
+        // --- BLOCK: KAROSSERIETECHNIK ---
+        { 
+            q: "Was ist der Unterschied zwischen einer 'tragenden' und einer 'strukturfesten' Karosseriekomponente?", 
+            a: ["Tragende Teile leiten Kräfte in die Fahrgastzelle ein (z.B. Längsträger).", "Strukturfeste Teile dienen nur der Versteifung (z.B. Dachhaut).", "Strukturfeste Teile dürfen nie geschweißt werden.", "Tragende Teile sind immer aus Aluminium."], 
+            c: [0, 1], t: "m" 
+        },
+        { 
+            q: "Warum ist beim Punktschweißen die Anpresskraft der Elektroden so wichtig?", 
+            a: ["Sicherstellen eines niedrigen Kontaktwiderstands zwischen den Blechen.", "Vermeidung von Schweißspritzern und Porenbildung.", "Erzeugung des nötigen Schweißschalendurchmessers.", "Kühlung der Schweißstelle."], 
+            c: [0, 1, 2], t: "m" 
+        },
+
+        // --- BLOCK: KALKULATION & GUTACHTEN ---
+        { 
+            q: "Was beschreibt der 'Prüfweg' in einem Kalkulationsprogramm (DAT/Audatex)?", 
+            a: ["Die logische Abfolge der Schadensaufnahme (vorn -> hinten, außen -> innen).", "Die Testfahrt zur Ermittlung von Fahrwerksgeräuschen.", "Die Überprüfung der Versicherungsdeckung.", "Die Dauer der Gutachtenerstellung."], 
+            c: [0], t: "s" 
+        },
+        { 
+            q: "Welche Nebenkosten können im Gutachten zusätzlich anfallen?", 
+            a: ["Abschleppkosten und Standgebühren.", "Ab- und Anmeldekosten (bei Totalschaden).", "Pauschale für Telefon- und Portokosten (meist 25-30€).", "Kosten für ein Ersatzfahrrad."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Definition 'Vorschaden' vs. 'Altschaden' im Gutachten?", 
+            a: ["Vorschaden ist repariert, Altschaden ist unrepariert vorhanden.", "Altschäden müssen immer abgezogen werden, wenn sie den aktuellen Bereich betreffen.", "Ein Altschaden erhöht den Wiederbeschaffungswert.", "Beide Begriffe bezeichnen das Gleiche."], 
+            c: [0, 1], t: "m" 
+        },
+        { 
+            q: "Was ist ein 'Nutzungswille' im Zusammenhang mit Nutzungsausfall?", 
+            a: ["Der Geschädigte muss die Absicht haben, das Fahrzeug tatsächlich zu nutzen.", "Wird bei fiktiver Abrechnung oft durch eine Reparaturbestätigung nachgewiesen.", "Ist bei einem stationären Aufenthalt im Krankenhaus oft nicht gegeben.", "Spielt keine Rolle für die Entschädigung."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Welche Bauteile sind 'sicherheitsrelevante Teile' und unterliegen besonderen Prüfpflichten?", 
+            a: ["Fahrwerksteile (Achslenker, Spurstangen).", "Bremssysteme.", "Rückhaltesysteme (Airbag, Gurtstraffer).", "Stoßfängerverkleidungen."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Wann wird eine 'Lackschichtdickenmessung' durchgeführt?", 
+            a: ["Zur Feststellung von verdeckten Vorschäden (Spachtelmasse).", "Zur Prüfung, ob eine Originallackierung vorliegt.", "Vor jeder Wäsche des Fahrzeugs.", "Um das Gewicht des Lacks zu bestimmen."], 
+            c: [0, 1], t: "m" 
+        },        // --- BLOCK: GETRIEBETECHNIK & KRAFTÜBERTRAGUNG ---
+        { 
+            q: "Welche Symptome deuten auf einen Defekt im Mechatronik-Modul eines Doppelkupplungsgetriebes (DSG) hin?", 
+            a: ["Ruckartiges Schalten oder Ausfallen einzelner Fahrstufen.", "Das Fahrzeug kriecht nicht mehr beim Lösen der Bremse.", "Blinkende Ganganzeige im Kombiinstrument.", "Vibrationen ausschließlich im Schiebebetrieb."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Was ist beim Abschleppen eines Fahrzeugs mit Automatikgetriebe zu beachten?", 
+            a: ["Begrenzte Geschwindigkeit und Wegstrecke (Herstellervorgabe), um Überhitzung zu vermeiden.", "Die Ölpumpe wird meist nicht angetrieben, wenn der Motor steht.", "Es muss zwingend die Parksperre manuell entriegelt werden (Notentriegelung).", "Automatikfahrzeuge dürfen grundsätzlich gar nicht abgeschleppt werden."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Was beschreibt der Begriff 'Lamellenkupplung' im Allradantrieb (z.B. Haldex)?", 
+            a: ["Ein elektronisch gesteuertes Bauteil zur variablen Kraftverteilung zwischen den Achsen.", "Sie ermöglicht den Drehzahlausgleich zwischen Vorder- und Hinterachse.", "Sie arbeitet rein mechanisch ohne Steuergerät.", "Sie dient als Anfahrhilfe am Berg."], 
+            c: [0, 1], t: "m" 
+        },
+
+        // --- BLOCK: KAROSSERIE-INSTANDSETZUNG & DICHTIGKEIT ---
+        { 
+            q: "Wie wird eine fachgerechte Dichtheitsprüfung nach einem Austausch der Frontscheibe durchgeführt?", 
+            a: ["Einsatz eines Ultraschall-Lecksuchgeräts.", "Abspritzen der Klebenaht mit Wasser (drucklos).", "Prüfung mit Seifenlauge und Druckluft von innen.", "Optische Kontrolle auf Blasenbildung im Kleber."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Welche Gefahr besteht beim Schweißen in der Nähe von Airbag-Sensoren?", 
+            a: ["Induktionsströme können das Steuergerät beschädigen oder den Airbag auslösen.", "Die Hitze kann die Sensoren dekalibrieren.", "Es gibt keine Gefahr, solange die Zündung aus ist.", "Die Sensoren müssen nach jeder Schweißarbeit ersetzt werden."], 
+            c: [0, 1], t: "m" 
+        },
+
+        // --- BLOCK: SCHADENRECHT (REPARATURWEGE) ---
+        { 
+            q: "Hat der Geschädigte Anspruch auf Neuteile bei der Reparatur?", 
+            a: ["Ja, grundsätzlich darf die Reparatur mit Original-Ersatzteilen des Herstellers kalkuliert werden.", "Bei sehr alten Fahrzeugen kann der Abzug 'Neu für Alt' (NfA) erfolgen.", "Die Versicherung darf den Einsatz von Gebrauchtteilen ohne Zustimmung niemals erzwingen.", "Nur wenn das Fahrzeug jünger als 2 Jahre ist."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Was ist die 'Schadenminderungspflicht' des Geschädigten?", 
+            a: ["Er darf die Kosten nicht unnötig in die Höhe treiben (z.B. zu langer Mietwagenzeitraum).", "Er muss das günstigste von drei Gutachten wählen.", "Er muss die Versicherung vorab über die Wahl des Gutachters informieren.", "Er muss bei Bagatellschäden auf ein Gutachten verzichten."], 
+            c: [0, 4], t: "m" 
+        },
+        { 
+            q: "Was bedeutet 'Unzumutbarkeit der Reparatur'?", 
+            a: ["Wenn nach der Instandsetzung erhebliche technische Mängel oder Unsicherheiten bleiben.", "Wenn die Reparaturdauer unzumutbar lange ist (z.B. mehrere Monate).", "Wenn das Fahrzeug nach der Reparatur nicht mehr die gleiche Crash-Sicherheit bietet.", "Nur wenn die Reparaturkosten 150% des WBW erreichen."], 
+            c: [0, 1, 2], t: "m" 
+        },
+
+        // --- BLOCK: DIAGNOSETECHNIK ---
+        { 
+            q: "Welche Informationen liefert der 'Freeze Frame' im Fehlerspeicher?", 
+            a: ["Die genauen Betriebsbedingungen (Drehzahl, Temperatur, Last) zum Zeitpunkt des Fehlereintritts.", "Ein Foto vom Bauteil zum Zeitpunkt des Schadens.", "Die Anzahl der Fahrzyklen seit dem letzten Fehler.", "Die Seriennummer des Steuergeräts."], 
+            c: [0], t: "s" 
+        },
+        { 
+            q: "Was ist bei der Ruhestrommessung (Parasitic Drain) zu beachten?", 
+            a: ["Das Fahrzeug muss sich im 'Sleep-Mode' befinden (alle Bus-Systeme heruntergefahren).", "Die Messung sollte über einen längeren Zeitraum erfolgen.", "Das Öffnen einer Tür kann das System sofort wieder aufwecken.", "Die Batterie muss während der Messung abgeklemmt sein."], 
+            c: [0, 1, 2], t: "m" 
+        },        // --- BLOCK: FAHRASSISTENZSYSTEME (ADAS) & KALIBRIERUNG ---
+        { 
+            q: "Wann muss eine Frontkamera (z.B. für Spurhalteassistent) zwingend neu kalibriert werden?", 
+            a: ["Nach dem Austausch der Windschutzscheibe.", "Nach Arbeiten am Fahrwerk oder einer Achsvermessung.", "Nach einem Austausch des Steuergeräts für die Kamera.", "Nach jedem Reifenwechsel."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Was ist der Unterschied zwischen einer 'statischen' und einer 'dynamischen' Kalibrierung?", 
+            a: ["Statisch: Erfolgt in der Werkstatt mit speziellen Kalibriertafeln.", "Dynamisch: Erfolgt während einer definierten Probefahrt.", "Statisch ist genauer als dynamisch.", "Dynamisch wird nur bei älteren Fahrzeugen angewendet."], 
+            c: [0, 1], t: "m" 
+        },
+        { 
+            q: "Welche Rolle spielt der Radarsensor hinter der Stoßfängerverkleidung?", 
+            a: ["Abstandsmessung für ACC (Adaptive Cruise Control).", "Erkennung von Objekten bei Nebel und Regen.", "Er muss nach einem Unfallschaden am Frontend auf Verzug geprüft werden.", "Er misst die Außentemperatur."], 
+            c: [0, 1, 2], t: "m" 
+        },
+
+        // --- BLOCK: KAROSSERIE-TECHNIK & MATERIALKUNDE ---
+        { 
+            q: "Was ist bei der Lackierung von Stoßfängern mit Radarsensoren zu beachten?", 
+            a: ["Die Lackschichtdicke darf im Bereich des Sensors oft einen Maximalwert nicht überschreiten.", "Verwendung von speziellen 'Radar-kompatiblen' Lacken (weniger Metallpartikel).", "Spachtelstellen im Sendebereich des Radars sind meist unzulässig.", "Der Sensor muss während der Lackierung mit Aluminiumfolie abgeklebt werden."], 
+            c: [0, 1, 2], t: "m" 
+        },
+        { 
+            q: "Warum werden in der modernen Karosserie verstärkt 'Tailored Blanks' eingesetzt?", 
+            a: ["Um unterschiedliche Blechstärken und Qualitäten in einem Bauteil zu kombinieren.", "Gewichtsreduzierung bei gleichzeitiger Erhöhung der Crash-Sicherheit.", "Vermeidung von unnötigen Überlappungen und Schweißnähten.", "Zur Reduzierung der Windgeräusche."], 
+            c: [0, 1, 2], t: "m" 
+        },
+
+        // --- BLOCK: SCHADENRECHT & HAFTUNG ---
+        { 
+            q: "Wer haftet, wenn die Werkstatt im Auftrag des Kunden ein fehlerhaftes Gutachten umsetzt?", 
+            a: ["Die Werkstatt hat eine Prüf- und Hinweispflicht; erkennt sie Fehler im Gutachten, muss sie darauf hinweisen.", "Bei groben technischen Fehlern im Gutachten haftet die Werkstatt mit, wenn sie diese ungeprüft übernimmt.", "Der Gutachter haftet für die Kalkulation, die Werkstatt nur für die Ausführung.", "Der Kunde haftet grundsätzlich selbst."], 
+            c: [0, 1], t: "m" 
+        },
+        { 
+            q: "Was bedeutet 'Vorteilsausgleich' im Schadenersatzrecht?", 
+            a: ["Abzug 'Neu für Alt', wenn das Fahrzeug durch die Reparatur eine Wertsteigerung erfährt.", "Der Geschädigte darf durch den Schaden nicht besser gestellt werden als vorher.", "Die Versicherung erhält einen Rabatt bei der Werkstatt.", "Der Gutachter bekommt eine Provision."], 
+            c: [0, 1], t: "m" 
+        },
+        { 
+            q: "Wann liegt ein 'Übernahmeverschulden' der Werkstatt vor?", 
+            a: ["Wenn die Werkstatt Arbeiten annimmt, für die sie weder qualifiziert noch ausgerüstet ist (z.B. HV-Arbeiten ohne Schein).", "Wenn sie den Wagen nach der Reparatur nicht wäscht.", "Wenn sie dem Kunden keinen Mietwagen stellt.", "Wenn sie die Rechnung direkt an die Versicherung schickt."], 
+            c: [0], t: "s" 
+        },
+
+        // --- BLOCK: MOTORENTECHNIK & ABGAS ---
+        { 
+            q: "Welche Aufgabe hat das AdBlue-System im Diesel-Abgasstrang?", 
+            a: ["Reduzierung von Stickoxiden (NOx) durch selektive katalytische Reduktion (SCR).", "Verbrennung von Rußpartikeln im Partikelfilter.", "Erhöhung der Motorleistung.", "Kühlung der Abgase."], 
+            c: [0], t: "s" 
+        },
+        { 
+            q: "Was versteht man unter 'Downsizing' bei Verbrennungsmotoren?", 
+            a: ["Hubraumverkleinerung bei gleichzeitiger Aufladung zur Effizienzsteigerung.", "Reduzierung der Zylinderanzahl.", "Verringerung der maximalen Drehzahl.", "Einbau von kleineren Batterien."], 
+            c: [0, 1], t: "m" 
+        }
+        // Hier können wir nun nahtlos bis Frage 500 weitermachen...
+
+    ];
+
+    let sess=[], idx=0, score=0, chk=false, sel=[];
+
+    function start(n) {
+        document.getElementById('menu').style.display='none';
+        document.getElementById('quiz').style.display='block';
+        document.getElementById('foot').style.display='block';
+        document.getElementById('stat-bar').style.display='flex';
+        document.getElementById('back-btn').style.display='inline-block';
+        sess = [...pool].sort(() => 0.5 - Math.random()).slice(0, n);
+        idx=0; score=0; draw();
+    }
+
+    function draw() {
+        chk = false; sel = [];
+        const d = sess[idx];
+        document.getElementById('st-count').innerText = "Frage " + (idx + 1) + "/" + sess.length;
+        document.getElementById('st-score').innerText = "Richtig: " + score;
+        document.getElementById('q-txt').innerText = d.q;
+        const b = document.getElementById('opts'); b.innerHTML = '';
+        d.a.forEach((t, i) => {
+            const o = document.createElement('button'); o.className = 'o'; o.innerText = t;
+            o.onclick = () => { if(chk) return;
+                if(d.t === 's') { sel = [i]; document.querySelectorAll('.o').forEach(x => x.classList.remove('sel')); o.classList.add('sel'); }
+                else { if(sel.includes(i)) sel = sel.filter(x => x !== i); else sel.push(i); o.classList.toggle('sel'); }
+            };
+            b.appendChild(o);
+        });
+        document.getElementById('act').innerText = "Prüfen";
+        document.getElementById('act').classList.remove('btn-a');
+    }
+
+    document.getElementById('act').onclick = () => {
+        if(sel.length === 0 && !chk) return;
+        const d = sess[idx];
+        if(!chk) {
+            const ok = JSON.stringify(sel.sort()) === JSON.stringify(d.c.sort());
+            document.querySelectorAll('.o').forEach((el, i) => {
+                if(d.c.includes(i) && sel.includes(i)) el.classList.add('correct');
+                else if(!d.c.includes(i) && sel.includes(i)) el.classList.add('wrong');
+                else if(d.c.includes(i) && !sel.includes(i)) el.classList.add('miss');
+            });
+            if(ok) score++; chk = true;
+            document.getElementById('act').innerText = "Nächste Frage";
+            document.getElementById('act').classList.add('btn-a');
+        } else {
+            idx++; if(idx < sess.length) draw(); else location.reload();
+        }
+    };
+
+    function goBack() { if(confirm("Abbrechen?")) location.reload(); }
+
+    function shareApp() {
+        const code = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+        const t = document.createElement("textarea"); document.body.appendChild(t);
+        t.value = code; t.select(); document.execCommand("copy"); document.body.removeChild(t);
+        alert("App-Code kopiert! Schicke ihn per WhatsApp.");
+    }
+</script>
+</body>
+</html>
