@@ -39,6 +39,10 @@
         .footer { margin-top: 40px; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
         .paypal-btn { display: inline-block; background: #ffc439; color: #003087; padding: 10px 25px; border-radius: 25px; text-decoration: none; font-weight: bold; margin-bottom: 15px; }
         .copyright { font-size: 11px; color: #888; }
+        
+        /* Modal Style Ergänzung */
+        #impressum-modal h3 { font-size: 1.1rem; margin-top: 20px; color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 8px; }
+        #impressum-modal p { font-size: 0.85rem; line-height: 1.5; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -50,9 +54,9 @@
 <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 10000; display: flex; justify-content: center; align-items: center; font-family: sans-serif;">
     <div style="background: white; padding: 35px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); max-width: 400px; width: 90%;">
         <div style="font-size: 50px; margin-bottom: 15px;">🔧</div>
-        <h2 id="overlay-title" style="margin-bottom: 10px; color: #333;">KFZ-Experten Zugang</h2>
+        <h2 id="overlay-title" style="margin-bottom: 10px; color: #333;">Zugang KFZ-Prüfungssimulation für Meister oder Sachverständige</h2>
         <p id="overlay-text" style="color: #666; margin-bottom: 20px; font-size: 0.95rem;">
-            Gib dein Passwort ein oder erwerbe den <b>6-Monats Zugang</b> für einmalig 10€.
+            Gib dein Passwort ein oder erwerbe den <b>Lifetime Zugang für 100,00€ oder den 6-Monats Zugang für 10,00€</b>. Schreibe einfach den gewünschten Zugang in die Paypal Zahlung.
         </p>
         
         <input type="password" id="pw-input" placeholder="Passwort eingeben..." style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box; text-align: center; outline: none;">
@@ -67,7 +71,7 @@
 
         <a href="https://www.paypal.me/soerenroesch/10" target="_blank" style="text-decoration: none;">
             <div style="width: 100%; padding: 12px; background: #ffc439; color: #2c2e2f; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-sizing: border-box; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                <span style="margin-right: 8px;">🚀</span> Passwort freischalten (10€)
+                <span style="margin-right: 8px;">🚀</span> Passwort freischalten (100€ / 10€)
             </div>
         </a>
 
@@ -81,7 +85,7 @@
 
 <div class="quiz-container">
     <div id="start-screen">
-        <h1>KFZ Prüfungssimulation</h1>
+        <h1>Prüfungssimulation für KFZ Meister und Sachverständige</h1>
         <p style="text-align:center">Wähle die Anzahl der Fragen für dein Training:</p>
         <div class="btn-grid">
             <button class="main-btn start-btn" onclick="startQuiz(20)">20 Fragen</button>
@@ -119,11 +123,30 @@
 </div>
 
 <div id="impressum-modal" class="hidden" style="position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; padding: 20px;">
-    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 100%; position: relative; max-height: 85vh; overflow-y: auto; color: #333;">
+    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 550px; width: 100%; position: relative; max-height: 85vh; overflow-y: auto; color: #333; text-align: left;">
         <span id="close-x" style="position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer;">&times;</span>
-        <h2>Impressum</h2>
+        
+        <h2>Impressum & Rechtliches</h2>
+        <p><strong>Angaben gemäß § 5 TMG</strong></p>
         <p>Sören Rösch<br>Akazienring 9<br>76706 Dettenheim</p>
-        <p>E-Mail: soeren.roesch@gmx.de</p>
+
+        <p><strong>Kontakt</strong><br>E-Mail: soeren.roesch@gmx.de</p>
+
+        <h3>Steuerlicher Hinweis</h3>
+        <p>Als Kleinunternehmer im Sinne von § 19 Abs. 1 UStG wird keine Umsatzsteuer berechnet oder ausgewiesen.</p>
+
+        <h3>Nutzungsbedingungen & Weitergabeverbot</h3>
+        <p>Mit dem Erwerb oder der Nutzung eines Passworts (gilt sowohl für Kauf- als auch Testzugänge) erhält der Nutzer ein einfaches, nicht übertragbares Recht zur Nutzung dieser Anwendung. <strong>Die Weitergabe der Passwörter an Dritte ist strikt untersagt.</strong> Bei Zuwiderhandlung behält sich der Betreiber vor, den Zugang dauerhaft zu sperren.</p>
+
+        <h3>Urheberrecht</h3>
+        <p>Die durch den Seitenbetreiber erstellten Inhalte (insbesondere die Zusammenstellung der Fragen und das Design der App) unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des Autors.</p>
+
+        <h3>Haftungsausschluss</h3>
+        <p>Trotz sorgfältiger Prüfung der Fachfragen wird keine Haftung für die Richtigkeit der Inhalte oder den Prüfungserfolg übernommen.</p>
+
+        <h3>Datenschutz</h3>
+        <p>Diese Anwendung nutzt LocalStorage zur Speicherung Ihres Fortschritts. Es werden keine personenbezogenen Daten an Dritte übermittelt. Bei Zahlungen via PayPal gelten deren Datenschutzbestimmungen.</p>
+
         <button class="main-btn start-btn" id="close-btn-bottom">Schließen</button>
     </div>
 </div>
@@ -1280,12 +1303,1714 @@
             "Der Gutachter darf nicht mehr als 10% der Schadenssumme kosten"
         ],
         correct: [0]
-    }
+    },
+{
+    q: "Ein moderner Dieselmotor mit Registeraufladung zeigt Instabilitäten beim Übergang von der Hochdruck- zur Niederdruckstufe. Welches Bauteil steuert diesen Übergang primär?",
+    a: ["Das Wastegate-Ventil", "Die Regelklappe (Turbinen-Umschaltventil)", "Der Ladeluft-Bypass", "Das VTG-Gestänge"],
+    correct: [1]
+},
+{
+    q: "Welche Ursache ist am wahrscheinlichsten, wenn bei einem Piezo-Injektor der Rücklaufdruck zu hoch ist?",
+    a: ["Ein defektes Bodenventil", "Verkokung der Düsennadel", "Ein Haarriss im Piezo-Stack", "Ein klemmendes Steuerventil"],
+    correct: [0]
+},
+{
+    q: "Beim Miller-Zyklus wird das Einlassventil deutlich vor UT geschlossen. Welchen thermodynamischen Haupteffekt erzielt man dadurch?",
+    a: ["Erhöhung der Verdichtungsendtemperatur", "Senkung der Klopfneigung durch Expansionskühlung", "Steigerung des Liefergrades im Volllastbereich", "Verringerung der Ladungsbewegung (Tumble)"],
+    correct: [1]
+},
+{
+    q: "Ein HV-Inverter nutzt SiC-Halbleiter. Welchen Vorteil haben diese gegenüber IGBTs?",
+    a: ["Höhere Schaltfrequenzen bei geringeren Verlusten", "Geringere Materialkosten", "Keine EMV-Abschirmung nötig", "Niedrigere maximale Betriebstemperatur"],
+    correct: [0]
+},
+{
+    q: "Was beschreibt der 'P-Grad' bei einem elektronischen Stabilitätsprogramm (ESP) in Bezug auf die Hydraulik?",
+    a: ["Die Pumpendrehzahl", "Die Steifigkeit des Bremssystems", "Den fahrerseitigen Vordruck", "Die Druckaufbaugeschwindigkeit"],
+    correct: [1]
+},
+{
+    q: "Welches Phänomen tritt bei falsch eingestelltem Zahnflankenspiel im Differenzial unter Last primär auf?",
+    a: ["Heulen im Schiebebetrieb", "Singen unter Zuglast", "Vibrationen ab 120 km/h", "Ölaustritt an den Wellendichtringen"],
+    correct: [1]
+},
+{
+    q: "In einem FlexRay-System dient der 'Bus Guardian' wozu?",
+    a: ["Zur Erhöhung der Datenrate", "Zum Schutz vor unzulässigen Zeitzugriffen (Jabber)", "Zur Stromversorgung der Sensoren", "Zur Terminierung der Busenden"],
+    correct: [1]
+},
+{
+    q: "Ein SCR-System zeigt einen zu geringen Wirkungsgrad. AdBlue-Qualität und NOx-Sensoren sind okay. Was ist eine häufige mechanische Ursache?",
+    a: ["Kristallisation im Mischrohr", "Defekte Kurbelgehäuseentlüftung", "Zu hoher Schwefelgehalt im Diesel", "Undichte AGR-Kühlung"],
+    correct: [0]
+},
+{
+    q: "Was passiert beim 'aktiven Entladen' des Zwischenkreiskondensators in einem Elektrofahrzeug?",
+    a: ["Energie wird in die 12V Batterie gespeist", "Energie wird über einen Widerstand oder Motorwicklungen vernichtet", "Der Kondensator wird mechanisch kurzgeschlossen", "Die Energie wird zurück in die HV-Batterie gepumpt"],
+    correct: [1]
+},
+{
+    q: "Warum wird bei modernen Ottomotoren mit Direkteinspritzung oft eine Mehrfacheinspritzung im KAT-Heizbetrieb genutzt?",
+    a: ["Zur Senkung des Kraftstoffverbrauchs", "Um die Wandfilmbenetzung zu maximieren", "Zur Erhöhung der Abgastemperatur durch späte Verbrennung", "Um das Klopfen zu verhindern"],
+    correct: [2]
+},
+{
+    q: "Welche Sensor-Technologie wird primär für die hochpräzise Rotorlageerkennung in PSM-Elektromotoren verwendet?",
+    a: ["Resolver", "Hallsensor", "Induktiver Näherungsschalter", "Kapazitiver Wegaufnehmer"],
+    correct: [0]
+},
+{
+    q: "Bei einem 7-Gang-Doppelkupplungsgetriebe (nasslaufend) ist das Öl verbrannt. Welches Schadensbild ist am wahrscheinlichsten?",
+    a: ["Defekter Parksperren-Aktor", "Überhitzung durch dauerhaftes Schleifen der Kupplung K1", "Fehlfunktion der elektrischen Ölpumpe", "Bruch der Synchronringe"],
+    correct: [1]
+},
+{
+    q: "Was ist die Hauptaufgabe des Zweimassenschwungrads (ZMS)?",
+    a: ["Erhöhung der Motordrehzahl", "Verschiebung der Resonanzfrequenz unter die Leerlaufdrehzahl", "Speicherung von kinetischer Energie für den Start-Stopp-Vorgang", "Kühlung der Kupplungsdruckplatte"],
+    correct: [1]
+},
+{
+    q: "Ein Lin-Bus Teilnehmer antwortet nicht. Die Spannung am Pin liegt konstant bei 12V. Was ist die wahrscheinlichste Ursache?",
+    a: ["Kurzschluss nach Masse", "Leitungsunterbrechung zum Master", "Defekter Abschlusswiderstand im Slave", "Kurzschluss nach Plus"],
+    correct: [1]
+},
+{
+    q: "Bei der Achsvermessung: Was bewirkt ein positiver Lenkrollradius primär?",
+    a: ["Stabilisierung beim Bremsen auf ungleichem Untergrund", "Leichtgängigkeit der Lenkung im Stand", "Selbsttätiges Einlenken in Kurven", "Erhöhte Rückstellkräfte, aber Empfindlichkeit bei Bremskraftunterschieden"],
+    correct: [3]
+},
+{
+    q: "Welchen Effekt hat Kavitation in einer Hochdruckpumpe?",
+    a: ["Bessere Schmierung der Kolben", "Materialabtrag durch implodierende Gasblasen", "Erhöhung des maximalen Förderdrucks", "Verringerung der Geräuschemission"],
+    correct: [1]
+},
+{
+    q: "Warum besitzen moderne LED-Scheinwerfer oft ein eigenes Lüfterrad oder Heatpipes?",
+    a: ["Um das Glas im Winter zu enteisen", "Da die LED-Chips an der Sperrschicht hochempfindlich gegen Hitze sind", "Um die Lichtfarbe zu verändern", "Zur Kühlung der Kunststofflinse"],
+    correct: [1]
+},
+{
+    q: "Ein Bremskraftverstärker (Unterdruck) ist hart beim ersten Treten nach dem Start. Ursache?",
+    a: ["Defektes Rückschlagventil in der Unterdruckleitung", "Luft im Bremssystem", "Verschlissene Bremsbeläge", "Falsche Bremsflüssigkeit"],
+    correct: [0]
+},
+{
+    q: "Was versteht man unter 'LSPI' (Low Speed Pre-Ignition)?",
+    a: ["Zündaussetzer im Leerlauf", "Vorentflammung bei niedriger Drehzahl und hoher Last (Downsizing-Motoren)", "Langsames Verbrennen des Gemisches im Schiebebetrieb", "Ein Defekt am Klopfsensor"],
+    correct: [1]
+},
+{
+    q: "In einem aktiven Fahrwerk (z.B. 48V Wankstabilisierung) wird welcher Aktor meist verwendet?",
+    a: ["Linearmotor", "Elektromechanischer Schwenkmotor", "Pneumatischer Balg", "Hydraulikzylinder mit Magnetventil"],
+    correct: [1]
+},
+{
+    q: "Welche Abgastemperatur muss ein Partikelfilter (DPF) für eine erfolgreiche thermische Regeneration mindestens erreichen?",
+    a: ["250°C - 300°C", "400°C - 450°C", "550°C - 650°C", "850°C - 950°C"],
+    correct: [2]
+},
+{
+    q: "Ein Resolver in einem E-Motor liefert zwei sinusförmige Signale. Wie sind diese zueinander verschoben?",
+    a: ["Um 45 Grad", "Um 90 Grad (Sinus und Cosinus)", "Um 120 Grad", "Um 180 Grad"],
+    correct: [1]
+},
+{
+    q: "Was ist die primäre Ursache für 'Brake Fade' bei langanhaltenden Bergabfahrten?",
+    a: ["Erhöhung des Reibwerts durch Hitze", "Ausgasen der Bremsbelag-Bindemittel", "Kochen der Bremsflüssigkeit in den Leitungen", "Verschleiß der Bremsscheiben-Beschichtung"],
+    correct: [1]
+},
+{
+    q: "In einem CAN-Bus-System: Was bedeutet eine 'Rezessive' Bit-Stufe elektrisch?",
+    a: ["Spannungsdifferenz von ca. 2V zwischen High und Low", "Beide Leitungen liegen auf ca. 2,5V (Differenz 0V)", "CAN-High auf 5V, CAN-Low auf 0V", "Massekurzschluss beider Leitungen"],
+    correct: [1]
+},
+{
+    q: "Welches Bauteil im Klimakreislauf trennt die Hochdruckseite von der Niederdruckseite?",
+    a: ["Der Trockner", "Das Expansionsventil", "Der Kondensator", "Der Verdampfer"],
+    correct: [1]
+},
+{
+    q: "Bei einem Automatikgetriebe tritt 'Stall Speed' (Festbremsdrehzahl) auf. Was wird dabei geprüft?",
+    a: ["Die Schaltgeschwindigkeit der Lamellenkupplungen", "Die maximale Drehmomentübertragung des Wandlers", "Der Öldruck der Primärpumpe", "Die mechanische Sperre der Parksperre"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Kamm’sche Kreis' in der Fahrdynamik?",
+    a: ["Das Verhältnis von Luftwiderstand zu Rollwiderstand", "Die Aufteilung der Gesamtkraft am Rad in Längs- und Seitenkräfte", "Den Wendekreis bei maximalem Lenkeinschlag", "Die Zentrifugalkraft bei Kurvenfahrt"],
+    correct: [1]
+},
+{
+    q: "Welche Aufgabe hat das 'Zweifluten-Prinzip' bei einem Twin-Scroll-Turbolader?",
+    a: ["Trennung der Abgasströme zur Vermeidung von Ladungswechsel-Interferenzen", "Kühlung des Verdichtergehäuses mit Öl und Wasser", "Gleichzeitiges Betreiben von zwei Turbinenrädern", "Vorwärmen der Ansaugluft"],
+    correct: [0]
+},
+{
+    q: "Ein HV-Batteriemanagementsystem (BMS) führt 'Passives Balancing' durch. Was passiert dabei?",
+    a: ["Energie wird von vollen in leere Zellen umgeladen", "Überschüssige Energie voller Zellen wird über Widerstände in Wärme umgewandelt", "Die schwächste Zelle wird komplett abgeschaltet", "Die Ladespannung wird für alle Zellen gleichzeitig erhöht"],
+    correct: [1]
+},
+{
+    q: "Welcher Effekt tritt bei einer stark verstellten 'Nachlaufstrecke' an der Vorderachse auf?",
+    a: ["Einseitiger Reifenverschleiß an der Innenflanke", "Schlechtes Rückstellmoment der Lenkung nach Kurven", "Flattern der Bremsscheiben", "Erhöhter Kraftstoffverbrauch durch Rollwiderstand"],
+    correct: [1]
+},
+{
+    q: "In einem Ottomotor: Was ist die Folge eines defekten Phasenstellers der Nockenwelle (Einlass)?",
+    a: ["Motor startet nicht mehr", "Leistungsverlust im oberen Drehzahlbereich oder unruhigem Leerlauf", "Massiver Ölverlust am Zylinderkopf", "Bruch der Ventile durch Kollision"],
+    correct: [1]
+},
+{
+    q: "Welche chemische Reaktion findet im NOx-Speicherkatalysator während der Regenerationsphase statt?",
+    a: ["Oxidation von Rußpartikeln zu CO2", "Reduktion von Stickoxiden zu Stickstoff (N2) mittels CO und HC", "Umwandlung von Schwefel in Harnstoff", "Spaltung von Wasserstoff"],
+    correct: [1]
+},
+{
+    q: "Was misst eine Breitband-Lambdasonde (LSU) im Gegensatz zur Sprungsonde primär?",
+    a: ["Die Spannung zwischen 0,1V und 0,9V", "Den Pumpstrom, der zur Neutralisierung des Sauerstoffüberschusses nötig ist", "Die elektrische Leitfähigkeit des Abgases", "Den Widerstand der Sondenheizung"],
+    correct: [1]
+},
+{
+    q: "Bei der Common-Rail-Diagnose: Was deutet auf ein undichtes Druckregelventil hin?",
+    a: ["Motor geht unter Volllast aus (Raildruck-Abfall)", "Rußbildung im Teillastbereich", "Nagelndes Verbrennungsgeräusch im Leerlauf", "Zu hohe Motortemperatur"],
+    correct: [0]
+},
+{
+    q: "Was versteht man unter dem 'Ackermann-Prinzip' bei der Lenkgeometrie?",
+    a: ["Die Sturzänderung beim Einfedern", "Dass das kurveninnere Rad stärker einschlägt als das kurvenäußere", "Die Spurveränderung bei hoher Geschwindigkeit", "Die Zentrierung des Lenkgetriebes"],
+    correct: [1]
+},
+{
+    q: "Welche Eigenschaft ändert sich bei einem ERF-Dämpfer (Elektrorheologische Flüssigkeit)?",
+    a: ["Die Viskosität des Öls durch Anlegen eines elektrischen Feldes", "Die Vorspannung der Feder durch einen Elektromotor", "Der Stickstoffdruck im Ausgleichsbehälter", "Die mechanische Öffnung der Bodenventile"],
+    correct: [0]
+},
+{
+    q: "Ein MOSFET im Steuergerät wird im PWM-Verfahren angesteuert. Was passiert bei einer zu niedrigen Schaltfrequenz?",
+    a: ["Der Transistor brennt sofort durch", "Der angeschlossene Aktor fängt an zu summen oder zu vibrieren", "Die Batteriespannung bricht zusammen", "Das CAN-Bussystem wird blockiert"],
+    correct: [1]
+},
+{
+    q: "Was ist der Hauptvorteil eines 'wassergekühlten Ladeluftkühlers'?",
+    a: ["Geringeres Gewicht des Gesamtsystems", "Kürzere Ansaugwege und konstantere Ansaugtemperaturen", "Vermeidung von Kondenswasser im Saugrohr", "Keine Reinigung des Kühlers mehr nötig"],
+    correct: [1]
+},
+{
+    q: "Welchen Zweck erfüllt das 'Zweimassenschwungrad' bei niedrigen Drehzahlen?",
+    a: ["Kühlung der Getriebewelle", "Entkopplung von Drehschwingungen der Kurbelwelle vom Getriebe", "Erhöhung der Kompression", "Verhinderung des 'Turbolochs'"],
+    correct: [1]
+},
+{
+    q: "Ein CO2-Klimasystem (R744) arbeitet im Vergleich zu R134a mit welchen Drücken?",
+    a: ["Gleiche Druckebene", "Deutlich niedrigeren Drücken", "Deutlich höheren Drücken (bis über 100 bar)", "Vakuum auf der Niederdruckseite"],
+    correct: [2]
+},
+{
+    q: "Welches Problem tritt beim Schweißen von ultrahochfesten, formgehärteten Stählen (z.B. Borstahl) primär auf?",
+    a: ["Extreme Porenbildung", "Gefügeveränderung und massiver Festigkeitsverlust in der Wärmeeinflusszone", "Zu geringe Einbrandtiefe", "Lichtbogeninstabilität durch die AlSi-Beschichtung"],
+    correct: [1]
+},
+{
+    q: "Was ist der Hauptvorteil des MIG-Lötens gegenüber dem MIG-Schweißen bei verzinkten Karosserieblechen?",
+    a: ["Höhere Zugfestigkeit der Naht", "Geringere thermische Schädigung des Korrosionsschutzes (Zink)", "Schnellere Abkühlzeit", "Kein Schutzgas erforderlich"],
+    correct: [1]
+},
+{
+    q: "Beim Kleben in der Karosseriefertigung spricht man von 'strukturellem Kleben'. Welche Hauptkraftart kann ein Klebstoff am besten übertragen?",
+    a: ["Schälkraft", "Spaltkraft", "Zugscherkraft", "Torsionskraft"],
+    correct: [2]
+},
+{
+    q: "Was versteht man unter dem 'Rückspringeffekt' (Springback) bei der Kaltumformung von hochfesten Blechen?",
+    a: ["Das Reißen des Materials beim Pressen", "Die elastische Rückverformung des Bauteils nach Entlastung des Werkzeugs", "Das Anhaften des Blechs am Stempel", "Die plastische Dehnung über die Streckgrenze hinaus"],
+    correct: [1]
+},
+{
+    q: "Welches Korrosionsphänomen tritt bevorzugt auf, wenn Aluminium direkt mit Stahl ohne Isolierung verbunden wird?",
+    a: ["Interkristalline Korrosion", "Spannungsrisskorrosion", "Galvanische Kontaktkorrosion", "Lochfraßkorrosion"],
+    correct: [2]
+},
+{
+    q: "Was ist das Kennzeichen einer 'Tailored Blank'?",
+    a: ["Ein Blech mit nachträglicher Verzinkung", "Ein Platinenzuschnitt aus verschiedenen Blechdicken oder Güten, die stumpf verschweißt sind", "Ein Bauteil aus Verbundwerkstoffen", "Ein durch Hydroforming hergestelltes Rohr"],
+    correct: [1]
+},
+{
+    q: "In der Richtsystem-Technik: Was gibt der 'Druckpunkt' beim Richten einer Karosserie an?",
+    a: ["Die Stelle, an der die Richtbank befestigt wird", "Den Punkt, an dem die Verformung in eine Stauchung übergeht", "Den Ort der maximalen Krafteinleitung durch den Richtsatz", "Die theoretische Mitte der Fahrgastzelle"],
+    correct: [1]
+},
+{
+    q: "Warum dürfen bestimmte höherfeste Bauteile (z.B. B-Säule aus Borstahl) im Reparaturbetrieb nicht gerichtet werden?",
+    a: ["Weil sie zu elastisch sind", "Gefahr von Mikrorissen und unvorhersehbarem Crashverhalten bei Zweitaufprall", "Die Richtbänke haben nicht genug Zugkraft", "Die Lackhaftung ist nach dem Richten nicht mehr gegeben"],
+    correct: [1]
+},
+{
+    q: "Welches Fügeverfahren ist 'nicht-thermisch' und wird häufig für die Verbindung von Aluminium-Dünnblechen genutzt?",
+    a: ["WIG-Schweißen", "Punktschweißen", "Stanznieten", "Laserschweißen"],
+    correct: [2]
+},
+{
+    q: "Was bedeutet die Abkürzung 'E-Modul' (Elastizitätsmodul) für die Karosserieinstandsetzung?",
+    a: ["Die maximale Härte des Blechs", "Das Maß für den Widerstand gegen elastische Verformung (Steifigkeit)", "Die Temperatur, bei der Stahl schmilzt", "Die elektrische Leitfähigkeit für das Punktschweißen"],
+    correct: [1]
+},
+{
+    q: "Beim Widerstandspunktschweißen: Welchen Einfluss hat ein 'Nebenschluss'?",
+    a: ["Erhöhung der Schweißstromstärke", "Strom fließt über einen benachbarten Schweißpunkt ab, die Schweißlinse wird zu klein", "Lichtbogenbildung zwischen den Elektroden", "Verschmelzen der Elektrodenkappe mit dem Blech"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Hybridfügen' in der Karosseriefertigung?",
+    a: ["Schweißen mit zwei verschiedenen Gasen", "Kombination aus zwei Verfahren, z.B. Kleben und Nieten", "Verbindung von Kunststoff und Glas", "Manuelles und robotergestütztes Arbeiten"],
+    correct: [1]
+},
+{
+    q: "Welche Funktion hat die KTL-Beschichtung (Kathodische Tauchlackierung)?",
+    a: ["Optische Grundierung für Metallic-Lacke", "Hochwertiger Korrosionsschutz durch gleichmäßigen Schichtaufbau auch in Hohlräumen", "Schutz gegen Steinschlag an der Front", "Vermeidung von Windgeräuschen"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Verschleiß' von Elektrodenkappen beim Punktschweißen primär?",
+    a: ["Die Kappen werden länger", "Vergrößerung der Kontaktfläche (Abplattung) führt zu sinkender Stromdichte", "Die Kappen werden magnetisch", "Oxidation führt zu unendlichem Widerstand"],
+    correct: [1]
+},
+{
+    q: "In welchem Bereich einer selbsttragenden Karosserie befindet sich die 'Knautschzone'?",
+    a: ["Ausschließlich in den Türen", "In den Längsträgerstrukturen von Vorder- und Hinterwagen", "In der Dachsäulen-Struktur", "Im Bereich des Mitteltunnels"],
+    correct: [1]
+},
+{
+    q: "Was ist das Hauptmerkmal einer Space-Frame-Architektur (z.B. Audi A8/R8)?",
+    a: ["Ein Rahmen aus kohlenstofffaserverstärktem Kunststoff", "Ein tragendes Gerüst aus Aluminium-Strangpressprofilen und Gussteilen", "Eine Karosserie ohne B-Säule", "Eine reine Holz-Rahmen-Konstruktion"],
+    correct: [1]
+},
+{
+    q: "Welches Gas wird üblicherweise als Schutzgas beim MSG-Löten verwendet?",
+    a: ["Reines CO2", "Argon (Edelgas)", "Sauerstoff-Stickstoff-Gemisch", "Acetylen"],
+    correct: [1]
+},
+{
+    q: "Wie wird die Festigkeit bei 'Trip-Stählen' während der Verformung beeinflusst?",
+    a: ["Sie werden weicher", "Festigkeitssteigerung durch gefügebedingte Umwandlung bei Verformung", "Die Korrosionsbeständigkeit sinkt", "Sie schmelzen bei niedrigerer Temperatur"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Symmetriemessung' am Richtsystem?",
+    a: ["Prüfung, ob das Dach gerade ist", "Vergleich von Diagonalmaßen und Abständen der Messpunkte links zu rechts", "Messung des Schwerpunkts", "Bestimmung des Luftwiderstands"],
+    correct: [1]
+},
+{
+    q: "Was ist bei der Reparatur von CFK-Bauteilen (Kohlefaser) zu beachten?",
+    a: ["Können einfach wie Blech ausgebeult werden", "Bauteile müssen meist segmentweise ersetzt oder nach speziellen Laminierplänen geklebt werden", "CFK darf nicht lackiert werden", "Es gibt keine Reparaturmöglichkeit"],
+    correct: [1]
+},
+{
+    q: "Welchen Zweck haben 'Sollknickstellen' in Längsträgern?",
+    a: ["Erleichterung der Montage im Werk", "Gezielter Abbau von Crash-Energie durch definiertes Falten", "Gewichtseinsparung", "Bessere Belüftung des Motorraums"],
+    correct: [1]
+},
+{
+    q: "Was kennzeichnet eine 'Sandwich-Bauweise'?",
+    a: ["Zwei Bleche direkt aufeinander", "Zwei dünne Deckschichten mit einem leichten Kernmaterial (Wabe oder Schaum) dazwischen", "Mehrschichtige Lackierung", "Verwendung von Recycling-Stahl"],
+    correct: [1]
+},
+{
+    q: "Welcher Effekt tritt auf, wenn man eine Aluminium-Karosserie in einer Werkstatt mit Stahlschleifstaub kontaminiert?",
+    a: ["Aluminium glänzt stärker", "Kontaktkorrosion durch Fremdeisen-Partikel", "Verbesserte Schweißbarkeit", "Keine Auswirkung"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Auszug' bei der Karosserie-Instandsetzung?",
+    a: ["Das Entfernen des Motors", "Das Rückverformen eingedrückter Bereiche durch Zugkraft", "Die Kündigung eines Leasingvertrags", "Das Heraustrennen einer Schweißnaht"],
+    correct: [1]
+},
+{
+    q: "Welche Härteprüfung wird häufig an Schweißnähten durchgeführt?",
+    a: ["Prüfung nach Beaufort", "Vickers-Härteprüfung (HV)", "Richter-Skala", "Mohs-Härte"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Clinchen'?",
+    a: ["Ein thermisches Fügeverfahren", "Durchsetzfügen (mechanische Verbindung durch Kaltumformung ohne Zusatzwerkstoff)", "Das Polieren von Chromteilen", "Eine Form der Hohlraumversiegelung"],
+    correct: [1]
+},
+{
+    q: "Welche Rolle spielt die 'Streckgrenze' beim Kaltrichten?",
+    a: ["Das Material muss bis zur Streckgrenze erwärmt werden", "Nur oberhalb der Streckgrenze tritt eine dauerhafte (plastische) Verformung ein", "Sie ist für das Richten unbedeutend", "Sie gibt den Schmelzpunkt an"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Fließlochschrauben' (FDS)?",
+    a: ["Schrauben, die durch Wasser gleiten", "Ein Fügeverfahren, bei dem die Schraube ihr Loch und Gewinde durch Reibwärme selbst erzeugt", "Schrauben für den Ölablass", "Besonders weiche Schrauben"],
+    correct: [1]
+},
+{
+    q: "Welche Gefahr besteht beim Erhitzen von hochfesten Karosseriestählen über 400°C - 600°C?",
+    a: ["Das Blech wird magnetisch", "Unwiderruflicher Verlust der Festigkeit durch Gefügeänderung", "Es beginnt zu brennen", "Die Verzinkung wird härter"],
+    correct: [1]
+},
+{
+    q: "Warum ist die 'Passivierung' bei Aluminium wichtig?",
+    a: ["Um es weicher zu machen", "Um eine kontrollierte Oxidschicht als Korrosionsschutz aufzubauen", "Damit es elektrisch leitet", "Zur Vorbereitung des Gießens"],
+    correct: [1]
+},
+{
+    q: "Was ist der 'Peel-Effekt' bei Klebeverbindungen?",
+    a: ["Das Ablösen der obersten Lackschicht", "Einseitige Belastung der Klebenaht am Rand, die zum Aufschälen führt", "Das Glänzen des Klebstoffs", "Die Saugwirkung beim Auftragen"],
+    correct: [1]
+},
+{
+    q: "Wie funktioniert das 'Bolzenschweißen' (Spitzenzündung)?",
+    a: ["Ein Bolzen wird mit einer Mutter verschraubt", "Ein Lichtbogen schmilzt Bolzenstirnseite und Werkstück kurzzeitig auf, dann werden sie zusammengefügt", "Durch Verkleben des Bolzens", "Durch Reibung in einer Drehbank"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Vielpunkt-Schweißanlage'?",
+    a: ["Ein Handschweißgerät", "Eine automatisierte Anlage, die viele Punkte gleichzeitig oder in schneller Folge setzt", "Ein Gerät zum Löten", "Eine Anlage zur Reifenmontage"],
+    correct: [1]
+},
+{
+    q: "Was ist der Unterschied zwischen elastischer und plastischer Verformung?",
+    a: ["Es gibt keinen Unterschied", "Elastisch ist reversibel (geht zurück), plastisch ist dauerhaft", "Plastisch ist nur bei Kunststoff möglich", "Elastisch hält länger"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Ziehhammer' (Wiggel)?",
+    a: ["Ein Hammer zum Nägel einschlagen", "Ein Werkzeug zum Herausziehen von kleinen Dellen durch aufgepunktete Sterne/Bolzen", "Ein Hammer für Steinmetze", "Ein Werkzeug zum Reifenwechsel"],
+    correct: [1]
+},
+{
+    q: "Warum werden Karosserie-Hohlräume 'flutwachsversiegelt'?",
+    a: ["Um das Gewicht zu erhöhen", "Um Blechüberlappungen und Innenflächen dauerhaft vor Korrosion zu schützen", "Damit das Auto leiser wird", "Zur besseren Kühlung"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Torsionssteifigkeits-Wert'?",
+    a: ["Die Endgeschwindigkeit", "Den Widerstand der Karosserie gegen Verdrehung um die Längsachse", "Die Kraft der Bremsen", "Die Härte der Reifen"],
+    correct: [1]
+},
+{
+    q: "Was ist beim Trennen von hochfesten Stählen zu beachten?",
+    a: ["Es kann eine normale Schere verwendet werden", "Hoher Werkzeugverschleiß, oft nur mit speziellen Trennscheiben oder Plasma möglich", "Das Material darf nicht geschnitten werden", "Es gibt keine Besonderheiten"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Lasertriangulations-System' in der Vermessung?",
+    a: ["Ein einfaches Maßband", "Ein optisches Messverfahren zur berührungslosen 3D-Erfassung der Karosseriegeometrie", "Ein System zur Geschwindigkeitsmessung", "Ein Laser zum Schneiden von Blech"],
+    correct: [1]
+},
+{
+    q: "Welchen Vorteil bietet das Laserschweißen in der Serie?",
+    a: ["Manuelle Durchführung ist einfach", "Hohe Geschwindigkeit, schmale Naht und sehr geringer Verzug", "Es ist das billigste Verfahren", "Man braucht kein Schutzgas"],
+    correct: [1]
+},
+{
+    q: "Was ist die 'Kaltverfestigung'?",
+    a: ["Stahl im Kühlschrank lagern", "Zunahme der Härte und Festigkeit eines Metalls durch plastische Verformung", "Das Einfrieren von Öl", "Das Aushärten von Klebstoff"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Modulbauweise'?",
+    a: ["Alles wird aus einem Stück gegossen", "Zusammenbau der Karosserie aus vordefinierten, austauschbaren Baugruppen (z.B. Frontmodul)", "Verwendung von Spielzeugsteinen", "Reine Handarbeit"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Rostgrad Ri 0'?",
+    a: ["Vollständige Durchrostung", "Keine sichtbare Rostbildung", "Flugrost auf der ganzen Fläche", "Lackabplatzung"],
+    correct: [1]
+},
+{
+    q: "Was ist 'hydrodynamisches Umformen' (Innenhochdruckumformen)?",
+    a: ["Biegen mit einem Hammer", "Umformen von Rohren oder Blechen durch hohen Innendruck eines flüssigen Mediums", "Waschen des Autos", "Kühlung des Schweißgeräts"],
+    correct: [1]
+},
+{
+    q: "Welche Aufgabe hat der Schweißprimer?",
+    a: ["Verschönerung der Naht", "Leitfähiger Korrosionsschutz in Blechzwischenräumen vor dem Schweißen", "Reinigung der Oberfläche", "Beschleunigung des Abkühlens"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Crash-Management-System'?",
+    a: ["Die Software des Airbags", "Eine austauschbare Struktur (meist hinter dem Stoßfänger), die leichte Kollisionen absorbiert", "Ein Versicherungstarif", "Ein Fahrertraining"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Fließpressen'?",
+    a: ["Ein Gussverfahren", "Ein Umformverfahren, bei dem Werkstoff unter hohem Druck zum Fließen gebracht wird", "Das Austreten von Öl", "Eine Lackiertechnik"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Diffusionsschweißen'?",
+    a: ["Schweißen mit viel Funkenflug", "Fügen durch Atomaustausch an den Kontaktflächen unter hohem Druck und Temperatur unterhalb der Schmelztemperatur", "Das Mischen von Gasen", "Ein anderes Wort für Löten"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt die 'Duktilität'?",
+    a: ["Die Farbe des Metalls", "Die Eigenschaft eines Werkstoffs, sich unter Belastung plastisch zu verformen, bevor er bricht", "Den elektrischen Widerstand", "Den Preis pro Tonne"],
+    correct: [1]
+},
+{
+    q: "Warum ist die 'Hut-Struktur' bei Längsträgern so verbreitet?",
+    a: ["Sieht besser aus", "Bietet hohe Steifigkeit bei geringem Gewicht und ist gut für automatisierte Schweißprozesse zugänglich", "Ist aerodynamischer", "Leitet Wasser besser ab"],
+    correct: [1]
+},
+{
+    q: "In einer Druckluftbremsanlage: Welche Aufgabe hat das Vierkreisschutzventil primär?",
+    a: ["Die Erhöhung des Bremsdrucks in Gefahrensituationen", "Die Absicherung der intakten Bremskreise bei Druckverlust in einem Kreis", "Die Steuerung der Anhängerbremse", "Die Entwässerung des Druckluftbehälters"],
+    correct: [1]
+},
+{
+    q: "Was ist der Hauptvorteil einer elektronisch gesteuerten Luftfederung (ECAS) beim LKW?",
+    a: ["Vollständiger Verzicht auf Stoßdämpfer", "Konstanthaltung des Fahrniveaus bei unterschiedlicher Beladung und Anpassung der Rahmenhöhe an Rampen", "Höhere Endgeschwindigkeit durch Aerodynamik", "Verringerung des Reifenluftdrucks"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter dem 'Voreilen' der Anhängerbremse?",
+    a: ["Der Anhänger bremst erst nach der Zugmaschine", "Der Anhänger bremst kurzzeitig vor oder stärker als die Zugmaschine, um den Zug gestreckt zu halten", "Der Anhänger fährt schneller als der LKW", "Die Feststellbremse löst sich automatisch"],
+    correct: [1]
+},
+{
+    q: "Bei Wohnmobilen: Was ist der entscheidende Nachteil eines großen Hecküberhangs?",
+    a: ["Besseres Kurvenverhalten", "Gefahr des Aufsetzens und starke Entlastung der Vorderachse (Lenkfähigkeit)", "Höherer Kraftstoffverbrauch", "Bessere Gewichtsverteilung"],
+    correct: [1]
+},
+{
+    q: "Welche Funktion hat der 'Retarder' in einem schweren LKW?",
+    a: ["Verschleißfreies Dauerbremsgerät zur Entlastung der Betriebsbremse", "Ein System zur Erhöhung der Motorleistung", "Eine Einparkhilfe", "Ein Filter für die Druckluft"],
+    correct: [0]
+},
+{
+    q: "Warum müssen LKW-Druckluftbehälter regelmäßig geprüft oder entwässert werden (trotz Lufttrockner)?",
+    a: ["Damit der Behälter nicht rostet", "Um Korrosion in den Ventilen und Einfrieren im Winter bei Fehlfunktion des Trockners zu verhindern", "Um das Gewicht zu reduzieren", "Damit die Luft besser riecht"],
+    correct: [1]
+},
+{
+    q: "Was ist bei der Instandsetzung von Sandwich-Wänden bei Wohnmobilen (Alu-Schaum-Holz) zu beachten?",
+    a: ["Sie können wie Stahlblech ausgebeult werden", "Großflächige Reparaturen erfordern oft das Einsetzen von Passstücken (Inlays) und speziellen 2K-Klebern", "Man darf sie nicht kleben", "Sie müssen immer komplett getauscht werden"],
+    correct: [1]
+},
+{
+    q: "In einem LKW-Dieselmotor: Was bewirkt die 'Konstantdrossel' als Motorbremse?",
+    a: ["Vollständiges Absperren der Kraftstoffzufuhr", "Ein kleines Ventil im Zylinderkopf bleibt offen, um Kompressionsarbeit als Bremsleistung zu nutzen", "Schließen der Drosselklappe im Ansaugtrakt", "Blockieren der Kurbelwelle"],
+    correct: [1]
+},
+{
+    q: "Was ist der 'D-Wert' bei einer Anhängerkupplung?",
+    a: ["Der Durchmesser des Kupplungskopfs", "Das theoretische Vergleichsmaß für die Deichselkraft zwischen Zugfahrzeug und Anhänger", "Die maximale Geschwindigkeit", "Das Datum der Herstellung"],
+    correct: [1]
+},
+{
+    q: "Wohnmobil-Elektrik: Warum wird oft ein 'Ladebooster' (DC/DC-Wandler) zwischen Starter- und Aufbaubatterie verbaut?",
+    a: ["Um das Radio lauter zu machen", "Um die Aufbaubatterie auch bei intelligenten Lichtmaschinen (Euro 6) während der Fahrt vollzuladen", "Zur Umwandlung auf 230V", "Damit die Batterie nicht einfriert"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Nachlaufachse' bei einem 3-Achs-LKW?",
+    a: ["Die Achse, die vor der Antriebsachse liegt", "Die letzte, oft lift- oder lenkbare Achse hinter der Antriebsachse", "Die Achse des Anhängers", "Die Vorderachse"],
+    correct: [1]
+},
+{
+    q: "Welche Gefahr besteht bei der Gasprüfung (G 607) an Wohnmobilen, wenn der Druckminderer älter als 10 Jahre ist?",
+    a: ["Er könnte explodieren", "Er verliert seine Zulassung und muss laut Vorschrift zwingend ersetzt werden", "Die Gasflamme wird grün", "Keine, das Alter spielt keine Rolle"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Zweileitungs-Druckluftbremssystem'?",
+    a: ["Bremsen mit Wasser und Luft", "System mit einer Vorratsleitung (rot) und einer Steuerleitung (gelb)", "Zwei Leitungen für die Handbremse", "Ein System ohne Ventile"],
+    correct: [1]
+},
+{
+    q: "Wofür steht die Abkürzung 'ALB' bei Nutzfahrzeugen?",
+    a: ["Automatischer Lastabhängiger Bremskraftregler", "Antiblocking-Leuchte-Blau", "Anhänger-Last-Begrenzung", "Allrad-Lenk-Beschleuniger"],
+    correct: [0]
+},
+{
+    q: "Warum werden bei LKW oft 'Trommelbremsen' an den Hinterachsen trotz Scheibenbrems-Trend verwendet?",
+    a: ["Weil sie schöner aussehen", "Guter Schutz gegen Verschmutzung im Baustelleneinsatz und hohe Bremsmomente", "Weil sie leichter sind", "Sie kühlen schneller ab"],
+    correct: [1]
+},
+{
+    q: "Wohnmobil-Wasserversorgung: Was ist bei einem Druckwassersystem im Vergleich zu einem Tauchpumpensystem zu beachten?",
+    a: ["Es ist leiser", "Die Leitungen stehen permanent unter Druck; Undichtigkeiten führen zu dauerhaftem Wasseraustritt", "Es braucht keinen Strom", "Man braucht keinen Wassertank"],
+    correct: [1]
+},
+{
+    q: "Was ist die Aufgabe der 'Kompaktlager' bei LKW-Achsen?",
+    a: ["Erhöhung des Rollwiderstands", "Wartungsfreie Einheit aus Lager, Dichtung und Fett für hohe Laufleistungen", "Schmierung der Reifen", "Kühlung der Felge"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Lastindex' (LI) bei LKW-Reifen?",
+    a: ["Die maximale Geschwindigkeit", "Die maximal zulässige Tragfähigkeit pro Reifen", "Die Profiltiefe", "Das Herstellungsland"],
+    correct: [1]
+},
+{
+    q: "In der LKW-Diagnose: Was prüft man mit dem 'Niederdruckkreis' der Kraftstoffanlage?",
+    a: ["Den Druck im Zylinder", "Den Druck zwischen Tank und Hochdruckpumpe (Vorförderdruck)", "Den Reifendruck", "Den Druck im AdBlue-Tank"],
+    correct: [1]
+},
+{
+    q: "Wohnmobil-Heizung: Wie funktioniert eine klassische 'Truma Combi'?",
+    a: ["Nur über Strom", "Gasbetriebenes Heizgerät mit integriertem Warmwasserboiler und Warmluftgebläse", "Wärmetauscher am Motor", "Verbrennung von Holzpellets"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Federspeicherbremszylinder'?",
+    a: ["Ein Zylinder für die Federung", "Ein kombinierter Zylinder für Betriebsbremse (Luft) und Feststellbremse (Federkraft)", "Ein Stoßdämpfer mit Luftanschluss", "Ein Zylinder für das Kipphaus"],
+    correct: [1]
+},
+{
+    q: "Was passiert, wenn die 'Abreißseil-Funktion' beim PKW-Anhänger (Wohnwagen) ausgelöst wird?",
+    a: ["Der Motor geht aus", "Die mechanische Auflaufbremse wird voll betätigt, falls sich der Anhänger vom Fahrzeug trennt", "Das Licht geht an", "Die Anhängerkupplung wird gefettet"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'AdBlue-Einfriergefahr' bei LKW im Winter?",
+    a: ["AdBlue wird zu Gas", "AdBlue gefriert ab ca. -11°C; das System muss daher beheizt sein", "Es brennt bei Kälte", "Es wird fest wie Stein und dehnt sich nicht aus"],
+    correct: [1]
+},
+{
+    q: "Wofür dient die 'Wandler-Überbrückungskupplung' bei LKW-Automatikgetrieben?",
+    a: ["Zum Schalten in den Rückwärtsgang", "Zur Eliminierung des Schlupfes im Drehmomentwandler für besseren Wirkungsgrad", "Zur Kühlung des Getriebeöls", "Als Feststellbremse"],
+    correct: [1]
+},
+{
+    q: "Was ist bei der Montage von 'Zwillingsreifen' an der Hinterachse unbedingt zu beachten?",
+    a: ["Unterschiedliche Profiltiefen sind egal", "Gleicher Abrollumfang und Reifendruck, damit die Last gleichmäßig verteilt wird", "Der innere Reifen muss mehr Druck haben", "Die Ventile müssen gegeneinander zeigen"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Hydropuls-Test' bei LKW-Fahrwerken?",
+    a: ["Eine Reinigung der Hydraulik", "Ein Prüfstandsversuch zur Simulation von Dauerbelastungen auf das Chassis", "Die Messung der Bremsflüssigkeit", "Ein Test für die Scheibenwaschanlage"],
+    correct: [1]
+},
+{
+    q: "Wohnmobil-Fenster: Warum sind diese meist aus Acrylglas (PMMA) statt Echtglas?",
+    a: ["Wegen der besseren Optik", "Gewichtsersparnis und bessere Isolationswerte (Doppelverglasung)", "Weil sie kratzfest sind", "Damit man nicht durchsehen kann"],
+    correct: [1]
+},
+{
+    q: "Was ist die Aufgabe des 'Lufttrockners' in der Druckluftanlage?",
+    a: ["Die Luft zu kühlen", "Entzug von Feuchtigkeit mittels Granulat (Adsorption), um Frostschäden zu vermeiden", "Reinigung der Luft von Staub", "Erhöhung des Sauerstoffgehalts"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Sattelvordruck' bei einer Sattelzugmaschine?",
+    a: ["Der Reifendruck der Vorderachse", "Der horizontale Abstand zwischen Sattelkupplungsmitte und Hinterachse zur Lastverteilung", "Der Druck in der Sattelkupplung", "Das Gewicht des Fahrers"],
+    correct: [1]
+},
+{
+    q: "Wohnmobil- Solarregler: Was ist der Vorteil eines 'MPPT-Reglers' gegenüber einem 'PWM-Regler'?",
+    a: ["Er ist billiger", "Er findet den optimalen Arbeitspunkt der Solarzellen und erzielt bis zu 30% mehr Ertrag", "Er braucht weniger Platz", "Er kann nur bei Nacht laden"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Zentralachsanhänger'?",
+    a: ["Ein Anhänger mit Drehschemellenkung", "Ein Anhänger, dessen Achsen mittig (schwerpunktnah) angeordnet sind (starrdeichselig)", "Ein Anhänger mit nur einem Rad", "Ein Auflieger"],
+    correct: [1]
+},
+{
+    q: "Was ist die 'Kippkabinen-Verriegelung'?",
+    a: ["Ein Schloss für die Tür", "Eine hydraulische oder mechanische Sicherung, die das Fahrerhaus im Fahrbetrieb fixiert", "Ein Gurt für den Sitz", "Eine Sperre für das Lenkrad"],
+    correct: [1]
+},
+{
+    q: "In der LKW-Elektrik: Warum nutzt man oft 24V statt 12V?",
+    a: ["Damit die Birnen heller leuchten", "Halbierung der Stromstärke bei gleicher Leistung (kleinere Kabelquerschnitte möglich)", "Weil es sicherer ist", "Weil Batterien immer 24V haben"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Kastenwagen-Ausbau' beim Wohnmobil?",
+    a: ["Ein integriertes Fahrzeug", "Ein Wohnmobil, das in der originalen Blechkarosserie eines Transporters realisiert wurde", "Ein Anhänger", "Ein LKW mit Kofferaufbau"],
+    correct: [1]
+},
+{
+    q: "Was ist die 'Federrate' bei einer Blattfeder?",
+    a: ["Die Anzahl der Blätter", "Das Verhältnis von wirkender Kraft zu Federweg (Härte der Feder)", "Die Farbe der Feder", "Das Alter der Feder"],
+    correct: [1]
+},
+{
+    q: "Wofür dient das 'Anhänger-Steuerventil'?",
+    a: ["Zur Regelung der Innenbeleuchtung", "Zur Übertragung der Bremsbefehle vom Zugfahrzeug zum Anhänger", "Zum Abkuppeln", "Zur Messung der Achslast"],
+    correct: [1]
+},
+{
+    q: "Was ist bei der Instandsetzung von GFK-Dächern bei Wohnmobilen wichtig?",
+    a: ["GFK kann man nicht reparieren", "Reinigung, Schleifen und fachgerechter Aufbau mit Harz und Glasfasermatten", "Man muss es schweißen", "Nur mit Klebeband abdichten"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Überhangswinkel' bei Expeditionsmobilen?",
+    a: ["Die Höhe des Fahrzeugs", "Die maximale Steigung/Geländekante, die ohne Aufsetzen des Hecks/Bug befahren werden kann", "Den Lenkeinschlag", "Den Sichtwinkel des Fahrers"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Intarder'?",
+    a: ["Ein externer Bremswiderstand", "Ein im Getriebe integrierter hydrodynamischer Retarder", "Ein Diagnosegerät", "Ein Sensor für das Öl"],
+    correct: [1]
+},
+{
+    q: "Wofür steht 'ABS' bei der Anhängerbremse?",
+    a: ["Anhänger-Brems-System", "Antiblockiersystem (verhindert das Blockieren der Räder beim Bremsen)", "Abstands-Berechnungs-Sensor", "Anhänger-Beladungs-Schutz"],
+    correct: [1]
+},
+{
+    q: "Was ist die 'Aufbaurichtlinie' der Fahrzeughersteller?",
+    a: ["Eine Anleitung zum Waschen", "Vorgaben für Aufbauhersteller über zulässige Änderungen am Chassis/Rahmen", "Ein Gesetz für die Autobahn", "Eine Werbung"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Frostschutzwächter' (FrostControl) beim Wohnmobil?",
+    a: ["Ein Thermometer", "Ein stromloses Ventil, das bei Frostgefahr den Boiler entleert, um Frostschäden zu vermeiden", "Eine beheizbare Windschutzscheibe", "Ein Frostschutzmittel-Tester"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Spreizkeilbremse'?",
+    a: ["Eine Bremse für Fahrräder", "Eine Trommelbrems-Betätigungsart bei Nutzfahrzeugen mittels Druckluft", "Eine mechanische Feststellbremse", "Ein Keil unter dem Rad"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'CAN-Bus-Abschlusswiderstand' beim LKW?",
+    a: ["Ein Widerstand gegen das Schalten", "Ein 120 Ohm Widerstand an den Leitungsenden zur Vermeidung von Signalreflexionen", "Ein defektes Kabel", "Ein Schalter am Armaturenbrett"],
+    correct: [1]
+},
+{
+    q: "Was ist der Vorteil von 'Alu-Systemprofilen' im Wohnmobilausbau?",
+    a: ["Geringes Gewicht bei hoher Stabilität und flexibler Montage von Möbeln", "Sie sind besonders weich", "Sie leiten Strom", "Sie sind brennbar"],
+    correct: [0]
+},
+{
+    q: "Was ist die 'Sattellast'?",
+    a: ["Das Gewicht des Sattels", "Die vertikale Kraft, die der Auflieger auf die Sattelkupplung ausübt", "Die Ladung im Führerhaus", "Der Reifendruck am Auflieger"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Schlingerdämpfer' (AKS) bei Wohnwagen?",
+    a: ["Ein Stoßdämpfer am Rad", "Eine Kupplung mit Reibbelägen, die Pendelbewegungen des Anhängers unterdrückt", "Ein Windfang", "Ein Anker"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Radstand' beim LKW?",
+    a: ["Der Abstand zwischen den Reifen einer Achse", "Der Abstand zwischen den Mitten der Vorder- und Hinterachse (bzw. theoretische Mitte)", "Die Breite des Fahrzeugs", "Der Durchmesser der Felge"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Integrierter' (Vollintegrierter) beim Wohnmobil?",
+    a: ["Ein Fahrzeug mit originalem Fahrerhaus", "Ein Fahrzeug, bei dem das Fahrerhaus komplett in den Wohnaufbau einbezogen/neu aufgebaut wurde", "Ein Anhänger", "Ein Zelt"],
+    correct: [1]
+},
+{
+    q: "Welche Aufgabe hat das 'Anhängerbremsventil'?",
+    a: ["Es misst die Geschwindigkeit", "Es steuert den Bremsvorgang im Anhänger abhängig vom Druck in der Steuerleitung", "Es füllt den Dieseltank", "Es regelt die Klimaanlage"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter dem 'Wiederbeschaffungswert' (WBW) in einem Gutachten?",
+    a: ["Der Neupreis des Fahrzeugs ab Werk", "Der Betrag, den ein Geschädigter für ein gleichwertiges Ersatzfahrzeug beim seriösen Fachhandel zahlen muss", "Der Händlereinkaufspreis laut Schwacke-Liste", "Der Schrottwert des verunfallten Fahrzeugs"],
+    correct: [1]
+},
+{
+    q: "Ab welcher Schadenshöhe spricht man in der Regel nicht mehr von einem 'Bagatellschaden' (Relevanz für die Gutachterkosten)?",
+    a: ["Ab ca. 150 €", "Ab ca. 750 € bis 1.000 €", "Ab ca. 2.500 €", "Erst wenn die Airbags ausgelöst haben"],
+    correct: [1]
+},
+{
+    q: "Was ist der Unterschied zwischen einer 'Reparaturbestätigung' und einem 'Gutachten'?",
+    a: ["Es gibt keinen Unterschied", "Die Bestätigung belegt nur die fachgerechte Instandsetzung, das Gutachten ermittelt die Schadenshöhe", "Das Gutachten ist immer kostenlos", "Die Bestätigung wird nur vom TÜV ausgestellt"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt die '130%-Regel' im Haftpflichtschadenfall?",
+    a: ["Der Gutachter bekommt 30% Aufschlag", "Der Geschädigte darf bis zu 130% des WBW reparieren, wenn er das Fahrzeug weiter nutzt (Opfergrenze)", "Die Versicherung zahlt immer 30% mehr als im Gutachten steht", "Das Fahrzeug ist nach der Reparatur 30% mehr wert"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Merkantiler Minderwert'?",
+    a: ["Der technische Defekt nach einer Reparatur", "Der Wertverlust am Markt, den ein Fahrzeug trotz fachgerechter Reparatur als Unfallwagen erleidet", "Die Ersparnis durch gebrauchte Ersatzteile", "Die Abnutzung der Reifen"],
+    correct: [1]
+},
+{
+    q: "Wann liegt ein 'Wirtschaftlicher Totalschaden' vor?",
+    a: ["Wenn das Auto brennt", "Wenn die voraussichtlichen Reparaturkosten plus Wertminderung den Wiederbeschaffungswert übersteigen", "Wenn keine Ersatzteile mehr lieferbar sind", "Wenn der Fahrzeughalter das Auto nicht mehr mag"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Restwert' im Sinne der Rechtsprechung?",
+    a: ["Der Betrag, den der Schrotthändler garantiert zahlt", "Der Wert des Fahrzeugs im unreparierten Zustand am allgemeinen regionalen Markt", "Der Wert der noch vollen Tankfüllung", "Die Versicherungssumme"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Abgrenzung' im Gutachten?",
+    a: ["Das Einzäunen des Besichtigungsortes", "Die Unterscheidung zwischen frischen Unfallschäden und unreparierten Altschäden/Vorschäden", "Die Trennung von Motor und Getriebe", "Der Abstand zum nächsten Fahrzeug"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Neu für Alt' (n.f.a.) Abzug bei der Schadenskalkulation?",
+    a: ["Man bekommt ein neues Auto", "Vorteilsausgleich, wenn durch die Reparatur verschleißbehaftete Teile durch Neuteile ersetzt werden (z.B. Auspuff, Reifen)", "Der Gutachter ist alt, die Werkstatt neu", "Abzug für die Reinigung des Fahrzeugs"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Nutzungsausfall'?",
+    a: ["Wenn das Radio nicht funktioniert", "Die Entschädigung für die Zeit, in der das Fahrzeug unfallbedingt nicht zur Verfügung steht", "Die Standgebühr bei der Polizei", "Der Wertverlust durch das Alter"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter dem Begriff 'Schadensminderungspflicht'?",
+    a: ["Der Gutachter muss den Schaden kleinrechnen", "Der Geschädigte muss die Kosten so gering wie möglich halten (z.B. kein Luxus-Mietwagen bei Kleinwagen)", "Die Versicherung muss den Schaden sofort ablehnen", "Die Werkstatt muss auf Gewinn verzichten"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'fiktive Abrechnung'?",
+    a: ["Abrechnung auf Basis des Gutachtens ohne tatsächliche Durchführung der Reparatur (Netto-Auszahlung)", "Abrechnung mit erfundenen Preisen", "Die Versicherung zahlt gar nichts", "Abrechnung über ein Computerspiel"],
+    correct: [0]
+},
+{
+    q: "Was bezeichnet die 'Verschränkungsprüfung' bei einem Felgengutachten?",
+    a: ["Das Biegen der Felge", "Prüfung der Freigängigkeit der Räder bei maximaler Einfederung und Lenkeinschlag", "Das Kreuzen der Speichen", "Das Lackieren in zwei Farben"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'UPE-Aufschlag'?",
+    a: ["Ein Bonus für den Fahrer", "Ein prozentualer Aufschlag auf die unverbindliche Preisempfehlung der Ersatzteile (ortüblich)", "Die Gebühr für das Gutachten", "Ein Rabatt für die Versicherung"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Verbringungskosten'?",
+    a: ["Die Fahrtkosten des Gutachters", "Kosten für den Transport des Fahrzeugs (oder Teilen davon) zum Lackierbetrieb", "Das Abschleppen zur Schrottpresse", "Die Kosten für die Zulassung"],
+    correct: [1]
+},
+{
+    q: "Wann muss ein Gutachter ein 'Restwertangebot' in das Gutachten aufnehmen?",
+    a: ["Nur bei Oldtimern", "Regelmäßig bei Totalschäden oder drohenden Totalschäden zur Schadensermittlung", "Wenn der Kunde danach fragt", "Nie, das macht die Versicherung"],
+    correct: [1]
+},
+{
+    q: "Was ist der 'Händlereinkaufswert' (HEK)?",
+    a: ["Der Preis, den der Kunde beim Händler zahlt", "Der Preis, den ein Händler beim Ankauf eines Fahrzeugs im Schnitt bezahlt (Basis für WBW-Ermittlung)", "Die Mehrwertsteuer", "Der Schrottpreis"],
+    correct: [1]
+},
+{
+    q: "Was bezeichnet man als 'Opfergrenze'?",
+    a: ["Die Schmerzgrenze des Unfallopfers", "Die 130%-Grenze bei der Reparaturwürdigkeit", "Die maximale Dauer der Reparatur", "Die Selbstbeteiligung"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'technische Wertminderung'?",
+    a: ["Ein psychologischer Nachteil am Markt", "Ein verbleibender technischer Mangel trotz Reparatur (z.B. schwerere Karosserie durch Spachtel)", "Der normale Verschleiß", "Ein Kratzer im Lack"],
+    correct: [1]
+},
+{
+    q: "Warum ist die Angabe der 'Lackschichtdicke' in einem Gutachten wichtig?",
+    a: ["Um das Gewicht zu bestimmen", "Um verdeckte Vorschäden (Nachlackierungen/Spachtel) zu identifizieren", "Damit der Lackierer weiß, wie viel Farbe er braucht", "Zur Bestimmung der Fahrzeugfarbe"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Wiederbeschaffungsdauer'?",
+    a: ["Die Zeit bis zum nächsten Urlaub", "Der Zeitraum, den der Geschädigte benötigt, um ein Ersatzfahrzeug zu finden (meist 10-14 Tage)", "Die Dauer der Probefahrt", "Die Lieferzeit eines Neuwagens"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'beilackieren'?",
+    a: ["Das ganze Auto streichen", "Farbtonangleichung der angrenzenden Bauteile zur Vermeidung von Farbunterschieden", "Den Innenraum lackieren", "Nur den Klarlack auftragen"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Rahmenrichtsatz' in der Kalkulation?",
+    a: ["Ein Gesetz für Gutachter", "Herstellerspezifische Vorgaben und Kosten für das Richten der Karosserie auf der Richtbank", "Der Preis für einen Bilderrahmen", "Die Gebühr für die Hauptuntersuchung"],
+    correct: [1]
+},
+{
+    q: "Welche Rolle spielt die 'serienmäßige Ausstattung' bei der WBW-Ermittlung?",
+    a: ["Keine, nur Sonderausstattung zählt", "Sie ist die Basis für den Marktwertvergleich gleichwertiger Fahrzeuge", "Sie senkt den Wert", "Sie ist nur für die Versicherung wichtig"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Vorsteuerabzugsberechtigung'?",
+    a: ["Wenn man keine Steuern zahlen muss", "Wenn der Geschädigte (z.B. Firma) die MwSt. vom Finanzamt erstattet bekommt; Gutachten erfolgt dann Netto", "Ein Rabatt beim Autokauf", "Die Gebühr für den Steuerberater"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Kaskoschaden' im Gegensatz zum 'Haftpflichtschaden'?",
+    a: ["Es gibt keinen Unterschied", "Schaden am eigenen Fahrzeug (Vertragsrecht), Haftpflicht ist Fremdschaden (gesetzliches Recht)", "Kasko zahlt immer mehr", "Kasko ist nur für LKW"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Schätzung' im Gutachten?",
+    a: ["Raten von Preisen", "Fachkundige Beurteilung von Werten oder Aufwänden, die nicht exakt messbar sind", "Ein Gebet", "Die Meinung der Werkstatt"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Wertverbesserung'?",
+    a: ["Wenn das Auto gewaschen wird", "Wenn durch die Reparatur ein höherer Wert als vor dem Unfall entsteht (z.B. Neulackierung einer verkratzten Tür)", "Ein neuer Duftbaum", "Das Tanken von Premium-Sprit"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt die 'Geringfügigkeitsgrenze'?",
+    a: ["Die maximale Geschwindigkeit", "Die Grenze, unter der kein Sachverständiger bestellt werden darf (Bagatellschaden)", "Die Breite des Fahrzeugs", "Die Mindestprofiltiefe"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Gewerblicher Restwertaufkäufer'?",
+    a: ["Ein privater Autokäufer", "Ein spezialisierter Händler, der Unfallfahrzeuge über Restwertbörsen ankauft", "Der örtliche Schrotthändler", "Die Versicherung selbst"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Audatex' oder 'DAT' im Gutachtenwesen?",
+    a: ["Automarken", "Softwareanbieter für die EDV-gestützte Schadenskalkulation und Fahrzeugbewertung", "Reifentypen", "Versicherungsnamen"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Totalschaden auf Rädern'?",
+    a: ["Ein Auto ohne Motor", "Ein fahrbereites Fahrzeug, bei dem die Reparaturkosten den Wert übersteigen", "Ein Fahrradunfall", "Ein brennender LKW"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Vorschaden' vs. 'Altschaden'?",
+    a: ["Beides ist das Gleiche", "Vorschaden ist repariert, Altschaden ist ein noch vorhandener, unreparierter Schaden", "Vorschaden ist am Motor, Altschaden am Lack", "Altschaden ist nur bei Oldtimern"],
+    correct: [1]
+},
+{
+    q: "Warum ist die 'Identnummer-Prüfung' (VIN) so wichtig?",
+    a: ["Um die Farbe zu wissen", "Sicherstellung der Identität des Fahrzeugs und Prüfung auf Manipulation/Diebstahl", "Zur Berechnung der KFZ-Steuer", "Damit der Gutachter weiß, wo er ist"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Markengebundene Fachwerkstatt'?",
+    a: ["Ein Discounter für Teile", "Eine vom Hersteller autorisierte Vertragswerkstatt", "Jede Werkstatt mit einem Schild", "Eine Werkstatt nur für Oldtimer"],
+    correct: [1]
+},
+{
+    q: "Was ist die 'Schwacke-Liste'?",
+    a: ["Eine Liste mit Telefonnummern", "Ein Standardwerk zur Ermittlung von Gebrauchtfahrzeugwerten", "Eine Liste für Bußgelder", "Ein Kochbuch"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Haltefrist' bei der 130%-Regel?",
+    a: ["Dauer des Ampelstopps", "Der Geschädigte muss das Fahrzeug nach der Reparatur meist noch 6 Monate weiter nutzen", "Die Zeit bis zum nächsten Ölwechsel", "Die Dauer der Versicherungspolice"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Gegengutachten'?",
+    a: ["Ein Gutachten für das andere Auto", "Ein von der Gegenseite (Versicherung) beauftragtes Gutachten zur Prüfung des Erstgutachtens", "Ein gefälschtes Gutachten", "Ein Gutachten über das Wetter"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Fahrzeugzustand' im Gutachten (Noten 1-5)?",
+    a: ["Die Sauberkeit", "Die Klassifizierung des allgemeinen Erhaltungszustands (besonders bei Oldtimern)", "Die Anzahl der Vorbesitzer", "Die Farbe der Sitze"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Schadenerweiterung'?",
+    a: ["Wenn das Auto nach dem Unfall noch mal angefahren wird", "Zusätzliche Schäden, die erst bei der Demontage in der Werkstatt sichtbar werden", "Ein Anbau am Haus", "Die Vergrößerung des Gutachtens"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Nutzungswille'?",
+    a: ["Dass man das Auto verkaufen will", "Die Absicht des Geschädigten, das reparierte Fahrzeug tatsächlich weiter zu nutzen (wichtig für 130%-Regel)", "Die Lust am Autofahren", "Das Einverständnis zur Probefahrt"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Hebe- und Senkvorrichtung' in der Kalkulation?",
+    a: ["Ein Kran", "Die Kostenposition für die Nutzung der Hebebühne zur Besichtigung/Reparatur", "Ein Wagenheber im Kofferraum", "Die Luftfederung"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'unverzüglich' im Schadensrecht?",
+    a: ["In zwei Wochen", "Ohne schuldhaftes Zögern (meist innerhalb von 1-3 Tagen)", "Sofort auf der Stelle", "Nächstes Jahr"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Wertminderung nach Ruhkopf/Sahm'?",
+    a: ["Eine Strafe für Raser", "Eine klassische Berechnungsmethode zur Ermittlung des merkantilen Minderwerts", "Ein Rabatt für Neuwagen", "Ein Versicherungstarif"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Ersatzbeschaffung'?",
+    a: ["Kauf von neuen Reifen", "Der Kauf eines dem Unfallwagen entsprechenden Ersatzfahrzeugs", "Das Mieten eines Autos", "Das Reparieren des Motors"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Besichtigungsgebühr'?",
+    a: ["Eintrittsgeld für die Werkstatt", "Kostenanteil des Gutachters für die reine Sichtprüfung vor Ort", "Die Parkgebühr", "Eine Steuer"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Totalschaden auf technischer Basis'?",
+    a: ["Wenn das Radio fehlt", "Wenn das Fahrzeug technisch nicht mehr instandsetzbar ist (z.B. massive Rahmenverformung)", "Wenn der TÜV abgelaufen ist", "Wenn die Batterie leer ist"],
+    correct: [1]
+},
+{
+    q: "Warum wird die 'Profiltiefe' dokumentiert?",
+    a: ["Wegen der Optik", "Zur Feststellung der Verkehrssicherheit und zur Berechnung von n.f.a.-Abzügen", "Zur Bestimmung der Reifenmarke", "Damit der Gutachter etwas zu schreiben hat"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Zustandsbericht'?",
+    a: ["Ein Liebesbrief", "Ein kurzes Dokument über den Ist-Zustand ohne detaillierte Schadenskalkulation (z.B. bei Leasingrücknahme)", "Die Wettervorhersage", "Ein ärztliches Attest"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Beilackierung von Kunststoffteilen'?",
+    a: ["Lackieren mit Plastikfarbe", "Besonderes Verfahren, da Kunststoffteile oft elastische Zusätze im Lack benötigen", "Das Streichen der Stoßstange mit dem Pinsel", "Gibt es nicht"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Negative Lenkrollradius' bei der Fahrwerksgeometrie primär?",
+    a: ["Leichteres Lenken im Stand", "Stabilisierung des Fahrzeugs bei einseitigen Bremskräften (z.B. µ-Split)", "Erhöhung des Reifenverschleißes", "Verringerung der Rückstellkräfte"],
+    correct: [1]
+},
+{
+    q: "Bei einem Oszilloskop-Bild einer Zündspule: Was deutet auf einen Windungsschluss in der Primärwicklung hin?",
+    a: ["Zu lange Funkenbrenndauer", "Fehlende oder stark gedämpfte Ausschwingvorgänge am Ende des Funkens", "Eine zu hohe Zündspannungsnadel", "Ein konstanter Stromfluss"],
+    correct: [1]
+},
+{
+    q: "Wie unterscheidet sich ein 'Hallsensor' von einem 'Induktivgeber' in der Signalform?",
+    a: ["Hall liefert Sinus, Induktiv liefert Rechteck", "Hall liefert ein digitales Rechtecksignal, Induktiv ein analoges Sinussignal", "Hall benötigt keine Spannungsversorgung", "Induktivgeber sind hochempfindlich gegen Schmutz"],
+    correct: [1]
+},
+{
+    q: "Was ist die Hauptaufgabe des 'Pulsweitenmodulations-Signals' (PWM) bei der Ansteuerung eines E-Lüfters?",
+    a: ["Änderung der Spannungshöhe", "Stufenlose Regelung der Leistung durch Änderung des Tastverhältnisses", "Schutz vor Verpolung", "Umwandlung von Gleichstrom in Wechselstrom"],
+    correct: [1]
+},
+{
+    q: "Welches Bauteil im Automatikgetriebe ermöglicht unterschiedliche Übersetzungen durch Festhalten oder Antreiben einzelner Glieder?",
+    a: ["Drehmomentwandler", "Planetenradsatz", "Lamellenkupplung", "Parksperre"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Scavenging' bei aufgeladenen Ottomotoren?",
+    a: ["Reinigung des Turboladers mit Wasser", "Spülen des Brennraums durch Ventilüberschneidung zur besseren Zylinderfüllung", "Absaugen von Öldämpfen", "Kühlung der Auslassventile"],
+    correct: [1]
+},
+{
+    q: "Ein Klopfsensor arbeitet nach welchem physikalischen Prinzip?",
+    a: ["Induktiv", "Piezoelektrisch", "Kapazitiv", "Optisch"],
+    correct: [1]
+},
+{
+    q: "Was ist die Folge einer defekten 'Tankentlüftung' (Aktivkohlefilter-System)?",
+    a: ["Der Tank kann sich durch Unterdruck verformen oder der Motor geht aus", "Das Auto verbraucht weniger Kraftstoff", "Die Klimaanlage kühlt nicht mehr", "Die Reifen verlieren Luft"],
+    correct: [0]
+},
+{
+    q: "Warum wird bei modernen Motoren ein 'kennfeldgesteuertes Thermostat' eingesetzt?",
+    a: ["Um die Heizung schneller warm zu machen", "Um die Motortemperatur je nach Lastzustand (Teillast/Volllast) für Wirkungsgrad oder Bauteilschutz zu variieren", "Damit das Thermostat länger hält", "Zur Überwachung des Frostschutzes"],
+    correct: [1]
+},
+{
+    q: "Was ist die Aufgabe des 'Zweimassenschwungrads' (ZMS)?",
+    a: ["Erhöhung der Kompression", "Dämpfung von Drehschwingungen der Kurbelwelle zum Schutz des Getriebes", "Kühlung der Kupplung", "Lagerung der Getriebeeingangswelle"],
+    correct: [1]
+},
+{
+    q: "In einem Hybridfahrzeug: Was macht der 'Inverter'?",
+    a: ["Er lädt die 12V Batterie direkt aus dem Auspuff", "Er wandelt Gleichstrom der HV-Batterie in Wechselstrom für den E-Motor um (und umgekehrt)", "Er misst den Reifendruck", "Er steuert die Sitzheizung"],
+    correct: [1]
+},
+{
+    q: "Welche Sensorik nutzt ein 'ACC-System' (Adaptive Cruise Control) primär?",
+    a: ["Infrarotsensoren", "Radarsensoren und oft Kamerasysteme", "Ultraschallsensoren", "Regensensoren"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Stöchiometrisches Kraftstoffverhältnis' (Lambda = 1)?",
+    a: ["1 kg Kraftstoff auf 1 kg Luft", "14,7 kg Luft auf 1 kg Benzin", "10 kg Luft auf 1 kg Benzin", "Gleiche Anteile CO2 und O2"],
+    correct: [1]
+},
+{
+    q: "Welche Aufgabe hat das 'Zweikreis-Bremssystem'?",
+    a: ["Schnelleres Bremsen", "Sicherstellung einer Restbremswirkung bei Ausfall eines Bremskreises", "Kühlung der Bremsscheiben", "Regelung des ABS"],
+    correct: [1]
+},
+{
+    q: "Was ist der Vorteil von 'Zündkerzen mit Iridium-Mittelelektrode'?",
+    a: ["Sie sind billiger", "Hohe Erosionsbeständigkeit und sehr dünne Elektrode für bessere Funkenentflammung", "Sie glühen im Dunkeln", "Man braucht kein Zündkabel"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Slip-Winkel' bei einem Reifen?",
+    a: ["Der Winkel, in dem der Reifen auf der Felge rutscht", "Die Differenz zwischen der Bewegungsrichtung des Rades und der Radmittelebene", "Der Neigungswinkel in Kurven", "Der Winkel beim Einparken"],
+    correct: [1]
+},
+{
+    q: "Was passiert bei einer 'Überfettung' des Gemischs (Lambda < 1)?",
+    a: ["CO-Gehalt im Abgas steigt an", "Motor wird zu heiß", "O2-Gehalt im Abgas steigt massiv", "Kraftstoffverbrauch sinkt"],
+    correct: [0]
+},
+{
+    q: "Welche Funktion hat die 'Sekundärluftschaltung' beim Kaltstart?",
+    a: ["Kühlung der Ventile", "Schnelleres Aufheizen des Katalysators durch Nachverbrennung im Abgastrakt", "Bessere Innenraumlüftung", "Schmierung des Turboladers"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Dampfblasen-Effekt' in der Bremsflüssigkeit?",
+    a: ["Flüssigkeit gefriert", "Siedepunkt wird unterschritten, Wasseranteil verdampft und Bremse fällt aus (Pedalweg wird lang)", "Bremse blockiert von selbst", "Bremslicht leuchtet dauerhaft"],
+    correct: [1]
+},
+{
+    q: "Wofür steht 'EGR' (oder AGR)?",
+    a: ["Elektronische Getriebe-Regelung", "Abgasrückführung (Senkung der Stickoxide durch Reduzierung der Verbrennungstemperatur)", "Elektrisches Gas-Rad", "Auspuff-Gas-Reinigung"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Torque Vectoring'?",
+    a: ["Ein Messgerät für Drehmoment", "Gezielte Verteilung der Antriebsmomente auf einzelne Räder zur Verbesserung der Kurvendynamik", "Das Einstellen der Ventile", "Ein System zur Reifendruckkontrolle"],
+    correct: [1]
+},
+{
+    q: "Welche Aufgabe hat das 'Wastegate' am Turbolader?",
+    a: ["Kühlung des Öls", "Ladedruckregelung durch Umleiten der Abgase an der Turbine vorbei", "Reinigung der Ansaugluft", "Erhöhung der Turbinendrehzahl"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'NTC-Sensor' (z.B. Kühlmitteltemperatur)?",
+    a: ["Widerstand steigt bei steigender Temperatur", "Heißleiter: Widerstand sinkt bei steigender Temperatur", "Ein optischer Sensor", "Ein Sensor für Druck"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Schließwinkel' bei einer klassischen Zündanlage?",
+    a: ["Den Winkel, in dem die Tür schließt", "Die Zeit (in Grad Kurbelwinkel), in der der Primärstrom durch die Zündspule fließt", "Den Winkel der Zündkerze", "Den Winkel des Gaspedals"],
+    correct: [1]
+},
+{
+    q: "Was ist 'SAE 5W-30'?",
+    a: ["Eine Telefonnummer", "Viskositätsklasse eines Mehrbereichsöls (Fließverhalten bei Kälte/Hitze)", "Ein Benzinzusatz", "Die Größe des Ölfilters"],
+    correct: [1]
+},
+{
+    q: "Warum ist 'Bremsflüssigkeit hygroskopisch'?",
+    a: ["Damit sie nicht brennt", "Sie nimmt Wasser aus der Umgebung auf (was den Siedepunkt senkt)", "Sie leuchtet unter UV-Licht", "Sie schmiert die Reifen"],
+    correct: [1]
+},
+{
+    q: "Was ist die 'Ungefederte Masse' am Fahrzeug?",
+    a: ["Das Gewicht des Fahrers", "Bauteile wie Räder, Bremsen und Teile der Achsen (sollte für Komfort gering sein)", "Der Motor", "Die Ladung im Kofferraum"],
+    correct: [1]
+},
+{
+    q: "Was bewirkt die 'Ladeluftkühlung'?",
+    a: ["Kühlung des Innenraums", "Erhöhung der Luftdichte durch Abkühlung der verdichteten Luft für mehr Leistung", "Schutz des Fahrers vor Hitze", "Vermeidung von Rost im Auspuff"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Common-Rail-System'?",
+    a: ["Ein Zug-System", "Hochdruck-Einspritzung mit gemeinsamem Druckspeicher für alle Zylinder", "Ein Schienensystem für Sitze", "Eine Art der Radaufhängung"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Zener-Diode'?",
+    a: ["Eine Diode, die nur leuchtet", "Spezielle Diode, die ab einer bestimmten Spannung auch in Sperrrichtung leitet (Spannungsbegrenzung)", "Eine Sicherung für 1000V", "Ein Schalter für das Licht"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Blow-by-Gasen'?",
+    a: ["Gase aus der Klimaanlage", "Verbrennungsgase, die an den Kolbenringen vorbei ins Kurbelgehäuse gelangen", "Abgase am Endrohr", "Windgeräusche am Fenster"],
+    correct: [1]
+},
+{
+    q: "Was ist die Aufgabe des 'Differenzials'?",
+    a: ["Unterscheidung von Benzin und Diesel", "Drehzahlausgleich zwischen den Rädern einer Achse bei Kurvenfahrt", "Einstellen der Spiegel", "Regelung der Sitzhöhe"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Trockensumpfschmierung'?",
+    a: ["Schmierung ohne Öl", "Aufwendiges Schmiersystem mit separatem Öltank (v.a. in Sportwagen/Offroad)", "Ein Getriebe ohne Ölbad", "Die Schmierung der Scheibenwischer"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Hydroplaning' (Aquaplaning)?",
+    a: ["Fahren auf Eis", "Aufschwimmen des Reifens auf einem Wasserfilm (Verlust der Haftung)", "Reinigung des Autos mit Wasser", "Ein Defekt an der Wasserpumpe"],
+    correct: [1]
+},
+{
+    q: "Was ist der 'Zündabstand' bei einem V6-Motor (4-Takt)?",
+    a: ["90 Grad", "120 Grad", "180 Grad", "360 Grad"],
+    correct: [1]
+},
+{
+    q: "Wofür wird das 'AdBlue' verwendet?",
+    a: ["Als Scheibenreiniger", "Zur Reduktion von Stickoxiden im SCR-Katalysator (Diesel)", "Zur Erhöhung der Oktanzahl", "Als Kühlmittelzusatz"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Drosselklappen-Potentiometer'?",
+    a: ["Ein Sensor zur Erfassung der Gaspedalstellung oder Drosselklappenwinkel", "Ein mechanischer Stopper", "Ein Bauteil zur Kühlung", "Ein Teil der Zündkerze"],
+    correct: [0]
+},
+{
+    q: "Was beschreibt der 'Rollwiderstand'?",
+    a: ["Widerstand gegen das Umkippen", "Energieverlust durch Verformung des Reifens beim Rollen", "Reibung der Radlager", "Luftwiderstand der Felgen"],
+    correct: [1]
+},
+{
+    q: "Was ist die 'Sperrschicht' bei einem Halbleiter?",
+    a: ["Eine Schicht Lack", "Der Bereich in einer Diode/Transistor, der den Stromfluss steuert oder verhindert", "Die Isolierung am Kabel", "Die oberste Schicht der Batterie"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'PHEV'?",
+    a: ["Ein reines Elektroauto", "Plug-in-Hybrid Electric Vehicle (Hybrid mit extern aufladbarer Batterie)", "Ein Fahrzeug mit Wasserstoffantrieb", "Ein Sportwagen mit V8"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Ventilspiel'?",
+    a: ["Das Wackeln des Lenkrads", "Nötiger Abstand im Ventiltrieb zum Ausgleich der Wärmeaudehnung", "Das Spiel in der Schaltung", "Die Bewegung der Reifen"],
+    correct: [1]
+},
+{
+    q: "Was ist 'OBD-II'?",
+    a: ["Eine Rennserie", "On-Board-Diagnose (standardisiertes System zur Überwachung abgasrelevanter Bauteile)", "Ein Navigationssystem", "Eine Versicherungsklasse"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Pendelachse'?",
+    a: ["Eine Achse, die hin und her schwingt", "Einfache Form der Einzelradaufhängung, bei der die Halbachsen um ein Gelenk am Differenzial schwingen", "Eine Achse am Anhänger", "Eine Lenkachse beim LKW"],
+    correct: [1]
+},
+{
+    q: "Was ist 'E10' Kraftstoff?",
+    a: ["Benzin mit 10% Wasseranteil", "Benzin mit bis zu 10% Bio-Ethanol-Beimischung", "Diesel für 10 Grad Kälte", "Ein Öl für Getriebe"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Achsantrieb'?",
+    a: ["Der Motor selbst", "Die letzte Übersetzungsstufe vor den Rädern (meist im Differenzialgehäuse)", "Die Antriebswelle", "Das Radlager"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Spreizung' (Fahrwerk)?",
+    a: ["Abstand der Räder", "Winkel zwischen der Schwenkachse des Rades und der Senkrechten (in Querrichtung)", "Das Ausdehnen der Bremsbeläge", "Die Breite der Spur"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Rekuperation'?",
+    a: ["Reparatur des Motors", "Rückgewinnung von Energie beim Bremsen/Rollen (v.a. bei Elektro/Hybrid)", "Das Auffüllen von Öl", "Reinigung des Innenraums"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Zündverteiler' (bei älteren Autos)?",
+    a: ["Ein Teil des Tanks", "Mechanisches Bauteil zur Weiterleitung der Hochspannung an die jeweiligen Zündkerzen", "Ein Schalter im Innenraum", "Die Batterie"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Spurtreue'?",
+    a: ["Dass das Auto nicht geklaut wird", "Fähigkeit des Fahrzeugs, bei Geradeausfahrt stabil die Richtung zu halten", "Das genaue Einhalten von Service-Terminen", "Die Breite der Reifen"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Bi-Turbo'?",
+    a: ["Ein Turbolader für zwei Kraftstoffe", "Einsatz von zwei Turboladern zur Leistungssteigerung oder Verringerung des Turbolochs", "Ein Motor mit zwei Zylindern", "Ein Auspuff mit zwei Rohren"],
+    correct: [1]
+},
+{
+    q: "Was ist beim Trennen von Längsträgern aus ultrahochfestem Stahl zu beachten?",
+    a: ["Immer mit dem Schneidbrenner trennen", "Nur an vom Hersteller exakt vorgegebenen Trennstellen (Schnittmarken) schneiden", "Es darf nur eine Handsäge verwendet werden", "Die Trennstelle ist völlig egal, solange sie gerade ist"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der Begriff 'Rückverformung vor dem Trennen'?",
+    a: ["Das Auto wird gewaschen", "Beschädigte Teile werden grob in die Ursprungsform gezogen, um Spannungen im Gefüge zu lösen, bevor Neuteile eingepasst werden", "Das Fahrzeug wird rückwärts in die Werkstatt geschoben", "Die Versicherung zieht Geld ab"],
+    correct: [1]
+},
+{
+    q: "Warum ist beim Punktschweißen der Anpressdruck der Elektroden so wichtig?",
+    a: ["Damit das Gerät nicht runterfällt", "Um den Übergangswiderstand zu kontrollieren und Spritzer sowie Poren zu vermeiden", "Damit das Blech flacher wird", "Zur Kühlung der Umgebung"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Richtwinkelsatz'?",
+    a: ["Ein Geodreieck für Karosseriebauer", "Fahrzeugspezifische Aufnahmen, die das Fahrzeug an definierten Punkten (z.B. Fahrwerkspunkten) auf der Richtbank fixieren", "Eine Liste mit Schweißparametern", "Ein Werkzeug zum Einstellen der Spur"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Kaltrichten'?",
+    a: ["Richten bei Minusgraden", "Rückverformung ohne Zufuhr von Wärme, um das Gefüge des Stahls nicht zu schwächen", "Das Richten von Eisenteilen", "Ein Verfahren für Kunststoffstoßstangen"],
+    correct: [1]
+},
+{
+    q: "Welche Funktion hat die 'Opferanode' (oder Zinkschicht) beim Korrosionsschutz?",
+    a: ["Sie dient als Grundierung für den Lack", "Sie oxidiert anstelle des Stahls (kathodischer Schutz)", "Sie macht das Blech härter", "Sie verhindert Windgeräusche"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Elektronisches Messsystem' in der Unfallinstandsetzung?",
+    a: ["Ein Multimeter für die Batterie", "Ein System zur computergestützten Vermessung der Karosserie-Maßpunkte gegen die Hersteller-Datenbank", "Eine digitale Waage", "Ein Laser zum Blechschneiden"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Lochpunkt-Schweißen' (MAG)?",
+    a: ["Löcher in das Blech brennen", "Verbindung von zwei Blechen durch ein vorgefertigtes Loch im oberen Blech (Ersatz für Punktschweißen)", "Schweißen unter Wasser", "Ein spezielles Verfahren für Alufelgen"],
+    correct: [1]
+},
+{
+    q: "Warum müssen Airbag-Steuergeräte nach einer Auslösung oft ersetzt werden?",
+    a: ["Weil sie explodiert sind", "Wegen gespeicherter Crash-Daten (Event Data Recorder) und möglicher interner Sensorschäden", "Weil die Batterie leer ist", "Wegen der Optik"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Strukturklebstoff'?",
+    a: ["Ein Kleber für Aufkleber", "Ein hochfester Kleber, der zur Versteifung der Karosserie beiträgt und oft mit Nieten/Punktschweißen kombiniert wird", "Ein weicher Kleber für Dichtungen", "Ein Kleber für die Windschutzscheibe"],
+    correct: [1]
+},
+{
+    q: "Was ist bei der Reparatur von Aluminium-Aussenhautteilen (z.B. Tür) besonders schwierig?",
+    a: ["Die Farbe hält nicht", "Die geringe Rückverformbarkeit und die hohe Bruchgefahr bei Kaltverformung", "Das Material ist zu schwer", "Es lässt sich nicht schleifen"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'I-Stoß' bei einer Schweißnahtvorbereitung?",
+    a: ["Zwei Bleche werden im rechten Winkel verschweißt", "Stumpfstoß ohne Abschrägung der Werkstückkanten", "Eine Naht in Form eines 'I'", "Überlappung von 10 cm"],
+    correct: [1]
+},
+{
+    q: "Welches Gas wird beim MAG-Schweißen von Stahl meist verwendet?",
+    a: ["Reines Argon", "Mischgas (z.B. Argon mit CO2-Anteil)", "Sauerstoff", "Stickstoff"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Überlappung' bei einer Teilersetzung?",
+    a: ["Bleche werden bündig aneinandergelegt", "Ein Blech liegt ein Stück über dem anderen (oft kombiniert mit Absetzen)", "Das Lackieren über die Kante", "Das Stapeln von Ersatzteilen"],
+    correct: [1]
+},
+{
+    q: "Wofür wird ein 'Absetzgerät' (Absetzzange) benötigt?",
+    a: ["Zum Abziehen von Reifen", "Um eine Vertiefung in die Blechkante zu drücken, damit das überlappende Blech bündig liegt", "Zum Schneiden von Kabeln", "Zum Entfernen von Rost"],
+    correct: [1]
+},
+{
+    q: "Was ist der 'Schweißpunkt-Ausbohrer'?",
+    a: ["Ein großer Bohrer für Holz", "Spezialbohrer mit Zentrierspitze, der nur das obere Blech durchbohrt, um den Schweißpunkt zu lösen", "Ein Gerät zum Polieren", "Ein Werkzeug für Schrauben"],
+    correct: [1]
+},
+{
+    q: "Was ist beim Schweißen in der Nähe von Steuergeräten zu tun?",
+    a: ["Nichts", "Batterie abklemmen und ggf. Steuergeräte abstecken oder Überspannungsschutz verwenden", "Das Auto nass machen", "Den Radio einschalten"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Verzug' beim Schweißen?",
+    a: ["Die Verspätung der Werkstatt", "Die geometrische Veränderung des Bauteils durch die Hitzeeinwirkung", "Das Abblättern der Farbe", "Das Reißen der Schweißnaht"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Hohlraumkonservierung' nach der Instandsetzung?",
+    a: ["Das Füllen des Tanks", "Wachs- oder Fettbeschichtung im Inneren von Trägern, um Korrosion an neuen Schweißstellen zu verhindern", "Das Reinigen der Polster", "Eine Lackierung des Unterbodens"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Dummy' in der Unfallforschung?",
+    a: ["Ein schlechter Mechaniker", "Eine mit Sensoren bestückte Puppe zur Simulation der Belastungen auf den menschlichen Körper", "Ein Ersatzteil aus Plastik", "Ein kaputtes Auto"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Hartlöten' (MIG-Löten)?",
+    a: ["Schweißen mit sehr viel Kraft", "Fügen mit einem Zusatzwerkstoff (Lot), dessen Schmelztemperatur unter der des Grundwerkstoffs liegt", "Ein Klebeverfahren", "Das Erhitzen mit dem Föhn"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Abreißprüfung' beim Punktschweißen?",
+    a: ["Testen der Motorleistung", "Qualitätsprüfung an Probeschleifen, um die Festigkeit und den Linsendurchmesser des Schweißpunktes zu prüfen", "Das Abreißen der Stoßstange", "Ein Bremstest"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Korrosionsschutz-Wiederherstellung'?",
+    a: ["Das Auto polieren", "Alle Maßnahmen (Grundieren, Abdichten, Wachsen), um den Werkszustand des Rostschutzes nach Reparatur zu erreichen", "Neuen TÜV machen", "Reifen wechseln"],
+    correct: [1]
+},
+{
+    q: "Wofür dient die 'Karosserie-Dichtmasse'?",
+    a: ["Zum Ankleben von Spiegeln", "Zum Abdichten von Blechüberlappungen gegen Feuchtigkeit und Gase", "Zum Füllen von tiefen Beulen", "Als Ersatz für Schrauben"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Schattenlackierung'?",
+    a: ["Lackieren im Dunkeln", "Andere Bezeichnung für Beilackierung zur Vermeidung von sichtbaren Farbunterschieden", "Lackieren mit schwarzer Farbe", "Ein Fehler im Lack"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Körnung' beim Schleifmittel?",
+    a: ["Die Farbe des Papiers", "Die Anzahl der Schleifpartikel pro Flächeneinheit (je höher die Zahl, desto feiner)", "Die Dicke des Papiers", "Die Marke des Herstellers"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Infrarot-Trocknung'?",
+    a: ["Trocknen an der Sonne", "Beschleunigte Aushärtung von Lack/Spachtel durch Wärmestrahlung", "Trocknen mit Pressluft", "Das Auto in den Wind stellen"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Füller' in der Lackierung?",
+    a: ["Eine Person, die den Tank füllt", "Eine Schicht zum Ausgleichen kleiner Unebenheiten und zur Haftvermittlung", "Ein Werkzeug zum Spachteln", "Eine Politur"],
+    correct: [1]
+},
+{
+    q: "Warum darf man hochfeste Stähle nicht mit Wasser kühlen nach dem Schweißen?",
+    a: ["Es gibt eine Sauerei", "Gefahr der Aufhärtung und Versprödung des Materials", "Das Wasser verdampft zu schnell", "Es fängt an zu rosten"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Richtbank'?",
+    a: ["Eine Bank zum Ausruhen", "Ein stabiler Rahmen zur exakten Positionierung und Rückverformung verunfallter Karosserien", "Ein Tisch für den Gutachter", "Ein Werkzeug zum Biegen von Rohren"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Diagonaltest'?",
+    a: ["Prüfung des Radios", "Manuelle Messung zwischen gegenüberliegenden Symmetriepunkten zur Prüfung auf Verzug", "Fahren in Schlangenlinien", "Messung der Profiltiefe"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Sicherheitskarosserie'?",
+    a: ["Ein gepanzertes Auto", "Konstruktion mit steifer Fahrgastzelle und definierten Knautschzonen", "Ein Auto ohne Fenster", "Ein Auto mit 10 Airbags"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Punktschweißpaste'?",
+    a: ["Zahnpasta für Mechaniker", "Leitfähiges Material, das vor dem Schweißen in die Überlappung aufgetragen wird (Korrosionsschutz)", "Ein Schmiermittel für Bohrer", "Ein Kleber"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Einpassen'?",
+    a: ["Das Auto in die Garage fahren", "Das exakte Ausrichten der Spaltmaße von Neuteilen vor der endgültigen Befestigung", "Das Anziehen der Arbeitskleidung", "Das Einbauen der Sitze"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Spachtel'?",
+    a: ["Ein Küchengerät", "Zweikomponenten-Material zum Ausgleichen von Oberflächenunebenheiten", "Ein Lappen zum Putzen", "Ein Teil des Auspuffs"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Spot-Repair'?",
+    a: ["Eine komplette Neulackierung", "Kleinflächige Instandsetzung von Lackschäden (Punktreparatur)", "Die Reparatur von Scheinwerfern", "Das Wechseln eines Reifens"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Ausglasen'?",
+    a: ["Trinken aus Gläsern", "Das fachgerechte Entfernen von verklebten Scheiben mittels Schneiddraht oder oszillierendem Messer", "Das Putzen der Scheiben", "Das Tönen der Scheiben"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Zinnersatz'?",
+    a: ["Plastikfolie", "Spezielle Spachtelmasse auf Epoxidharzbasis, die das klassische Verzinnen ersetzt", "Ein neuer Lack", "Ein Teil des Motors"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt die 'Fahrzeugvermessung' nach einem Unfall?",
+    a: ["Wiegen des Fahrzeugs", "Prüfung der Achsgeometrie (Spur, Sturz etc.) auf unfallbedingte Abweichungen", "Messen der Fahrzeughöhe", "Zählen der Sitze"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Säulenschnitt'?",
+    a: ["Ein Haarschnitt", "Das Durchtrennen einer Karosseriesäule (A, B oder C-Säule) an herstellervorgeschriebenen Stellen zur Teilersetzung", "Ein Riss im Reifen", "Eine Markierung am Boden"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Abdeckfolie' in der Lackiererei?",
+    a: ["Eine Decke für den Fahrer", "Schutzfolie zum Abkleben nicht zu lackierender Fahrzeugteile", "Eine Folie für das Dach", "Ein Sonnenschutz"],
+    correct: [1]
+},
+{
+    q: "Wofür wird ein 'Exzenterschleifer' verwendet?",
+    a: ["Zum Bohren", "Zum ebenmäßigen Schleifen von Flächen durch rotierende und schwingende Bewegungen", "Zum Schneiden von Blech", "Zum Polieren der Felgen"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Haftvermittler' (Primer)?",
+    a: ["Ein Klebeband", "Spezielle Grundierung, die die Haftung zwischen Untergrund (z.B. Kunststoff) und Lack verbessert", "Ein Reiniger für Öl", "Ein Parfüm"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Verstärkungsblech'?",
+    a: ["Ein dünnes Blech zur Zierde", "Ein zusätzlich im Inneren verbautes Blech zur Erhöhung der Steifigkeit (z.B. im Schweller)", "Ein Blech für das Nummernschild", "Ein Blech im Auspuff"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Doppelblech'?",
+    a: ["Zwei Autos nebeneinander", "Zwei aufeinanderliegende Blechschichten, die gemeinsam verschweißt sind", "Ein dickes Blech", "Ein Ersatzteil"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Entfetten' vor dem Lackieren?",
+    a: ["Eine Diät für Mechaniker", "Reinigung der Oberfläche mit Silikonentferner, um Haftungsprobleme zu vermeiden", "Das Ablassen des Öls", "Das Waschen mit Wasser"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Schweißperle'?",
+    a: ["Ein Schmuckstück", "Kleine Metallspritzer, die beim Schweißen entstehen und oft mühsam entfernt werden müssen", "Eine gute Schweißnaht", "Ein Tropfen Öl"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Pneumatik-Meißel'?",
+    a: ["Ein Hammer für Holz", "Druckluftwerkzeug zum schnellen Trennen von Blechen oder Schweißverbindungen", "Ein Werkzeug zum Schrauben", "Ein Luftpumpenaufsatz"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt 'Spachtel ziehen'?",
+    a: ["An einer Schnur ziehen", "Das glatte Auftragen und Verteilen von Spachtelmasse mit einem Spachtelblatt", "Das Entfernen von altem Spachtel", "Ein Spiel in der Werkstatt"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Originalteil' (OE-Teil)?",
+    a: ["Ein gebrauchtes Teil", "Ein Ersatzteil, das direkt vom Fahrzeughersteller in dessen Verpackung geliefert wird", "Ein Teil vom Schrottplatz", "Ein selbst gebautes Teil"],
+    correct: [1]
+},
+{
+    q: "Ein CAN-Bus-Signal zeigt im Oszilloskop bei rezessivem Pegel 3,5V statt 2,5V. Was ist die wahrscheinlichste Ursache?",
+    a: ["Ein Kurzschluss von CAN-High nach Plus", "Ein Masseversatz (Offset) durch eine fehlerhafte Masseverbindung eines Steuergeräts", "Ein defekter Abschlusswiderstand im Gateway", "Ein Kurzschluss zwischen CAN-High und CAN-Low"],
+    correct: [1]
+},
+{
+    q: "Welches Phänomen begrenzt bei hochaufgeladenen Downsizing-Motoren primär das Drehmoment bei niedrigen Drehzahlen (LSPI)?",
+    a: ["Klopfende Verbrennung durch zu frühe Zündung", "Vorentflammung durch glühende Partikel oder Öltröpfchen im Brennraum", "Die maximale Strömungsgeschwindigkeit am Einlass", "Die thermische Belastung des Turbolader-Lagers"],
+    correct: [1]
+},
+{
+    q: "Bei der HV-Isolationsüberwachung wird das Puls-Verfahren genutzt. Welchen Vorteil bietet es gegenüber der einfachen Spannungsteiler-Messung?",
+    a: ["Es ist schneller", "Es kann auch symmetrische Isolationsfehler (beide Pole gegen Masse) erkennen", "Es benötigt keine Verbindung zum Chassis", "Es funktioniert auch bei tiefentladener Batterie"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Kamm’sche Kreis' in der Fahrdynamik?",
+    a: ["Die Abhängigkeit der Seitenkraft von der Reifenbreite", "Die Vektorsumme aus Längs- und Seitenführungskraft darf das Kraftschlusspotenzial nicht überschreiten", "Den optimalen Reifendruck bei Höchstgeschwindigkeit", "Das Verhältnis von gefederten zu ungeforderten Massen"],
+    correct: [1]
+},
+{
+    q: "Warum benötigt das Widerstandspunktschweißen von Aluminium deutlich höhere Stromstärken als bei Stahl?",
+    a: ["Aluminium hat einen höheren Schmelzpunkt", "Wegen der hohen thermischen und elektrischen Leitfähigkeit fließt die Energie zu schnell ab", "Die Oxidschicht erhöht den Widerstand ins Unendliche", "Aluminium ist weicher und benötigt mehr Anpressdruck"],
+    correct: [1]
+},
+{
+    q: "Was bewirkt eine Erhöhung der Spreizung an der Vorderachse?",
+    a: ["Das Fahrzeug wird instabil beim Bremsen", "Die Rückstellkräfte der Lenkung erhöhen sich, da das Fahrzeug beim Lenken leicht angehoben wird", "Der Wendekreis verringert sich drastisch", "Der Sturz wird positiv"],
+    correct: [1]
+},
+{
+    q: "Ein NOx-Speicherkatalysator benötigt eine 'De-Sulfatierung'. Welche Bedingungen müssen hierfür vorliegen?",
+    a: ["Niedrige Abgastemperaturen und mageres Gemisch", "Hohe Abgastemperaturen (> 600°C) und fettes Gemisch (Lambda < 1)", "Zugabe von AdBlue im Leerlauf", "Konstante Fahrt mit 80 km/h über 50 km"],
+    correct: [1]
+},
+{
+    q: "Welches Problem tritt bei SiC-Invertern (Siliziumkarbid) in Bezug auf die Motorwicklung auf?",
+    a: ["Zu geringe Leistung", "Hohe Spannungsgradienten (du/dt) belasten die Isolierung der Motorwicklungen stärker", "Überhitzung der Halbleiter bei niedriger Frequenz", "Das Magnetfeld der Rotoren bricht zusammen"],
+    correct: [1]
+},
+{
+    q: "In der Gutachtenerstellung: Was ist der 'Vorteilsausgleich' bei der Abzugsposition 'Neu für Alt'?",
+    a: ["Die Versicherung zahlt den Neupreis", "Der Wertzuwachs durch den Austausch eines verschlissenen Teils gegen ein Neuteil wird vom Schaden abgezogen", "Der Gutachter erhält eine Provision", "Der Geschädigte bekommt ein kostenloses Leihfahrzeug"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter der '10%-Grenze' beim merkantilen Minderwert?",
+    a: ["Der Minderwert darf 10% des WBW nicht überschreiten", "Reparaturkosten unter 10% des WBW führen oft zu keinem merkantilen Minderwert", "Die Versicherung zieht 10% Bearbeitungsgebühr ab", "Der Gutachter darf 10% Abweichung haben"],
+    correct: [1]
+},
+{
+    q: "Welche Funktion hat die 'Voreinspritzung' beim Common-Rail-Diesel primär?",
+    a: ["Erhöhung der Endleistung", "Reduzierung des Zündverzugs und damit der Verbrennungsgeräusche (Nageln)", "Kühlung des Brenraums", "Reinigung der Ventile"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Zangenmessgerät' für den CAN-Bus (berührungslos)?",
+    a: ["Ein Gerät zum Durchtrennen der Leitungen", "Ein kapazitiver Aufnehmer zur Signaldiagnose ohne Beschädigung der Isolierung", "Ein Werkzeug zum Crimpen", "Ein mechanischer Halter"],
+    correct: [1]
+},
+{
+    q: "Beim Miller-Zyklus wird das Einlassventil früh geschlossen. Welcher Effekt wird genutzt?",
+    a: ["Die innere Gemischbildung wird beschleunigt", "Die Expansionsphase ist länger als die effektive Kompressionsphase (Wirkungsgrad)", "Der Ladedruck wird im Zylinder verdoppelt", "Die Abgastemperatur steigt"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Opfergrenze' im Haftpflichtschadenrecht?",
+    a: ["Der Punkt, an dem der Geschädigte aufgeben muss", "Die 130%-Regelung (Reparaturkosten im Verhältnis zum WBW)", "Die maximale Belastbarkeit des Gurtes", "Die Grenze für Schmerzensgeld"],
+    correct: [1]
+},
+{
+    q: "Welche Kennlinie hat ein Breitband-Lambdasensor (LSU) im Arbeitsbereich?",
+    a: ["Sprungförmige Spannungsänderung bei Lambda 1", "Stetig verlaufender Pumpstrom proportional zum Restsauerstoffgehalt", "Konstanter Widerstand über den gesamten Bereich", "Sägezahnsignal"],
+    correct: [1]
+},
+{
+    q: "Was ist die 'interkristalline Korrosion' bei Aluminium?",
+    a: ["Rost auf der Oberfläche", "Korrosion entlang der Korngrenzen im Gefüge, oft durch falsche Wärmebehandlung", "Lochfraß durch Streusalz", "Kontakt mit Stahl"],
+    correct: [1]
+},
+{
+    q: "Warum haben PSM-Motoren (Permanentmagnet) bei hohen Drehzahlen ein Problem mit der 'Gegenspannung'?",
+    a: ["Die Magnete fallen ab", "Die induzierte Spannung nähert sich der Batteriespannung, was den Stromfluss begrenzt (Feldschwächung nötig)", "Der Motor wird zum Heizwiderstand", "Die Lager schmelzen"],
+    correct: [1]
+},
+{
+    q: "Was ist der 'Reibwert-Sprung' beim Bremsen auf µ-Split?",
+    a: ["Das Auto beschleunigt", "Unterschiedliche Kraftschlussbeiwerte zwischen linker und rechter Fahrzeugseite", "Ein Defekt am ABS-Block", "Der Verschleiß der Bremsbeläge"],
+    correct: [1]
+},
+{
+    q: "In der Karosserietechnik: Was ist 'Formhärten'?",
+    a: ["Abkühlen von Stahl an der Luft", "Gleichzeitiges Umformen und Abschrecken von Borstahl im Werkzeug für extreme Festigkeit", "Lackieren unter Hitze", "Biegen von Rohren mit Sandfüllung"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Körperschallmessung' am Getriebe?",
+    a: ["Messung der Lautstärke im Innenraum", "Analyse von Schwingungsfrequenzen zur Früherkennung von Lagerschäden", "Wiegen des Getriebes", "Messung der Öltemperatur"],
+    correct: [1]
+},
+{
+    q: "Welchen Effekt hat 'Kavitation' in einem Injektor?",
+    a: ["Bessere Zerstäubung", "Materialabtrag durch implodierende Dampfblasen bei extremen Druckabfällen", "Schmierung der Nadel", "Verringerung der Emissionen"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Restwertbörse' für einen Sachverständigen?",
+    a: ["Ein Ort zum Autokauf", "Eine Online-Plattform zur Ermittlung des höchsten regionalen Restwertangebots für Unfallwagen", "Eine Flohmarkt-App", "Die Börse für Versicherungsaktien"],
+    correct: [1]
+},
+{
+    q: "Was ist die Aufgabe des 'Zwiscchenkreis-Kondensators' im Inverter?",
+    a: ["Speicherung von Energie für das Radio", "Glättung der Batteriespannung und Pufferung der schnellen Schaltvorgänge der Halbleiter", "Kühlung der Elektronik", "Schutz gegen Kurzschluss"],
+    correct: [1]
+},
+{
+    q: "Was beschreibt der 'Nachlaufnachlauf' (Nachlaufstrecke)?",
+    a: ["Die Zeit bis zum Bremsen", "Der horizontale Abstand zwischen dem Durchstoßpunkt der Lenkachse und dem Reifenaufstandspunkt", "Der Verschleißweg der Reifen", "Die Länge des Bremswegs"],
+    correct: [1]
+},
+{
+    q: "Warum ist bei HV-Leitungen die Schirmung (Shielding) so wichtig?",
+    a: ["Zum Schutz vor Feuchtigkeit", "Vermeidung von elektromagnetischen Störungen (EMV) durch hochfrequente Schaltvorgänge", "Erhöhung der mechanischen Festigkeit", "Damit die Kabel orange aussehen"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Pendel-Differenzial'?",
+    a: ["Ein Differenzial für Uhren", "Ein Ausgleichsgetriebe, das auch Nickbewegungen des Motors ausgleicht", "Ein Verteilergetriebe in Allradfahrzeugen", "Ein fehlerhafter Begriff (Fangfrage)"],
+    correct: [3]
+},
+{
+    q: "Was bewirkt die 'Schubumluftsteuerung' beim Turbolader beim Lastwechsel?",
+    a: ["Erhöhung des Ladedrucks", "Verhinderung des 'Pumpens' (Druckstau vor der geschlossenen Drosselklappe) zur Schonung der Turbine", "Kühlung des Abgases", "Vermeidung von Ruß"],
+    correct: [1]
+},
+{
+    q: "Was ist der 'Sekundärwiderstand' einer Zündspule (Messung)?",
+    a: ["Widerstand der Kabel", "Der elektrische Widerstand der Hochwicklung (meist im Kiloohm-Bereich)", "Der Widerstand der Zündkerze", "Die Spannung der Batterie"],
+    correct: [1]
+},
+{
+    q: "Wofür steht die Abkürzung 'LIN-Bus' im Vergleich zu 'CAN-Bus'?",
+    a: ["Schnellerer Bus", "Local Interconnect Network (Eindraht-Bus für einfache Komfortsysteme)", "Laser Interface Network", "Leitungs-Isolations-Norm"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Zweistufen-Generator' im Airbag?",
+    a: ["Ein Generator für zwei Airbags", "Ein Treibsatz, der je nach Unfallschwere zeitversetzt oder zweistufig zündet", "Ein elektrischer Generator", "Ein Ersatzteil für den Gurtstraffer"],
+    correct: [1]
+},
+{
+    q: "Welche physikalische Größe misst der 'Heißfilm-Luftmassenmesser' (HFM)?",
+    a: ["Das Volumen der Luft", "Die Masse der Luft durch Abkühlung eines beheizten Elements", "Den Luftdruck", "Die Luftfeuchtigkeit"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Passivierung' im Bereich der Karosserie?",
+    a: ["Das Auto stehen lassen", "Die Bildung einer Schutzschicht auf Metalloberflächen zur Vermeidung von Korrosion", "Das Entfernen von Lack", "Die Montage von Kunststoffteilen"],
+    correct: [1]
+},
+{
+    q: "Warum haben Dieselmotoren kein 'Drosselklappen-Vakuum'?",
+    a: ["Weil sie keine Drosselklappe benötigen (Qualitätsregelung)", "Weil der Turbo das Vakuum zerstört", "Wegen der hohen Kompression", "Weil Diesel zu dickflüssig ist"],
+    correct: [0]
+},
+{
+    q: "Was bedeutet 'Tragendes Teil' im Gutachten?",
+    a: ["Teil, das die Ladung hält", "Bauteil, das für die strukturelle Integrität und Crashsicherheit der Karosserie essenziell ist", "Der Dachgepäckträger", "Die Reifen"],
+    correct: [1]
+},
+{
+    q: "Was ist ein 'Tumble-Effekt' im Brennraum?",
+    a: ["Ein Defekt der Ventile", "Walzenförmige Luftbewegung zur besseren Gemischaufbereitung (Ottomotor)", "Das Vibrieren des Motors", "Der Ausstoß von Abgasen"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Over-the-Air' (OTA) Updates?",
+    a: ["Updates beim Fliegen", "Drahtlose Aktualisierung der Steuergeräte-Software über Mobilfunk", "Updates für das Radio", "Reifendruckprüfung per Funk"],
+    correct: [1]
+},
+{
+    q: "Welche Aufgabe hat das 'Zweimassenschwungrad' bei einem Hybridmotor?",
+    a: ["Kühlung der E-Maschine", "Entkopplung der Schwingungen zwischen Verbrennungsmotor und restlichem Strang", "Erhöhung des Drehmoments", "Laden der Batterie"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Vorschaden nicht fachgerecht repariert' im Gutachten?",
+    a: ["Das Auto wurde nie repariert", "Ein alter Schaden wurde nur optisch kaschiert, ohne die Struktur/Sicherheit wiederherzustellen", "Das Auto ist schmutzig", "Die Farbe passt nicht ganz"],
+    correct: [1]
+},
+{
+    q: "Was ist der 'Piezoresistive Effekt'?",
+    a: ["Das Leuchten von LEDs", "Widerstandsänderung eines Materials durch mechanische Verformung (Drucksensoren)", "Das Schmelzen von Sicherungen", "Die Aufladung der Batterie"],
+    correct: [1]
+},
+{
+    q: "Warum ist das 'Spaltmaß' nach einem Unfall so wichtig für die Diagnose?",
+    a: ["Wegen der Aerodynamik", "Hinweis auf strukturellen Verzug der Karosserie oder verschobene Montagepunkte", "Damit es schön aussieht", "Zur Bestimmung des Herstellers"],
+    correct: [1]
+},
+{
+    q: "Was ist 'SCR' in der Abgastechnik?",
+    a: ["Super Charge Racing", "Selective Catalytic Reduction (Stickoxidreduktion mittels Harnstoff)", "System Control Repair", "Sport-Clutch-Release"],
+    correct: [1]
+},
+{
+    q: "Was versteht man unter 'Rekuperationsmoment'?",
+    a: ["Die Beschleunigung beim Bremsen", "Das Bremsmoment, das die E-Maschine beim Erzeugen von Strom auf die Achse ausübt", "Das Drehmoment des Anlassers", "Die Kraft der Handbremse"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Bordnetzstützung'?",
+    a: ["Ein Halter für Kabel", "Zusätzliche Stromversorgung bei hohem Bedarf oder Ausfall des Hauptnetzes (z.B. DC/DC-Wandler)", "Ein Batterieladegerät", "Das Abschalten der Klimaanlage"],
+    correct: [1]
+},
+{
+    q: "Was ist der 'Sturz' (Fahrwerk)?",
+    a: ["Das Umkippen des Autos", "Die Neigung der Radebene zur Senkrechten", "Die Breite der Achse", "Der Winkel beim Lenken"],
+    correct: [1]
+},
+{
+    q: "Was ist 'E-Call'?",
+    a: ["Ein Telefonat mit dem Autohaus", "Automatisches Notrufsystem bei Unfällen (Pflicht für Neufahrzeuge)", "Ein elektrischer Schalter", "Die Hupe"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Nutzungsausfallentschädigung' Gruppe A-L?",
+    a: ["Die Farbe des Mietwagens", "Klassifizierung der Entschädigungshöhe basierend auf dem Fahrzeugtyp/Klasse", "Das Alter des Fahrers", "Die Dauer der Reparatur"],
+    correct: [1]
+},
+{
+    q: "Was ist 'Torque Fill'?",
+    a: ["Das Füllen des Öls", "Kompensation des Drehmomentabfalls beim Schalten durch den Elektromotor (Hybrid)", "Erhöhung des Ladedrucks", "Reinigung des Getriebes"],
+    correct: [1]
+},
+{
+    q: "Was bedeutet 'Mismatching' bei Reifen?",
+    a: ["Falscher Luftdruck", "Unterschiedliche Reifentypen oder Verschleißzustände auf einer Achse", "Reifen auf der falschen Felge", "Reifen im Winter"],
+    correct: [1]
+},
+{
+    q: "Was ist eine 'Widerstands-Punkt-Schweiß-Zange'?",
+    a: ["Ein Werkzeug zum Nägelziehen", "Das Werkzeug für das automatisierte/manuelle Punktschweißen in der Fertigung/Instandsetzung", "Eine Zange für Kabel", "Ein Diagnosegerät"],
+    correct: [1]
+},
+{
+    q: "Was ist 'G-Force' in der Unfalldatenspeicherung?",
+    a: ["Die Geschwindigkeit", "Die auf das Fahrzeug wirkende Beschleunigung/Verzögerung (Schwerkraft-Faktor)", "Der Kraftstoffverbrauch", "Die Motorleistung"],
+    correct: [1]
+}
     // ... fortsetzend bis 100 Fragen ...
     // ... fortführend bis 100 Fragen ...
     // ... hier folgen weitere Fragen nach diesem Schema ...
 ];
-let activeQuestions = [];
+        // --- LOGIK-STEUERUNG ---
+
+    let activeQuestions = [];
     let currentIdx = 0;
     let score = 0;
     let selectedChoices = [];
@@ -1298,22 +3023,31 @@ let activeQuestions = [];
         checkSessionStatus();
         setInterval(checkSessionStatus, 30000);
 
-        // Impressum
+        // Impressum Logik
         const openBtn = document.getElementById('open-impressum');
         const impModal = document.getElementById('impressum-modal');
-        if(openBtn) {
+        if(openBtn && impModal) {
             openBtn.onclick = (e) => {
                 e.preventDefault();
                 impModal.style.setProperty('display', 'flex', 'important');
                 impModal.classList.remove('hidden');
             };
         }
+        
         const hideImp = () => {
-            impModal.style.setProperty('display', 'none', 'important');
-            impModal.classList.add('hidden');
+            if(impModal) {
+                impModal.style.setProperty('display', 'none', 'important');
+                impModal.classList.add('hidden');
+            }
         };
-        document.getElementById('close-x').onclick = hideImp;
-        document.getElementById('close-btn-bottom').onclick = hideImp;
+
+        if(document.getElementById('close-x')) document.getElementById('close-x').onclick = hideImp;
+        if(document.getElementById('close-btn-bottom')) document.getElementById('close-btn-bottom').onclick = hideImp;
+        
+        // Enter-Taste im Passwortfeld
+        document.getElementById('pw-input')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
     });
 
     // --- ZUGANGS-LOGIK ---
@@ -1323,11 +3057,22 @@ let activeQuestions = [];
         const overlay = document.getElementById('password-overlay');
         const timer = document.getElementById('session-timer');
 
+        // Gültigkeit: 1 Stunde (3600000 ms)
         if (unlockTime && (now - unlockTime < 3600000)) {
             if(overlay) overlay.style.display = 'none';
             if(timer) {
                 timer.style.display = 'block';
                 document.getElementById('timer-minutes').innerText = Math.ceil((3600000 - (now - unlockTime)) / 60000);
+                
+                // Abmelde-Button hinzufügen, falls nicht vorhanden
+                if(!document.getElementById('logout-btn-ui')) {
+                    const logoutBtn = document.createElement('button');
+                    logoutBtn.id = 'logout-btn-ui';
+                    logoutBtn.innerText = 'Abmelden';
+                    logoutBtn.style = "margin-left: 10px; background: #dc3545; color: white; border: none; border-radius: 10px; padding: 2px 8px; cursor: pointer; font-size: 10px;";
+                    logoutBtn.onclick = logout;
+                    timer.appendChild(logoutBtn);
+                }
             }
         } else {
             if(overlay) overlay.style.display = 'flex';
@@ -1337,11 +3082,26 @@ let activeQuestions = [];
 
     function checkPassword() {
         const input = document.getElementById('pw-input').value;
-        if (input === "Kfz2026") {
+        const errorMsg = document.getElementById('pw-error');
+        
+        // Deine erlaubten Passwörter
+        const validPasswords = ["Kfz2026", "Lifetime!?", "!Kurzzeit?!"]; 
+
+        if (validPasswords.includes(input)) {
             localStorage.setItem('kfz_quiz_time', new Date().getTime());
-            location.reload();
+            checkSessionStatus();
+            if(errorMsg) errorMsg.style.display = 'none';
+            document.getElementById('pw-input').value = '';
         } else {
-            document.getElementById('pw-error').style.display = 'block';
+            if (errorMsg) errorMsg.style.display = 'block';
+            document.getElementById('pw-input').value = '';
+        }
+    }
+
+    function logout() {
+        if(confirm("Möchtest du dich wirklich abmelden?")) {
+            localStorage.removeItem('kfz_quiz_time');
+            location.reload();
         }
     }
 
@@ -1393,7 +3153,6 @@ let activeQuestions = [];
 
     document.getElementById('submit-btn').onclick = () => {
         if (selectedChoices.length === 0) return alert("Bitte wähle eine Antwort!");
-        
         const correctOnes = activeQuestions[currentIdx].correct;
         const isCorrect = selectedChoices.length === correctOnes.length && 
                           selectedChoices.every(v => correctOnes.includes(v));
@@ -1438,7 +3197,7 @@ let activeQuestions = [];
         userLog.forEach((item, i) => {
             const d = document.createElement('div');
             d.className = 'review-item';
-            d.innerHTML = `<strong>${i+1}. ${item.q}</strong><br><span class="${item.status ? 'status-correct' : 'status-wrong'}">${item.status ? '✓' : '✗'}</span>`;
+            d.innerHTML = `<strong>${i+1}. ${item.q}</strong><br><span class="${item.status ? 'status-correct' : 'status-wrong'}">${item.status ? '✓' : '✗'}</span>${!item.status ? `<br><small style="color:var(--success)">Richtig: ${item.correct.join(', ')}</small>` : ''}`;
             review.appendChild(d);
         });
     }
