@@ -60,7 +60,7 @@
         <div style="font-size: 50px; margin-bottom: 15px;">🔧</div>
         <h2 id="overlay-title" style="margin-bottom: 10px; color: #333;">Zugang KFZ-Prüfungssimulation für Meister oder Sachverständige</h2>
         <p id="overlay-text" style="color: #666; margin-bottom: 20px; font-size: 0.95rem;">
-            Gib dein Passwort ein oder erwerbe den <b>Lifetime Zugang für 100,00€ oder den 6-Monats Zugang für 10,00€</b>. Schreibe einfach den gewünschten Zugang in die Paypal Zahlung.
+            Gib dein Passwort ein oder erwerbe den <b>Jahres Zugang für 100,00€ oder den Monats Zugang für 10,00€</b>. Schreibe einfach den gewünschten Zugang in die Paypal Zahlung.
         </p>
         
         <input type="password" id="pw-input" placeholder="Passwort eingeben..." style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box; text-align: center; outline: none;">
@@ -3594,7 +3594,7 @@
         const errorMsg = document.getElementById('pw-error');
         
         // Deine erlaubten Passwörter
-        const validPasswords = ["Kfz2026", "Lifetime!?", "!Kurzzeit?!"]; 
+        const validPasswords = ["Kfz2026!", "Year!?", "!Kurzzeit?!"]; 
 
         if (validPasswords.includes(input)) {
             localStorage.setItem('kfz_quiz_time', new Date().getTime());
